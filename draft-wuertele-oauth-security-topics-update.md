@@ -34,6 +34,23 @@ author:
     email: pedram.hosseyni@sec.uni-stuttgart.de
 
 normative:
+  RFC9700:
+  OpenID.Core:
+    author:
+    - ins: N. Sakimura
+      name: Nat Sakimura
+    - ins: J. Bradley
+      name: John Bradley
+    - ins: M. Jones
+      name: Michael B. Jones
+    - ins: B. de Medeiros
+      name: Breno de Medeiros
+    - ins: C. Mortimore
+      name: Chuck Mortimore
+    date: November 2014
+    target: https://openid.net/specs/openid-connect-core-1_0.html
+    title: OpenID Connect Core 1.0 incorporating errata set 1
+  RFC6749:
 
 informative:
 
@@ -48,17 +65,17 @@ TODO Abstract
 # Introduction {#Introduction}
 
 Since the publication of the first OAuth 2.0 Security Best Practices
-document [@!RFC9700], new threats to OAuth 2.0 ecosystems have been
+document {{RFC9700}}, new threats to OAuth 2.0 ecosystems have been
 identified. This document therefore serves as an extension of the
-original [@!RFC9700] and is to be read in conjunction with it.
+original {{RFC9700}} and is to be read in conjunction with it.
 
-Like [@!RFC9700] before, this document provides important security
+Like {{RFC9700}} before, this document provides important security
 recommendations and it is RECOMMENDED that implementers upgrade their
 implementations and ecosystems as soon as feasible.
 
 ## Structure
 
-TODO explain the document structure and how it "fits" with [@!RFC9700]
+TODO explain the document structure and how it "fits" with {{RFC9700}}
 
 # Conventions and Terminology
 
@@ -68,7 +85,7 @@ This specification uses the terms "access token", "authorization
 endpoint", "authorization grant", "authorization server", "client",
 "client identifier" (client ID), "protected resource", "refresh
 token", "resource owner", "resource server", and "token endpoint"
-defined by OAuth 2.0 [@!RFC6749].
+defined by OAuth 2.0 {{RFC6749}}.
 
 # Attacks and Mitigations {#AttacksMitigations}
 
