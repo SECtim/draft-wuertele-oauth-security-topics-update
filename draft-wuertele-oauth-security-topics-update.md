@@ -45,29 +45,35 @@ TODO Abstract
 
 --- middle
 
-# Introduction
+# Introduction {#Introduction}
 
 TODO Introduction
 
 
-# Conventions and Definitions
+# Conventions and Terminology
 
 {::boilerplate bcp14-tagged}
 
+This specification uses the terms "access token", "authorization
+endpoint", "authorization grant", "authorization server", "client",
+"client identifier" (client ID), "protected resource", "refresh
+token", "resource owner", "resource server", and "token endpoint"
+defined by OAuth 2.0 [@!RFC6749].
 
-# Security Considerations
+
+# Security Considerations {#Security}
 
 TODO Security
 
 
-# IANA Considerations
+# IANA Considerations {#IANA}
 
 This document has no IANA actions.
 
 
 --- back
 
-# Acknowledgments
+# Acknowledgments {#Acknowledgements}
 {:numbered="false"}
 
 TODO acknowledge.
