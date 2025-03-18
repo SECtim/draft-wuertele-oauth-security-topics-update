@@ -2,14 +2,14 @@
 
 
 
-WG Working Group                                              Y. N. Here
-Internet-Draft                                    Your Organization Here
-Intended status: Informational                             18 March 2025
-Expires: 19 September 2025
+Web Authorization Protocol                                    T. Würtele
+Internet-Draft                                               P. Hosseyni
+Intended status: Informational                   University of Stuttgart
+Expires: 19 September 2025                                 18 March 2025
 
 
-                           TODO - Your title
-                  draft-todo-yourname-protocol-latest
+                OAuth 2.0 Security Best Current Practice
+           draft-wuertele-oauth-security-topics-update-latest
 
 Abstract
 
@@ -21,8 +21,8 @@ About This Document
 
    The latest revision of this draft can be found at
    https://example.com/LATEST.  Status information for this document may
-   be found at https://datatracker.ietf.org/doc/draft-todo-yourname-
-   protocol/.
+   be found at https://datatracker.ietf.org/doc/draft-wuertele-oauth-
+   security-topics-update/.
 
    Discussion of this document takes place on the WG Working Group
    mailing list (mailto:WG@example.com), which is archived at
@@ -70,7 +70,7 @@ Table of Contents
    4.  IANA Considerations
    5.  Normative References
    Acknowledgments
-   Author's Address
+   Authors' Addresses
 
 1.  Introduction
 
@@ -107,8 +107,13 @@ Acknowledgments
 
    TODO acknowledge.
 
-Author's Address
+Authors' Addresses
 
-   Your Name Here
-   Your Organization Here
-   Email: your.email@example.com
+   Tim Würtele
+   University of Stuttgart
+   Email: tim.wuertele@sec.uni-stuttgart.de
+
+
+   Pedram Hosseyni
+   University of Stuttgart
+   Email: pedram.hosseyni@sec.uni-stuttgart.de
