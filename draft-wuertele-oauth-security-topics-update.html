@@ -1199,10 +1199,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
 <p id="section-1-1">Since the publication of the first OAuth 2.0 Security Best Practices
-document [@!RFC9700], new threats to OAuth 2.0 ecosystems have been
+document <span>[<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>, new threats to OAuth 2.0 ecosystems have been
 identified. This document therefore serves as an extension of the
-original [@!RFC9700] and is to be read in conjunction with it.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">Like [@!RFC9700] before, this document provides important security
+original <span>[<a href="#RFC9700" class="cite xref">RFC9700</a>]</span> and is to be read in conjunction with it.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">Like <span>[<a href="#RFC9700" class="cite xref">RFC9700</a>]</span> before, this document provides important security
 recommendations and it is <span class="bcp14">RECOMMENDED</span> that implementers upgrade their
 implementations and ecosystems as soon as feasible.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <div id="structure">
@@ -1210,7 +1210,7 @@ implementations and ecosystems as soon as feasible.<a href="#section-1-2" class=
         <h3 id="name-structure">
 <a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-structure" class="section-name selfRef">Structure</a>
         </h3>
-<p id="section-1.1-1">TODO explain the document structure and how it "fits" with [@!RFC9700]<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-1">TODO explain the document structure and how it "fits" with <span>[<a href="#RFC9700" class="cite xref">RFC9700</a>]</span><a href="#section-1.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1228,7 +1228,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 endpoint", "authorization grant", "authorization server", "client",
 "client identifier" (client ID), "protected resource", "refresh
 token", "resource owner", "resource server", and "token endpoint"
-defined by OAuth 2.0 [@!RFC6749].<a href="#section-2-2" class="pilcrow">¶</a></p>
+defined by OAuth 2.0 <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>.<a href="#section-2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="AttacksMitigations">
@@ -1277,13 +1277,25 @@ defined by OAuth 2.0 [@!RFC6749].<a href="#section-2-2" class="pilcrow">¶</a></
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
       </h2>
 <dl class="references">
+<dt id="OpenID.Core">[OpenID.Core]</dt>
+      <dd>
+<span class="refAuthor">Sakimura, N.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Jones, M.</span>, <span class="refAuthor">de Medeiros, B.</span>, and <span class="refAuthor">C. Mortimore</span>, <span class="refTitle">"OpenID Connect Core 1.0 incorporating errata set 1"</span>, <time datetime="2014-11" class="refDate">November 2014</time>, <span>&lt;<a href="https://openid.net/specs/openid-connect-core-1_0.html">https://openid.net/specs/openid-connect-core-1_0.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
       <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC6749">[RFC6749]</dt>
+      <dd>
+<span class="refAuthor">Hardt, D., Ed.</span>, <span class="refTitle">"The OAuth 2.0 Authorization Framework"</span>, <span class="seriesInfo">RFC 6749</span>, <span class="seriesInfo">DOI 10.17487/RFC6749</span>, <time datetime="2012-10" class="refDate">October 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6749">https://www.rfc-editor.org/rfc/rfc6749</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-    <dd>
+      <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9700">[RFC9700]</dt>
+    <dd>
+<span class="refAuthor">Lodderstedt, T.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Labunets, A.</span>, and <span class="refAuthor">D. Fett</span>, <span class="refTitle">"Best Current Practice for OAuth 2.0 Security"</span>, <span class="seriesInfo">BCP 240</span>, <span class="seriesInfo">RFC 9700</span>, <span class="seriesInfo">DOI 10.17487/RFC9700</span>, <time datetime="2025-01" class="refDate">January 2025</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9700">https://www.rfc-editor.org/rfc/rfc9700</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>

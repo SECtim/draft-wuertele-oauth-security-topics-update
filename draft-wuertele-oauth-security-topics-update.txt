@@ -82,18 +82,17 @@ Table of Contents
 1.  Introduction
 
    Since the publication of the first OAuth 2.0 Security Best Practices
-   document [@!RFC9700], new threats to OAuth 2.0 ecosystems have been
+   document [RFC9700], new threats to OAuth 2.0 ecosystems have been
    identified.  This document therefore serves as an extension of the
-   original [@!RFC9700] and is to be read in conjunction with it.
+   original [RFC9700] and is to be read in conjunction with it.
 
-   Like [@!RFC9700] before, this document provides important security
+   Like [RFC9700] before, this document provides important security
    recommendations and it is RECOMMENDED that implementers upgrade their
    implementations and ecosystems as soon as feasible.
 
 1.1.  Structure
 
-   TODO explain the document structure and how it "fits" with
-   [@!RFC9700]
+   TODO explain the document structure and how it "fits" with [RFC9700]
 
 2.  Conventions and Terminology
 
@@ -107,7 +106,7 @@ Table of Contents
    endpoint", "authorization grant", "authorization server", "client",
    "client identifier" (client ID), "protected resource", "refresh
    token", "resource owner", "resource server", and "token endpoint"
-   defined by OAuth 2.0 [@!RFC6749].
+   defined by OAuth 2.0 [RFC6749].
 
 3.  Attacks and Mitigations
 
@@ -132,14 +131,29 @@ Table of Contents
 
 6.  Normative References
 
+   [OpenID.Core]
+              Sakimura, N., Bradley, J., Jones, M., de Medeiros, B., and
+              C. Mortimore, "OpenID Connect Core 1.0 incorporating
+              errata set 1", November 2014,
+              <https://openid.net/specs/openid-connect-core-1_0.html>.
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
 
+   [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
+              RFC 6749, DOI 10.17487/RFC6749, October 2012,
+              <https://www.rfc-editor.org/rfc/rfc6749>.
+
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC9700]  Lodderstedt, T., Bradley, J., Labunets, A., and D. Fett,
+              "Best Current Practice for OAuth 2.0 Security", BCP 240,
+              RFC 9700, DOI 10.17487/RFC9700, January 2025,
+              <https://www.rfc-editor.org/rfc/rfc9700>.
 
 Acknowledgments
 
