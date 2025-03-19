@@ -114,27 +114,36 @@ here
 
 When using signature-based client authentication methods such as
 `private_key_jwt` as defined in {{OpenID.Core}} or signed JWTs as
-defined in {{?RFC7521}} and {{?RFC7523}}, a malicious authorization
+defined in {{!RFC7521}} and {{!RFC7523}}, a malicious authorization
 server may be able to obtain and use a client's authentication
 credential, enabling them to impersonate a client towards another
 honest authorization server.
 
 ### Attack Description
 
+[^desc-len]{: source="Tim W."}
+
+[^desc-len]: In its current form, the attack description is probably
+    way too long and complex. Maybe we can make it more accessible by
+    introducing some more structure. E.g., "Preconditions", "Attack
+    Sequence"(?), "Impact", "Variants".
+
 The descriptions here follow [TODO paper], where additional details of
 the attack are laid out.  Audience injection attacks require a client
 to interact with at least two authorization servers, one of which is
 malicious, and to authenticate to both with a signature-based
-authentication method using the same key pair.  Furthermore, the
-client needs to be willing to authenticate at an endpoint other than
-the token endpoint at the attacker authorization server.  The
-following description uses the pushed authorization request endpoint
-defined by {{?RFC9126}}, see below for further variants.
+authentication method using the same key pair.  The following
+description uses the `jwt-bearer` client authentication from
+{{!RFC7523}}, see below for further variants.  Furthermore, the client
+needs to be willing to authenticate at an endpoint other than the
+token endpoint at the attacker authorization server.  The following
+description uses the pushed authorization request endpoint defined by
+{{?RFC9126}}, see below for further variants.
 
-[^1]{: source="Tim W."}
+[^oid-fed-ex]{: source="Tim W."}
 
-[^1]: Mention OID Federation and FAPI 2.0 here as examples of profiles
-    that force clients to do that?
+[^oid-fed-ex]: Mention OID Federation and FAPI 2.0 here as examples of
+    profiles that force clients to do that?
 
 Assume that the authorization servers publish the following URIs for
 their authorization, token, and pushed authorization request
@@ -176,14 +185,31 @@ follows:
    authorization request to A-AS' pushed authorization request
    endpoint.
 
-One of the parameters of that pushed authorization request is a
-`client_assertion` that authenticates the client.
+Part of that pushed authorization request is a `client_assertion` that
+authenticates the client.  This client assertion consists of a JSON
+Web Token (JWT) that is signed by the client and contains, among
+others, the following claims:
 
-TODO show and explain the contents of the client assertion
+~~~ json
+"iss": "cid",
+"sub": "cid",
+"aud": "https://honest.com/token"
+~~~
 
-TODO explain how the attacker can now use the assertion to break authZ
+The client issued this client assertion to authenticate at A-AS, but
+due to the malicious use of H-AS' token endpoint in A-AS'
+authorization server metadata, the `aud` claim contains H-AS' token
+endpoint.  Recall that both A-AS and H-AS registered the client with
+client ID `cid`, and that the client uses the same key pair for
+authentication at both authorization servers.  Hence, this client
+assertion - that the client just sent to A-AS' pushed authorization
+endpoint - is also a valid authentication credential for the client at
+H-AS.  The attacker can therefore use the client assertion to
+impersonate the client at H-AS, for example, in a client credentials
+grant.
 
 TODO variants
+
 
 ### Countermeasures
 
