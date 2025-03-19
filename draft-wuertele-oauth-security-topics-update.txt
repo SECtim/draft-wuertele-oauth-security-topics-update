@@ -132,15 +132,25 @@ Table of Contents
 
 3.1.1.  Attack Description
 
+
+   // In its current form, the attack description is probably way too
+   // long and complex.  Maybe we can make it more accessible by
+   // introducing some more structure.  E.g., "Preconditions", "Attack
+   // Sequence"(?), "Impact", "Variants".
+   //
+   // -- Tim W.
+
    The descriptions here follow [TODO paper], where additional details
    of the attack are laid out.  Audience injection attacks require a
    client to interact with at least two authorization servers, one of
    which is malicious, and to authenticate to both with a signature-
-   based authentication method using the same key pair.  Furthermore,
-   the client needs to be willing to authenticate at an endpoint other
-   than the token endpoint at the attacker authorization server.  The
-   following description uses the pushed authorization request endpoint
-   defined by [RFC9126], see below for further variants.
+   based authentication method using the same key pair.  The following
+   description uses the jwt-bearer client authentication from [RFC7523],
+   see below for further variants.  Furthermore, the client needs to be
+   willing to authenticate at an endpoint other than the token endpoint
+   at the attacker authorization server.  The following description uses
+   the pushed authorization request endpoint defined by [RFC9126], see
+   below for further variants.
 
 
    // Mention OID Federation and FAPI 2.0 here as examples of profiles
@@ -186,13 +196,26 @@ Table of Contents
        authorization request to A-AS' pushed authorization request
        endpoint.
 
-   One of the parameters of that pushed authorization request is a
-   client_assertion that authenticates the client.
+   Part of that pushed authorization request is a client_assertion that
+   authenticates the client.  This client assertion consists of a JSON
+   Web Token (JWT) that is signed by the client and contains, among
+   others, the following claims:
 
-   TODO show and explain the contents of the client assertion
+   "iss": "cid",
+   "sub": "cid",
+   "aud": "https://honest.com/token"
 
-   TODO explain how the attacker can now use the assertion to break
-   authZ
+   The client issued this client assertion to authenticate at A-AS, but
+   due to the malicious use of H-AS' token endpoint in A-AS'
+   authorization server metadata, the aud claim contains H-AS' token
+   endpoint.  Recall that both A-AS and H-AS registered the client with
+   client ID cid, and that the client uses the same key pair for
+   authentication at both authorization servers.  Hence, this client
+   assertion - that the client just sent to A-AS' pushed authorization
+   endpoint - is also a valid authentication credential for the client
+   at H-AS.  The attacker can therefore use the client assertion to
+   impersonate the client at H-AS, for example, in a client credentials
+   grant.
 
    TODO variants
 
@@ -225,6 +248,16 @@ Table of Contents
               RFC 6749, DOI 10.17487/RFC6749, October 2012,
               <https://www.rfc-editor.org/rfc/rfc6749>.
 
+   [RFC7521]  Campbell, B., Mortimore, C., Jones, M., and Y. Goland,
+              "Assertion Framework for OAuth 2.0 Client Authentication
+              and Authorization Grants", RFC 7521, DOI 10.17487/RFC7521,
+              May 2015, <https://www.rfc-editor.org/rfc/rfc7521>.
+
+   [RFC7523]  Jones, M., Campbell, B., and C. Mortimore, "JSON Web Token
+              (JWT) Profile for OAuth 2.0 Client Authentication and
+              Authorization Grants", RFC 7523, DOI 10.17487/RFC7523, May
+              2015, <https://www.rfc-editor.org/rfc/rfc7523>.
+
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
@@ -247,16 +280,6 @@ Table of Contents
               Connect Discovery 1.0 incorporating errata set 2",
               December 2023, <https://openid.net/specs/openid-connect-
               discovery-1_0.html>.
-
-   [RFC7521]  Campbell, B., Mortimore, C., Jones, M., and Y. Goland,
-              "Assertion Framework for OAuth 2.0 Client Authentication
-              and Authorization Grants", RFC 7521, DOI 10.17487/RFC7521,
-              May 2015, <https://www.rfc-editor.org/rfc/rfc7521>.
-
-   [RFC7523]  Jones, M., Campbell, B., and C. Mortimore, "JSON Web Token
-              (JWT) Profile for OAuth 2.0 Client Authentication and
-              Authorization Grants", RFC 7523, DOI 10.17487/RFC7523, May
-              2015, <https://www.rfc-editor.org/rfc/rfc7523>.
 
    [RFC8414]  Jones, M., Sakimura, N., and J. Bradley, "OAuth 2.0
               Authorization Server Metadata", RFC 8414,
