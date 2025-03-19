@@ -4,8 +4,9 @@
 
 Web Authorization Protocol                                    T. Würtele
 Internet-Draft                                               P. Hosseyni
-Intended status: Informational                   University of Stuttgart
-Expires: 19 September 2025                                 18 March 2025
+Updates: 6749, 6750, 9700 (if approved)          University of Stuttgart
+Intended status: Best Current Practice                     19 March 2025
+Expires: 20 September 2025
 
 
                 OAuth 2.0 Security Best Current Practice
@@ -13,7 +14,10 @@ Expires: 19 September 2025                                 18 March 2025
 
 Abstract
 
-   TODO Abstract
+   This document updates the set of best current security practices for
+   OAuth 2.0 by extending the security advice given in RFC 6749, RFC
+   6750, and RFC 9700, to cover new threats that have been discovered
+   since the former documents have been published.
 
 About This Document
 
@@ -49,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 September 2025.
+   This Internet-Draft will expire on 20 September 2025.
 
 Copyright Notice
 
@@ -72,10 +76,14 @@ Table of Contents
    2.  Conventions and Terminology
    3.  Attacks and Mitigations
      3.1.  Audience Injection Attacks
+       3.1.1.  Attack Description
+       3.1.2.  Countermeasures
      3.2.  TODO Title - "Mix-up reloaded" content
    4.  Security Considerations
    5.  IANA Considerations
-   6.  Normative References
+   6.  References
+     6.1.  Normative References
+     6.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -110,9 +118,85 @@ Table of Contents
 
 3.  Attacks and Mitigations
 
-   TODO section intro
+   TODO section intro, mention that we do not repeat [RFC9700] stuff
+   here
 
 3.1.  Audience Injection Attacks
+
+   When using signature-based client authentication methods such as
+   private_key_jwt as defined in [OpenID.Core] or signed JWTs as defined
+   in [RFC7521] and [RFC7523], a malicious authorization server may be
+   able to obtain and use a client's authentication credential, enabling
+   them to impersonate a client towards another honest authorization
+   server.
+
+3.1.1.  Attack Description
+
+   The descriptions here follow [TODO paper], where additional details
+   of the attack are laid out.  Audience injection attacks require a
+   client to interact with at least two authorization servers, one of
+   which is malicious, and to authenticate to both with a signature-
+   based authentication method using the same key pair.  Furthermore,
+   the client needs to be willing to authenticate at an endpoint other
+   than the token endpoint at the attacker authorization server.  The
+   following description uses the pushed authorization request endpoint
+   defined by [RFC9126], see below for further variants.
+
+
+   // Mention OID Federation and FAPI 2.0 here as examples of profiles
+   // that force clients to do that?
+   //
+   // -- Tim W.
+
+   Assume that the authorization servers publish the following URIs for
+   their authorization, token, and pushed authorization request
+   endpoints, for example via mechanisms such as authorization server
+   metadata [RFC8414] or OpenID Discovery [OpenID.Discovery].  However,
+   audience injection attacks are also possible on clients with manually
+   configured authorization server metadata.
+
+   Excerpt from H-AS' metadata:
+
+   "issuer": "https://honest.com",
+   "authorization_endpoint": "https://honest.com/authorize",
+   "token_endpoint": "https://honest.com/token",
+   "pushed_authorization_request_endpoint": "https://honest.com/par",
+   ...
+
+   Excerpt from A-AS' metadata:
+
+   "issuer": "https://attacker.com",
+   "authorization_endpoint": "https://attacker.com/authorize",
+   "token_endpoint": "https://honest.com/token",
+   "pushed_authorization_request_endpoint": "https://attacker.com/par",
+   ...
+
+   I.e., the attacker authorization server claims to use the honest
+   authorization server's token endpoint.  The attack now commences as
+   follows:
+
+   1.  Client registers at H-AS, and gets assigned a client ID cid.
+
+   2.  Client registers at A-AS, and gets assigned the same client ID
+       cid.  Note that the client ID is not a secret and often send
+       through the front channel.
+
+   3.  Client starts an authorization code grant, e.g., triggered by the
+       attacker as a user of the client, with A-AS by sending a pushed
+       authorization request to A-AS' pushed authorization request
+       endpoint.
+
+   One of the parameters of that pushed authorization request is a
+   client_assertion that authenticates the client.
+
+   TODO show and explain the contents of the client assertion
+
+   TODO explain how the attacker can now use the assertion to break
+   authZ
+
+   TODO variants
+
+3.1.2.  Countermeasures
 
    TODO
 
@@ -122,20 +206,15 @@ Table of Contents
 
 4.  Security Considerations
 
-   Security considerations are described in
-   Section (#AttacksMitigations).
+   Security considerations are described in Section 3.
 
 5.  IANA Considerations
 
    This document has no IANA actions.
 
-6.  Normative References
+6.  References
 
-   [OpenID.Core]
-              Sakimura, N., Bradley, J., Jones, M., de Medeiros, B., and
-              C. Mortimore, "OpenID Connect Core 1.0 incorporating
-              errata set 1", November 2014,
-              <https://openid.net/specs/openid-connect-core-1_0.html>.
+6.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -155,17 +234,54 @@ Table of Contents
               RFC 9700, DOI 10.17487/RFC9700, January 2025,
               <https://www.rfc-editor.org/rfc/rfc9700>.
 
+6.2.  Informative References
+
+   [OpenID.Core]
+              Sakimura, N., Bradley, J., Jones, M., de Medeiros, B., and
+              C. Mortimore, "OpenID Connect Core 1.0 incorporating
+              errata set 2", December 2023,
+              <https://openid.net/specs/openid-connect-core-1_0.html>.
+
+   [OpenID.Discovery]
+              Sakimura, N., Bradley, J., Jones, M., and E. Jay, "OpenID
+              Connect Discovery 1.0 incorporating errata set 2",
+              December 2023, <https://openid.net/specs/openid-connect-
+              discovery-1_0.html>.
+
+   [RFC7521]  Campbell, B., Mortimore, C., Jones, M., and Y. Goland,
+              "Assertion Framework for OAuth 2.0 Client Authentication
+              and Authorization Grants", RFC 7521, DOI 10.17487/RFC7521,
+              May 2015, <https://www.rfc-editor.org/rfc/rfc7521>.
+
+   [RFC7523]  Jones, M., Campbell, B., and C. Mortimore, "JSON Web Token
+              (JWT) Profile for OAuth 2.0 Client Authentication and
+              Authorization Grants", RFC 7523, DOI 10.17487/RFC7523, May
+              2015, <https://www.rfc-editor.org/rfc/rfc7523>.
+
+   [RFC8414]  Jones, M., Sakimura, N., and J. Bradley, "OAuth 2.0
+              Authorization Server Metadata", RFC 8414,
+              DOI 10.17487/RFC8414, June 2018,
+              <https://www.rfc-editor.org/rfc/rfc8414>.
+
+   [RFC9126]  Lodderstedt, T., Campbell, B., Sakimura, N., Tonge, D.,
+              and F. Skokan, "OAuth 2.0 Pushed Authorization Requests",
+              RFC 9126, DOI 10.17487/RFC9126, September 2021,
+              <https://www.rfc-editor.org/rfc/rfc9126>.
+
 Acknowledgments
 
-   TODO acknowledge.
+   We would like to thank Kaixuan Luo, TODO add names, sort by last name
+   for their valuable feedback and contributions to this document.
 
 Authors' Addresses
 
    Tim Würtele
    University of Stuttgart
+   Germany
    Email: tim.wuertele@sec.uni-stuttgart.de
 
 
    Pedram Hosseyni
    University of Stuttgart
+   Germany
    Email: pedram.hosseyni@sec.uni-stuttgart.de
