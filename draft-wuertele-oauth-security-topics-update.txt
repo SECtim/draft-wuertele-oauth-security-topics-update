@@ -73,17 +73,17 @@ Table of Contents
 
    1.  Introduction
      1.1.  Structure
-   2.  Conventions and Terminology
-   3.  Attacks and Mitigations
-     3.1.  Audience Injection Attacks
-       3.1.1.  Attack Description
-       3.1.2.  Countermeasures
-     3.2.  TODO Title - "Mix-up reloaded" content
-   4.  Security Considerations
-   5.  IANA Considerations
-   6.  References
-     6.1.  Normative References
-     6.2.  Informative References
+     1.2.  Conventions and Terminology
+   2.  Attacks and Mitigations
+     2.1.  Audience Injection Attacks
+       2.1.1.  Attack Description
+       2.1.2.  Countermeasures
+     2.2.  TODO Title - "Mix-up reloaded" content
+   3.  Security Considerations
+   4.  IANA Considerations
+   5.  References
+     5.1.  Normative References
+     5.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -102,7 +102,7 @@ Table of Contents
 
    TODO explain the document structure and how it "fits" with [RFC9700]
 
-2.  Conventions and Terminology
+1.2.  Conventions and Terminology
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
@@ -116,12 +116,18 @@ Table of Contents
    token", "resource owner", "resource server", and "token endpoint"
    defined by OAuth 2.0 [RFC6749].
 
-3.  Attacks and Mitigations
+
+   // Make sure to update this list once the technical sections below
+   // are completed.
+   //
+   // -- Tim W.
+
+2.  Attacks and Mitigations
 
    TODO section intro, mention that we do not repeat [RFC9700] stuff
    here
 
-3.1.  Audience Injection Attacks
+2.1.  Audience Injection Attacks
 
    When using signature-based client authentication methods such as
    private_key_jwt as defined in [OpenID.Core] or signed JWTs as defined
@@ -130,7 +136,7 @@ Table of Contents
    them to impersonate a client towards another honest authorization
    server.
 
-3.1.1.  Attack Description
+2.1.1.  Attack Description
 
 
    // In its current form, the attack description is probably way too
@@ -188,8 +194,8 @@ Table of Contents
    1.  Client registers at H-AS, and gets assigned a client ID cid.
 
    2.  Client registers at A-AS, and gets assigned the same client ID
-       cid.  Note that the client ID is not a secret and often send
-       through the front channel.
+       cid.  Note that the client ID is not a secret (Section 2.2 of
+       [RFC6749]).
 
    3.  Client starts an authorization code grant, e.g., triggered by the
        attacker as a user of the client, with A-AS by sending a pushed
@@ -217,27 +223,34 @@ Table of Contents
    impersonate the client at H-AS, for example, in a client credentials
    grant.
 
+
+   // Omit concrete examples here.  Just say that the attacker can
+   // impersonate the client and may obtain access tokens, point to
+   // paper for details.
+   //
+   // -- Tim W.
+
    TODO variants
 
-3.1.2.  Countermeasures
+2.1.2.  Countermeasures
 
    TODO
 
-3.2.  TODO Title - "Mix-up reloaded" content
+2.2.  TODO Title - "Mix-up reloaded" content
 
    TODO
 
-4.  Security Considerations
+3.  Security Considerations
 
-   Security considerations are described in Section 3.
+   Security considerations are described in Section 2.
 
-5.  IANA Considerations
+4.  IANA Considerations
 
    This document has no IANA actions.
 
-6.  References
+5.  References
 
-6.1.  Normative References
+5.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -267,7 +280,7 @@ Table of Contents
               RFC 9700, DOI 10.17487/RFC9700, January 2025,
               <https://www.rfc-editor.org/rfc/rfc9700>.
 
-6.2.  Informative References
+5.2.  Informative References
 
    [OpenID.Core]
               Sakimura, N., Bradley, J., Jones, M., de Medeiros, B., and
