@@ -39,6 +39,8 @@ author:
     country: Germany
 
 normative:
+
+informative:
   OpenID.Core:
     author:
     - ins: N. Sakimura
@@ -51,19 +53,29 @@ normative:
       name: Breno de Medeiros
     - ins: C. Mortimore
       name: Chuck Mortimore
-    date: November 2014
+    date: December 2023
     target: https://openid.net/specs/openid-connect-core-1_0.html
     title: OpenID Connect Core 1.0 incorporating errata set 2
-
-informative:
-
+  OpenID.Discovery:
+    author:
+    - ins: N. Sakimura
+      name: Nat Sakimura
+    - ins: J. Bradley
+      name: John Bradley
+    - ins: M. Jones
+      name: Michael B. Jones
+    - ins: E. Jay
+      name: Edmund Jay
+    date: December 2023
+    target: https://openid.net/specs/openid-connect-discovery-1_0.html
+    title: OpenID Connect Discovery 1.0 incorporating errata set 2
 
 --- abstract
 
-This document extends the set of best current security practices for
-OAuth 2.0 by updating the security advice given in RFC 6749, RFC 6750,
-and RFC 9700, to cover new threats that have been discovered since the
-former documents have been published.
+This document updates the set of best current security practices for
+OAuth 2.0 by extending the security advice given in RFC 6749, RFC
+6750, and RFC 9700, to cover new threats that have been discovered
+since the former documents have been published.
 
 
 --- middle
@@ -95,7 +107,8 @@ defined by OAuth 2.0 {{!RFC6749}}.
 
 # Attacks and Mitigations {#AttacksMitigations}
 
-TODO section intro
+TODO section intro, mention that we do not repeat {{!RFC9700}} stuff
+here
 
 ## Audience Injection Attacks {#AudienceInjection}
 
