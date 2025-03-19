@@ -60,7 +60,10 @@ informative:
 
 --- abstract
 
-TODO Abstract
+This document extends the set of best current security practices for
+OAuth 2.0 by updating the security advice given in RFC 6749, RFC 6750,
+and RFC 9700, to cover new threats that have been discovered since the
+former documents have been published.
 
 
 --- middle
@@ -117,4 +120,7 @@ This document has no IANA actions.
 # Acknowledgments {#Acknowledgements}
 {:numbered="false"}
 
-TODO acknowledge.
+We would like to thank
+Kaixuan Luo,
+TODO add names, sort by last name
+for their valuable feedback and contributions to this document.
