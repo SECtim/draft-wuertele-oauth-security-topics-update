@@ -95,7 +95,8 @@ implementations and ecosystems as soon as feasible.
 
 TODO explain the document structure and how it "fits" with {{!RFC9700}}
 
-# Conventions and Terminology
+
+## Conventions and Terminology
 
 {::boilerplate bcp14-tagged}
 
@@ -104,6 +105,11 @@ endpoint", "authorization grant", "authorization server", "client",
 "client identifier" (client ID), "protected resource", "refresh
 token", "resource owner", "resource server", and "token endpoint"
 defined by OAuth 2.0 {{!RFC6749}}.
+
+[^terminology-update]{: source="Tim W."}
+
+[^terminology-update]: Make sure to update this list once the
+    technical sections below are completed.
 
 # Attacks and Mitigations {#AttacksMitigations}
 
@@ -123,8 +129,8 @@ honest authorization server.
 
 [^desc-len]{: source="Tim W."}
 
-[^desc-len]: In its current form, the attack description is probably
-    way too long and complex. Maybe we can make it more accessible by
+[^desc-len]: In its current form, the attack description is probably way
+    too long and complex. Maybe we can make it more accessible by
     introducing some more structure. E.g., "Preconditions", "Attack
     Sequence"(?), "Impact", "Variants".
 
@@ -178,8 +184,8 @@ follows:
 
 1. Client registers at H-AS, and gets assigned a client ID `cid`.
 2. Client registers at A-AS, and gets assigned the same client ID
-   `cid`. Note that the client ID is not a secret and often send
-   through the front channel.
+   `cid`. Note that the client ID is not a secret ({{Section 2.2 of
+   !RFC6749}}).
 3. Client starts an authorization code grant, e.g., triggered by the
    attacker as a user of the client, with A-AS by sending a pushed
    authorization request to A-AS' pushed authorization request
@@ -207,6 +213,12 @@ endpoint - is also a valid authentication credential for the client at
 H-AS.  The attacker can therefore use the client assertion to
 impersonate the client at H-AS, for example, in a client credentials
 grant.
+
+[^impers-ex]{: source="Tim W."}
+
+[^impers-ex]: Omit concrete examples here. Just say that the attacker
+    can impersonate the client and may obtain access tokens, point to
+    paper for details.
 
 TODO variants
 
