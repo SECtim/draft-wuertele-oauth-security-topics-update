@@ -142,21 +142,20 @@ authentication method using the same key pair.  The following
 description uses the `jwt-bearer` client authentication from
 {{!RFC7523}}, see below for further variants.  Furthermore, the client
 needs to be willing to authenticate at an endpoint other than the
-token endpoint at the attacker authorization server.  The following
-description uses the pushed authorization request endpoint defined by
-{{?RFC9126}}, see below for further variants.
+token endpoint at the attacker authorization server.
 
-[^oid-fed-ex]{: source="Tim W."}
-
-[^oid-fed-ex]: Mention OID Federation and FAPI 2.0 here as examples of
-    profiles that force clients to do that?
+#### Core Attack Idea
 
 Assume that the authorization servers publish the following URIs for
-their authorization, token, and pushed authorization request
-endpoints, for example via mechanisms such as authorization server
-metadata {{?RFC8414}} or OpenID Discovery {{OpenID.Discovery}}.
-However, audience injection attacks are also possible on clients with
-manually configured authorization server metadata.
+their authorization and token endpoints, for example via mechanisms
+such as authorization server metadata {{?RFC8414}} or OpenID Discovery
+{{OpenID.Discovery}}.
+The exact publication mechanism is not relevant, as audience injection
+attacks are also possible on clients with manually configured
+authorization server metadata.
+
+In the following, let H-AS be the honest authorization server and let
+A-AS be the attacker-controlled authorization server.
 
 Excerpt from H-AS' metadata:
 
@@ -164,7 +163,6 @@ Excerpt from H-AS' metadata:
 "issuer": "https://honest.com",
 "authorization_endpoint": "https://honest.com/authorize",
 "token_endpoint": "https://honest.com/token",
-"pushed_authorization_request_endpoint": "https://honest.com/par",
 ...
 ~~~
 
@@ -174,25 +172,21 @@ Excerpt from A-AS' metadata:
 "issuer": "https://attacker.com",
 "authorization_endpoint": "https://attacker.com/authorize",
 "token_endpoint": "https://honest.com/token",
-"pushed_authorization_request_endpoint": "https://attacker.com/par",
 ...
 ~~~
 
 I.e., the attacker authorization server claims to use the honest
-authorization server's token endpoint.  The attack now commences as
-follows:
+authorization server's token endpoint. Note that the attacker
+authorization server does not control this endpoint. The attack now
+commences as follows:
 
 1. Client registers at H-AS, and gets assigned a client ID `cid`.
 2. Client registers at A-AS, and gets assigned the same client ID
    `cid`. Note that the client ID is not a secret ({{Section 2.2 of
    !RFC6749}}).
-3. Client starts an authorization code grant, e.g., triggered by the
-   attacker as a user of the client, with A-AS by sending a pushed
-   authorization request to A-AS' pushed authorization request
-   endpoint.
 
-Part of that pushed authorization request is a `client_assertion` that
-authenticates the client.  This client assertion consists of a JSON
+Now, whenever the client creates a client assertion for authenticating
+to A-AS, the assertion consists of a JSON
 Web Token (JWT) that is signed by the client and contains, among
 others, the following claims:
 
@@ -202,25 +196,40 @@ others, the following claims:
 "aud": "https://honest.com/token"
 ~~~
 
-The client issued this client assertion to authenticate at A-AS, but
-due to the malicious use of H-AS' token endpoint in A-AS'
+Due to the malicious use of H-AS' token endpoint in A-AS'
 authorization server metadata, the `aud` claim contains H-AS' token
 endpoint.  Recall that both A-AS and H-AS registered the client with
 client ID `cid`, and that the client uses the same key pair for
 authentication at both authorization servers.  Hence, this client
-assertion - that the client just sent to A-AS' pushed authorization
-endpoint - is also a valid authentication credential for the client at
-H-AS.  The attacker can therefore use the client assertion to
-impersonate the client at H-AS, for example, in a client credentials
-grant.
+assertion is a valid valid authentication credential for the client at
+H-AS. The attacker can therefore use the client assertion to
+impersonate the client at H-AS.
 
-[^impers-ex]{: source="Tim W."}
+#### Endpoints
 
-[^impers-ex]: Omit concrete examples here. Just say that the attacker
-    can impersonate the client and may obtain access tokens, point to
-    paper for details.
+As mentioned above, the attack is only successful if the client
+authenticates to an endpoint other than the token endpoint. If the
+client wants to send a token request to  A-AS, it will send the token
+request to H-AS, thus, the attacker cannot obtain the client assertion.
 
-TODO variants
+As detailed in [TODO paper], the attack is possible if the client
+authenticates with such client assertions at the following endpoints of
+A-AS:
+
+- Pushed Authorization Endpoint
+- Token Revocation Endpoint
+- CIBA Backchannel Authentication Endpoint
+- Device Authorization Endpoint
+
+#### Further Notes
+
+As described in [TODO paper], the attacker can utilize the obtained
+client authentication assertions to impersonate the client and obtain
+access tokens.
+
+The attack is analogous for the `private_key_jwt` client authentication
+method as defined in {{OpenID.Core}} and instantiations of client
+authentication assertions defined in {{!RFC7521}}.
 
 
 ### Countermeasures
