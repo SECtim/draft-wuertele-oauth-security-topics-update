@@ -1,0 +1,91 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2025-03-20T01:39:38.330308+00:00",
+  "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
+  "labels": [
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    },
+    {
+      "name": "editorial",
+      "description": "Typos, formatting, and the like.",
+      "color": "17E24A"
+    }
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDOOKn4ys6utJzJ",
+      "title": "Decide on a title",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/1",
+      "state": "OPEN",
+      "author": "SECtim",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "So far, I've put \"OAuth 2.0 Security Best Current Practice\" as the title, but it might make sense to use a different title to at least indicate that this is an extension of an existing document of that name.",
+      "createdAt": "2025-03-19T09:29:09Z",
+      "updatedAt": "2025-03-19T09:29:09Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 2,
+      "id": "I_kwDOOKn4ys6utShA",
+      "title": "Description for Audience Injection Attacks",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/2",
+      "state": "OPEN",
+      "author": "SECtim",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "SECtim",
+        "PedramHD"
+      ],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-03-19T09:39:58Z",
+      "updatedAt": "2025-03-19T10:46:00Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 3,
+      "id": "I_kwDOOKn4ys6utTBW",
+      "title": "Description for attacks from mix-up reloaded work",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/3",
+      "state": "OPEN",
+      "author": "SECtim",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Exact title and structure to be discussed.",
+      "createdAt": "2025-03-19T09:40:32Z",
+      "updatedAt": "2025-03-19T09:40:32Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": []
+}
