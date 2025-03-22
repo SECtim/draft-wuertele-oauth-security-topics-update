@@ -202,10 +202,9 @@ commences as follows:
    `cid`. Note that the client ID is not a secret ({{Section 2.2 of
    !RFC6749}}).
 
-Now, whenever the client creates a client assertion for authenticating
-to A-AS, the assertion consists of a JSON
-Web Token (JWT) that is signed by the client and contains, among
-others, the following claims:
+Now, whenever the client creates a client assertion for authentication
+to A-AS, the assertion consists of a JSON Web Token (JWT) that is signed
+by the client and contains, among others, the following claims:
 
 ~~~ json
 "iss": "cid",
@@ -242,9 +241,9 @@ endpoints of A-AS:
 - CIBA Backchannel Authentication Endpoint (see {{OpenID.CIBA}})
 - Device Authorization Endpoint (see {{?RFC8628}})
 
-Note that this list of examples may not be exhaustive. Hence, any client
-that is willing to authenticate at any endpoint other than the token
-endpoint SHOULD employ countermeasures as described in
+Note that this list of examples is not exhaustive. Hence, any client
+that might authenticate at any endpoint other than the token endpoint
+SHOULD employ countermeasures as described in
 {{AudienceInjectionCountermeasures}}.
 
 #### Affected Client Authentication Methods {#AudienceInjectionAuthNMethods}
@@ -283,5 +282,7 @@ This document has no IANA actions.
 
 We would like to thank
 Kaixuan Luo,
-TODO add names, sort by last name
+[^acksAddNames]{: source="Tim W."}
+
+[^acksAddNames]: TODO add names, sort by last name.
 for their valuable feedback and contributions to this document.
