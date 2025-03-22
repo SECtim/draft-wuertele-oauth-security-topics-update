@@ -159,28 +159,27 @@ to interact with at least two authorization servers, one of which is
 malicious, and to authenticate to both with a signature-based
 authentication method using the same key pair.  The following
 description uses the `jwt-bearer` client authentication from
-{{!RFC7523}}, see below for further variants.  Furthermore, the client
-needs to be willing to authenticate at an endpoint other than the token
-endpoint at the attacker authorization server.
+{{!RFC7523}}, see {{AudienceInjectionAuthNMethods}} for other affected
+client authentication methods.  Furthermore, the client needs to be
+willing to authenticate at an endpoint other than the token endpoint at
+the attacker authorization server (see {{AudienceInjectionEndpoints}}).
 
-#### Core Attack Idea
+#### Core Attack Steps
+
+In the following, let H-AS be an honest authorization server and let
+A-AS be an attacker-controlled authorization server.
 
 Assume that the authorization servers publish the following URIs for
-their authorization and token endpoints, for example via mechanisms
-such as authorization server metadata {{?RFC8414}} or OpenID Discovery
-{{OpenID.Discovery}}.
+their token endpoints, for example via mechanisms such as authorization
+server metadata {{?RFC8414}} or OpenID Discovery {{OpenID.Discovery}}.
 The exact publication mechanism is not relevant, as audience injection
 attacks are also possible on clients with manually configured
 authorization server metadata.
-
-In the following, let H-AS be the honest authorization server and let
-A-AS be the attacker-controlled authorization server.
 
 Excerpt from H-AS' metadata:
 
 ~~~ javascript
 "issuer": "https://honest.com",
-"authorization_endpoint": "https://honest.com/authorize",
 "token_endpoint": "https://honest.com/token",
 ...
 ~~~
@@ -189,14 +188,13 @@ Excerpt from A-AS' metadata:
 
 ~~~ javascript
 "issuer": "https://attacker.com",
-"authorization_endpoint": "https://attacker.com/authorize",
 "token_endpoint": "https://honest.com/token",
 ...
 ~~~
 
 I.e., the attacker authorization server claims to use the honest
 authorization server's token endpoint. Note that the attacker
-authorization server does not control this endpoint. The attack now
+authorization server does not control this endpoint. The attack then
 commences as follows:
 
 1. Client registers at H-AS, and gets assigned a client ID `cid`.
@@ -221,12 +219,15 @@ endpoint.  Recall that both A-AS and H-AS registered the client with
 client ID `cid`, and that the client uses the same key pair for
 authentication at both authorization servers.  Hence, this client
 assertion is a valid valid authentication credential for the client at
-H-AS. The attacker can therefore use the client assertion to
-impersonate the client at H-AS.
+H-AS.
 
-#### Endpoints
+As described in {{research.ust}}, the attacker can then utilize the
+obtained client authentication assertion to impersonate the client and,
+for example, obtain access tokens.
 
-As mentioned above, the attack is only successful if the client
+#### Endpoints Requiring Client Authentication {#AudienceInjectionEndpoints}
+
+As mentioned above, the attack is only possible if the client
 authenticates to an endpoint other than the token endpoint at A-AS.
 This is because if the client sends a token request to A-AS, it will use
 A-AS' token endpoint as published by A-AS and hence, send the token
@@ -234,25 +235,30 @@ request to H-AS, i.e., the attacker cannot obtain the client assertion.
 
 As detailed in {{research.ust}}, the attack is confirmed to be possible
 if the client authenticates with such client assertions at the following
-endpoints of A-AS, but note that this list may not be exhaustive:
+endpoints of A-AS:
 
 - Pushed Authorization Endpoint (see {{?RFC9126}})
 - Token Revocation Endpoint (see {{?RFC7009}})
 - CIBA Backchannel Authentication Endpoint (see {{OpenID.CIBA}})
 - Device Authorization Endpoint (see {{?RFC8628}})
 
-#### Further Notes
+Note that this list of examples may not be exhaustive. Hence, any client
+that is willing to authenticate at any endpoint other than the token
+endpoint SHOULD employ countermeasures as described in
+{{AudienceInjectionCountermeasures}}.
 
-As described in {{research.ust}}, the attacker can utilize the obtained
-client authentication assertions to impersonate the client and obtain
-access tokens.
+#### Affected Client Authentication Methods {#AudienceInjectionAuthNMethods}
 
-The attack is analogous for the `private_key_jwt` client authentication
-method as defined in {{OpenID.Core}} and instantiations of client
-authentication assertions defined in {{!RFC7521}}.
+The same attacks are possible for the `private_key_jwt` client
+authentication method defined in {{OpenID.Core}}, as well as
+instantiations of client authentication assertions defined in
+{{!RFC7521}}, including the SAML assertions defined in {{?RFC7522}}.
 
+Furthermore, a similar attack is possible for `jwt-bearer` authorization
+grants as defined in {{Section 2.1 of !RFC7523}}, albeit under
+additional assumptions (see {{research.ust}} for details).
 
-### Countermeasures
+### Countermeasures {#AudienceInjectionCountermeasures}
 
 TODO
 
