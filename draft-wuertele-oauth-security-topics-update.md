@@ -69,6 +69,17 @@ informative:
     date: December 2023
     target: https://openid.net/specs/openid-connect-discovery-1_0.html
     title: OpenID Connect Discovery 1.0 incorporating errata set 2
+  research.ust:
+    author:
+    - ins: P. Hosseyni
+      name: Pedram Hosseyni
+    - ins: R. Küsters
+      name: Ralf Küsters
+    - ins: T. Würtele
+      name: Tim Würtele
+    date: TODO
+    target: TODO
+    title: "Audience Injection Attacks: A New Class of Attacks on Web-Based Authorization and Authentication Standards"
 
 --- abstract
 
@@ -127,22 +138,15 @@ honest authorization server.
 
 ### Attack Description
 
-[^desc-len]{: source="Tim W."}
-
-[^desc-len]: In its current form, the attack description is probably way
-    too long and complex. Maybe we can make it more accessible by
-    introducing some more structure. E.g., "Preconditions", "Attack
-    Sequence"(?), "Impact", "Variants".
-
-The descriptions here follow [TODO paper], where additional details of
-the attack are laid out.  Audience injection attacks require a client
+The descriptions here follow {{research.ust}}, where additional details
+of the attack are laid out.  Audience injection attacks require a client
 to interact with at least two authorization servers, one of which is
 malicious, and to authenticate to both with a signature-based
 authentication method using the same key pair.  The following
 description uses the `jwt-bearer` client authentication from
 {{!RFC7523}}, see below for further variants.  Furthermore, the client
-needs to be willing to authenticate at an endpoint other than the
-token endpoint at the attacker authorization server.
+needs to be willing to authenticate at an endpoint other than the token
+endpoint at the attacker authorization server.
 
 #### Core Attack Idea
 
@@ -212,7 +216,7 @@ authenticates to an endpoint other than the token endpoint. If the
 client wants to send a token request to  A-AS, it will send the token
 request to H-AS, thus, the attacker cannot obtain the client assertion.
 
-As detailed in [TODO paper], the attack is possible if the client
+As detailed in {{research.ust}}, the attack is possible if the client
 authenticates with such client assertions at the following endpoints of
 A-AS:
 
@@ -223,7 +227,7 @@ A-AS:
 
 #### Further Notes
 
-As described in [TODO paper], the attacker can utilize the obtained
+As described in {{research.ust}}, the attacker can utilize the obtained
 client authentication assertions to impersonate the client and obtain
 access tokens.
 
