@@ -1364,24 +1364,25 @@ impersonate the client at H-AS.<a href="#section-2.1.1.1-11" class="pilcrow">¶<
 <a href="#section-2.1.1.2" class="section-number selfRef">2.1.1.2. </a><a href="#name-endpoints" class="section-name selfRef">Endpoints</a>
             </h5>
 <p id="section-2.1.1.2-1">As mentioned above, the attack is only successful if the client
-authenticates to an endpoint other than the token endpoint. If the
-client wants to send a token request to  A-AS, it will send the token
-request to H-AS, thus, the attacker cannot obtain the client assertion.<a href="#section-2.1.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.1.1.2-2">As detailed in <span>[<a href="#research.ust" class="cite xref">research.ust</a>]</span>, the attack is possible if the client
-authenticates with such client assertions at the following endpoints of
-A-AS:<a href="#section-2.1.1.2-2" class="pilcrow">¶</a></p>
+authenticates to an endpoint other than the token endpoint at A-AS.
+This is because if the client sends a token request to A-AS, it will use
+A-AS' token endpoint as published by A-AS and hence, send the token
+request to H-AS, i.e., the attacker cannot obtain the client assertion.<a href="#section-2.1.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.2-2">As detailed in <span>[<a href="#research.ust" class="cite xref">research.ust</a>]</span>, the attack is confirmed to be possible
+if the client authenticates with such client assertions at the following
+endpoints of A-AS, but note that this list may not be exhaustive:<a href="#section-2.1.1.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.1.1.2-3.1">
-                <p id="section-2.1.1.2-3.1.1">Pushed Authorization Endpoint<a href="#section-2.1.1.2-3.1.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1.1.2-3.1.1">Pushed Authorization Endpoint (see <span>[<a href="#RFC9126" class="cite xref">RFC9126</a>]</span>)<a href="#section-2.1.1.2-3.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.1.1.2-3.2">
-                <p id="section-2.1.1.2-3.2.1">Token Revocation Endpoint<a href="#section-2.1.1.2-3.2.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1.1.2-3.2.1">Token Revocation Endpoint (see <span>[<a href="#RFC7009" class="cite xref">RFC7009</a>]</span>)<a href="#section-2.1.1.2-3.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.1.1.2-3.3">
-                <p id="section-2.1.1.2-3.3.1">CIBA Backchannel Authentication Endpoint<a href="#section-2.1.1.2-3.3.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1.1.2-3.3.1">CIBA Backchannel Authentication Endpoint (see <span>[<a href="#OpenID.CIBA" class="cite xref">OpenID.CIBA</a>]</span>)<a href="#section-2.1.1.2-3.3.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.1.1.2-3.4">
-                <p id="section-2.1.1.2-3.4.1">Device Authorization Endpoint<a href="#section-2.1.1.2-3.4.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1.1.2-3.4.1">Device Authorization Endpoint (see <span>[<a href="#RFC8628" class="cite xref">RFC8628</a>]</span>)<a href="#section-2.1.1.2-3.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>
@@ -1481,6 +1482,10 @@ authentication assertions defined in <span>[<a href="#RFC7521" class="cite xref"
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="OpenID.CIBA">[OpenID.CIBA]</dt>
+        <dd>
+<span class="refAuthor">Fernandez, G.</span>, <span class="refAuthor">Walter, F.</span>, <span class="refAuthor">Nennker, A.</span>, <span class="refAuthor">Tonge, D.</span>, and <span class="refAuthor">B. Campbell</span>, <span class="refTitle">"OpenID Connect Client-Initiated Backchannel Authentication Flow - Core 1.0"</span>, <time datetime="2021-09" class="refDate">September 2021</time>, <span>&lt;<a href="https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html">https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="OpenID.Core">[OpenID.Core]</dt>
         <dd>
 <span class="refAuthor">Sakimura, N.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Jones, M.</span>, <span class="refAuthor">de Medeiros, B.</span>, and <span class="refAuthor">C. Mortimore</span>, <span class="refTitle">"OpenID Connect Core 1.0 incorporating errata set 2"</span>, <time datetime="2023-12" class="refDate">December 2023</time>, <span>&lt;<a href="https://openid.net/specs/openid-connect-core-1_0.html">https://openid.net/specs/openid-connect-core-1_0.html</a>&gt;</span>. </dd>
@@ -1493,9 +1498,21 @@ authentication assertions defined in <span>[<a href="#RFC7521" class="cite xref"
         <dd>
 <span class="refAuthor">Hosseyni, P.</span>, <span class="refAuthor">Küsters, R.</span>, and <span class="refAuthor">T. Würtele</span>, <span class="refTitle">"Audience Injection Attacks: A New Class of Attacks on Web-Based Authorization and Authentication Standards"</span>, <time datetime="2025-03" class="refDate">March 2025</time>, <span>&lt;<a href="TODO">TODO</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC7009">[RFC7009]</dt>
+        <dd>
+<span class="refAuthor">Lodderstedt, T., Ed.</span>, <span class="refAuthor">Dronia, S.</span>, and <span class="refAuthor">M. Scurtescu</span>, <span class="refTitle">"OAuth 2.0 Token Revocation"</span>, <span class="seriesInfo">RFC 7009</span>, <span class="seriesInfo">DOI 10.17487/RFC7009</span>, <time datetime="2013-08" class="refDate">August 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7009">https://www.rfc-editor.org/rfc/rfc7009</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8414">[RFC8414]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Sakimura, N.</span>, and <span class="refAuthor">J. Bradley</span>, <span class="refTitle">"OAuth 2.0 Authorization Server Metadata"</span>, <span class="seriesInfo">RFC 8414</span>, <span class="seriesInfo">DOI 10.17487/RFC8414</span>, <time datetime="2018-06" class="refDate">June 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8414">https://www.rfc-editor.org/rfc/rfc8414</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8628">[RFC8628]</dt>
+        <dd>
+<span class="refAuthor">Denniss, W.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Jones, M.</span>, and <span class="refAuthor">H. Tschofenig</span>, <span class="refTitle">"OAuth 2.0 Device Authorization Grant"</span>, <span class="seriesInfo">RFC 8628</span>, <span class="seriesInfo">DOI 10.17487/RFC8628</span>, <time datetime="2019-08" class="refDate">August 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8628">https://www.rfc-editor.org/rfc/rfc8628</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9126">[RFC9126]</dt>
+      <dd>
+<span class="refAuthor">Lodderstedt, T.</span>, <span class="refAuthor">Campbell, B.</span>, <span class="refAuthor">Sakimura, N.</span>, <span class="refAuthor">Tonge, D.</span>, and <span class="refAuthor">F. Skokan</span>, <span class="refTitle">"OAuth 2.0 Pushed Authorization Requests"</span>, <span class="seriesInfo">RFC 9126</span>, <span class="seriesInfo">DOI 10.17487/RFC9126</span>, <time datetime="2021-09" class="refDate">September 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9126">https://www.rfc-editor.org/rfc/rfc9126</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
