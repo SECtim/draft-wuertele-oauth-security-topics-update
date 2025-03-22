@@ -69,6 +69,21 @@ informative:
     date: December 2023
     target: https://openid.net/specs/openid-connect-discovery-1_0.html
     title: OpenID Connect Discovery 1.0 incorporating errata set 2
+  OpenID.CIBA:
+    author:
+    - ins: G. Fernandez
+      name: Gonzalo Fernandez Rodriguez
+    - ins: F. Walter
+      name: Florian Walter
+    - ins: A. Nennker
+      name: Axel Nennker
+    - ins: D. Tonge
+      name: Dave Tonge
+    - ins: B. Campbell
+      name: Brian Campbell
+    date: September 2021
+    target: https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html
+    title: OpenID Connect Client-Initiated Backchannel Authentication Flow - Core 1.0
   research.ust:
     author:
     - ins: P. Hosseyni
@@ -212,18 +227,19 @@ impersonate the client at H-AS.
 #### Endpoints
 
 As mentioned above, the attack is only successful if the client
-authenticates to an endpoint other than the token endpoint. If the
-client wants to send a token request to  A-AS, it will send the token
-request to H-AS, thus, the attacker cannot obtain the client assertion.
+authenticates to an endpoint other than the token endpoint at A-AS.
+This is because if the client sends a token request to A-AS, it will use
+A-AS' token endpoint as published by A-AS and hence, send the token
+request to H-AS, i.e., the attacker cannot obtain the client assertion.
 
-As detailed in {{research.ust}}, the attack is possible if the client
-authenticates with such client assertions at the following endpoints of
-A-AS:
+As detailed in {{research.ust}}, the attack is confirmed to be possible
+if the client authenticates with such client assertions at the following
+endpoints of A-AS, but note that this list may not be exhaustive:
 
-- Pushed Authorization Endpoint
-- Token Revocation Endpoint
-- CIBA Backchannel Authentication Endpoint
-- Device Authorization Endpoint
+- Pushed Authorization Endpoint (see {{?RFC9126}})
+- Token Revocation Endpoint (see {{?RFC7009}})
+- CIBA Backchannel Authentication Endpoint (see {{OpenID.CIBA}})
+- Device Authorization Endpoint (see {{?RFC8628}})
 
 #### Further Notes
 
