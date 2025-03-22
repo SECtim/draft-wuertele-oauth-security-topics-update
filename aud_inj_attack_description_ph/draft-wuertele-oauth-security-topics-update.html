@@ -1335,10 +1335,9 @@ commences as follows:<a href="#section-2.1.1.1-7" class="pilcrow">¶</a></p>
 <code>cid</code>. Note that the client ID is not a secret (<span><a href="https://rfc-editor.org/rfc/rfc6749#section-2.2" class="relref">Section 2.2</a> of [<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>).<a href="#section-2.1.1.1-8.2.1" class="pilcrow">¶</a></p>
 </li>
             </ol>
-<p id="section-2.1.1.1-9">Now, whenever the client creates a client assertion for authenticating
-to A-AS, the assertion consists of a JSON
-Web Token (JWT) that is signed by the client and contains, among
-others, the following claims:<a href="#section-2.1.1.1-9" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.1-9">Now, whenever the client creates a client assertion for authentication
+to A-AS, the assertion consists of a JSON Web Token (JWT) that is signed
+by the client and contains, among others, the following claims:<a href="#section-2.1.1.1-9" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-2.1.1.1-10">
 <pre>
 "iss": "cid",
@@ -1385,9 +1384,9 @@ endpoints of A-AS:<a href="#section-2.1.1.2-2" class="pilcrow">¶</a></p>
                 <p id="section-2.1.1.2-3.4.1">Device Authorization Endpoint (see <span>[<a href="#RFC8628" class="cite xref">RFC8628</a>]</span>)<a href="#section-2.1.1.2-3.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-2.1.1.2-4">Note that this list of examples may not be exhaustive. Hence, any client
-that is willing to authenticate at any endpoint other than the token
-endpoint <span class="bcp14">SHOULD</span> employ countermeasures as described in
+<p id="section-2.1.1.2-4">Note that this list of examples is not exhaustive. Hence, any client
+that might authenticate at any endpoint other than the token endpoint
+<span class="bcp14">SHOULD</span> employ countermeasures as described in
 <a href="#AudienceInjectionCountermeasures" class="auto internal xref">Section 2.1.2</a>.<a href="#section-2.1.1.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1535,8 +1534,8 @@ additional assumptions (see <span>[<a href="#research.ust" class="cite xref">res
       </h2>
 <p id="appendix-A-1">We would like to thank
 Kaixuan Luo,
-TODO add names, sort by last name
-for their valuable feedback and contributions to this document.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<span class="cref" id="acksAddNames">TODO add names, sort by last name.<span class="crefSource">Tim W.</span></span><a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-2">for their valuable feedback and contributions to this document.<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
