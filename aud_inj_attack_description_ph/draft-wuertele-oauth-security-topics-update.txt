@@ -4,9 +4,10 @@
 
 Web Authorization Protocol                                    T. Würtele
 Internet-Draft                                               P. Hosseyni
-Updates: 6749, 6750, 9700 (if approved)          University of Stuttgart
-Intended status: Best Current Practice                     22 March 2025
-Expires: 23 September 2025
+Updates: 6749, 6750, 7521, 7522, 7523, 9700      University of Stuttgart
+         (if approved)                                     24 March 2025
+Intended status: Best Current Practice                                  
+Expires: 25 September 2025
 
 
                 OAuth 2.0 Security Best Current Practice
@@ -53,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 September 2025.
+   This Internet-Draft will expire on 25 September 2025.
 
 Copyright Notice
 
