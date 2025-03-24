@@ -259,7 +259,7 @@ Table of Contents
    Note that the following countermeasures mandate the use of string
    audience values (as opposed to arrays).  This is because
    Section 4.1.4 of [RFC7519] allows the receiver of an audience-
-   restricted JWT to accept the it, even if the receiver identifies with
+   restricted JWT to accept the JWT even if the receiver identifies with
    only one of the values in such an array.
 
    Clients that interact with more than one authorization server and
