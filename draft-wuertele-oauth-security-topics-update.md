@@ -41,6 +41,7 @@ author:
 normative:
 
 informative:
+  OAUTH-7523bis: I-D.draft-ietf-oauth-rfc7523bis-00
   OpenID.Core:
     author:
     - ins: N. Sakimura
@@ -259,7 +260,55 @@ additional assumptions (see {{research.ust}} for details).
 
 ### Countermeasures {#AudienceInjectionCountermeasures}
 
-TODO
+At its core, audience injection attacks exploit the ambiguity in using
+the token endpoint to identify an authorization server as a client
+assertion's intended audience, and the fact that from the client's point
+of view, an (attacker) authorization server's token endpoint is a mostly
+opaque value. Note that an attacker authorization server may claim any
+URI as its token endpoint, including, for example, an honest
+authorization server's issuer identifier. Hence, as long as a client
+uses the token endpoint as an audience value when authenticating to the
+attacker authorization server, audience injection attacks are possible.
+Therefore, audience injection attacks need to be prevented by the
+client.
+
+Note that the following countermeasures mandate the use of string
+audience values (as opposed to arrays). This is because {{Section 4.1.4
+of ?RFC7519}} allows the receiver of an audience-restricted JWT to
+accept the it, even if the receiver identifies with only one of the
+values in such an array.
+
+Clients that interact with more than one authorization server and
+authenticate with signature-based client authentication methods MUST
+employ one of the following countermeasures, unless audience injection
+attacks are mitigated by other means, such as using fresh key material
+for each authorization server.
+
+#### Authorization Server Issuer Identifier
+
+Clients MUST use the authorization server's issuer identifier (as
+defined in {{!RFC8414}}) as the sole audience value in client
+assertions.
+
+For `jwt-bearer` client assertions as defined by {{RFC7523}}, this
+mechanism is described in more detail in {{OAUTH-7523bis}}.
+
+Note that "issuer identifier" here does not refer to the term "issuer"
+as defined in {{Section 4.4 of RFC9700}}, but to the issuer identifier
+as used in {{!RFC8414}} and {{OpenID.Discovery}}.
+
+#### Exact Target Endpoint URI
+
+Clients MUST use the exact endpoint URI to which a client assertion is
+sent as that client assertion's sole audience value.
+
+This countermeasure can be used for authorization servers that do not
+use authorization server metadata {{!RFC8414}} or OpenID Discovery
+{{OpenID.Discovery}}.
+
+
+
+
 
 ## TODO Title - "Mix-up reloaded" content
 
