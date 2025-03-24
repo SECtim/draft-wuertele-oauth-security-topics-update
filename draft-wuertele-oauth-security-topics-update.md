@@ -4,7 +4,7 @@ abbrev: "OAuth 2.0 Security BCP"
 category: bcp
 seriesno: 240
 docname: draft-wuertele-oauth-security-topics-update-latest
-updates: 6749, 6750, 9700
+updates: 6749, 6750, 7521, 7522, 7523, 9700
 
 submissiontype: IETF
 ipr: trust200902
