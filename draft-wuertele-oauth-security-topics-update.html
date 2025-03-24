@@ -1054,7 +1054,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Würtele &amp; Hosseyni</td>
-<td class="center">Expires 20 September 2025</td>
+<td class="center">Expires 25 September 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1069,15 +1069,15 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="bcp">240</dd>
 <dt class="label-updates">Updates:</dt>
 <dd class="updates">
-<a href="https://www.rfc-editor.org/rfc/rfc6749" class="eref">6749</a>, <a href="https://www.rfc-editor.org/rfc/rfc6750" class="eref">6750</a>, <a href="https://www.rfc-editor.org/rfc/rfc9700" class="eref">9700</a> (if approved)</dd>
+<a href="https://www.rfc-editor.org/rfc/rfc6749" class="eref">6749</a>, <a href="https://www.rfc-editor.org/rfc/rfc6750" class="eref">6750</a>, <a href="https://www.rfc-editor.org/rfc/rfc7521" class="eref">7521</a>, <a href="https://www.rfc-editor.org/rfc/rfc7522" class="eref">7522</a>, <a href="https://www.rfc-editor.org/rfc/rfc7523" class="eref">7523</a>, <a href="https://www.rfc-editor.org/rfc/rfc9700" class="eref">9700</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-03-19" class="published">19 March 2025</time>
+<time datetime="2025-03-24" class="published">24 March 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Best Current Practice</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-09-20">20 September 2025</time></dd>
+<dd class="expires"><time datetime="2025-09-25">25 September 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1134,7 +1134,7 @@ since the former documents have been published.<a href="#section-abstract-1" cla
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 25 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1283,96 +1283,130 @@ honest authorization server.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
           <h4 id="name-attack-description">
 <a href="#section-2.1.1" class="section-number selfRef">2.1.1. </a><a href="#name-attack-description" class="section-name selfRef">Attack Description</a>
           </h4>
-<p id="section-2.1.1-1"><span class="cref" id="desc-len">In its current form, the attack description is probably way
-too long and complex. Maybe we can make it more accessible by
-introducing some more structure. E.g., "Preconditions", "Attack
-Sequence"(?), "Impact", "Variants".<span class="crefSource">Tim W.</span></span><a href="#section-2.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.1.1-2">The descriptions here follow [TODO paper], where additional details of
-the attack are laid out.  Audience injection attacks require a client
+<p id="section-2.1.1-1">The descriptions here follow <span>[<a href="#research.ust" class="cite xref">research.ust</a>]</span>, where additional details
+of the attack are laid out.  Audience injection attacks require a client
 to interact with at least two authorization servers, one of which is
 malicious, and to authenticate to both with a signature-based
 authentication method using the same key pair.  The following
 description uses the <code>jwt-bearer</code> client authentication from
-<span>[<a href="#RFC7523" class="cite xref">RFC7523</a>]</span>, see below for further variants.  Furthermore, the client
-needs to be willing to authenticate at an endpoint other than the
-token endpoint at the attacker authorization server.  The following
-description uses the pushed authorization request endpoint defined by
-<span>[<a href="#RFC9126" class="cite xref">RFC9126</a>]</span>, see below for further variants.<a href="#section-2.1.1-2" class="pilcrow">¶</a></p>
-<p id="section-2.1.1-3"><span class="cref" id="oid-fed-ex">Mention OID Federation and FAPI 2.0 here as examples of
-profiles that force clients to do that?<span class="crefSource">Tim W.</span></span><a href="#section-2.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-2.1.1-4">Assume that the authorization servers publish the following URIs for
-their authorization, token, and pushed authorization request
-endpoints, for example via mechanisms such as authorization server
-metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> or OpenID Discovery <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span>.
-However, audience injection attacks are also possible on clients with
-manually configured authorization server metadata.<a href="#section-2.1.1-4" class="pilcrow">¶</a></p>
-<p id="section-2.1.1-5">Excerpt from H-AS' metadata:<a href="#section-2.1.1-5" class="pilcrow">¶</a></p>
-<div class="lang-javascript sourcecode" id="section-2.1.1-6">
+<span>[<a href="#RFC7523" class="cite xref">RFC7523</a>]</span>, see <a href="#AudienceInjectionAuthNMethods" class="auto internal xref">Section 2.1.1.3</a> for other affected
+client authentication methods.  Furthermore, the client needs to be
+willing to authenticate at an endpoint other than the token endpoint at
+the attacker authorization server (see <a href="#AudienceInjectionEndpoints" class="auto internal xref">Section 2.1.1.2</a>).<a href="#section-2.1.1-1" class="pilcrow">¶</a></p>
+<div id="core-attack-steps">
+<section id="section-2.1.1.1">
+            <h5 id="name-core-attack-steps">
+<a href="#section-2.1.1.1" class="section-number selfRef">2.1.1.1. </a><a href="#name-core-attack-steps" class="section-name selfRef">Core Attack Steps</a>
+            </h5>
+<p id="section-2.1.1.1-1">In the following, let H-AS be an honest authorization server and let
+A-AS be an attacker-controlled authorization server.<a href="#section-2.1.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.1-2">Assume that the authorization servers publish the following URIs for
+their token endpoints, for example via mechanisms such as authorization
+server metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> or OpenID Discovery <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span>.
+The exact publication mechanism is not relevant, as audience injection
+attacks are also possible on clients with manually configured
+authorization server metadata.<a href="#section-2.1.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.1-3">Excerpt from H-AS' metadata:<a href="#section-2.1.1.1-3" class="pilcrow">¶</a></p>
+<div class="lang-javascript sourcecode" id="section-2.1.1.1-4">
 <pre>
 "issuer": "https://honest.com",
-"authorization_endpoint": "https://honest.com/authorize",
 "token_endpoint": "https://honest.com/token",
-"pushed_authorization_request_endpoint": "https://honest.com/par",
 ...
-</pre><a href="#section-2.1.1-6" class="pilcrow">¶</a>
+</pre><a href="#section-2.1.1.1-4" class="pilcrow">¶</a>
 </div>
-<p id="section-2.1.1-7">Excerpt from A-AS' metadata:<a href="#section-2.1.1-7" class="pilcrow">¶</a></p>
-<div class="lang-javascript sourcecode" id="section-2.1.1-8">
+<p id="section-2.1.1.1-5">Excerpt from A-AS' metadata:<a href="#section-2.1.1.1-5" class="pilcrow">¶</a></p>
+<div class="lang-javascript sourcecode" id="section-2.1.1.1-6">
 <pre>
 "issuer": "https://attacker.com",
-"authorization_endpoint": "https://attacker.com/authorize",
 "token_endpoint": "https://honest.com/token",
-"pushed_authorization_request_endpoint": "https://attacker.com/par",
 ...
-</pre><a href="#section-2.1.1-8" class="pilcrow">¶</a>
+</pre><a href="#section-2.1.1.1-6" class="pilcrow">¶</a>
 </div>
-<p id="section-2.1.1-9">I.e., the attacker authorization server claims to use the honest
-authorization server's token endpoint.  The attack now commences as
-follows:<a href="#section-2.1.1-9" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-2.1.1-10">
-<li id="section-2.1.1-10.1">
-              <p id="section-2.1.1-10.1.1">Client registers at H-AS, and gets assigned a client ID <code>cid</code>.<a href="#section-2.1.1-10.1.1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.1-7">I.e., the attacker authorization server claims to use the honest
+authorization server's token endpoint. Note that the attacker
+authorization server does not control this endpoint. The attack then
+commences as follows:<a href="#section-2.1.1.1-7" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.1.1.1-8">
+<li id="section-2.1.1.1-8.1">
+                <p id="section-2.1.1.1-8.1.1">Client registers at H-AS, and gets assigned a client ID <code>cid</code>.<a href="#section-2.1.1.1-8.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li id="section-2.1.1-10.2">
-              <p id="section-2.1.1-10.2.1">Client registers at A-AS, and gets assigned the same client ID
-<code>cid</code>. Note that the client ID is not a secret (<span><a href="https://rfc-editor.org/rfc/rfc6749#section-2.2" class="relref">Section 2.2</a> of [<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>).<a href="#section-2.1.1-10.2.1" class="pilcrow">¶</a></p>
+              <li id="section-2.1.1.1-8.2">
+                <p id="section-2.1.1.1-8.2.1">Client registers at A-AS, and gets assigned the same client ID
+<code>cid</code>. Note that the client ID is not a secret (<span><a href="https://rfc-editor.org/rfc/rfc6749#section-2.2" class="relref">Section 2.2</a> of [<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>).<a href="#section-2.1.1.1-8.2.1" class="pilcrow">¶</a></p>
 </li>
-            <li id="section-2.1.1-10.3">
-              <p id="section-2.1.1-10.3.1">Client starts an authorization code grant, e.g., triggered by the
-attacker as a user of the client, with A-AS by sending a pushed
-authorization request to A-AS' pushed authorization request
-endpoint.<a href="#section-2.1.1-10.3.1" class="pilcrow">¶</a></p>
-</li>
-          </ol>
-<p id="section-2.1.1-11">Part of that pushed authorization request is a <code>client_assertion</code> that
-authenticates the client.  This client assertion consists of a JSON
-Web Token (JWT) that is signed by the client and contains, among
-others, the following claims:<a href="#section-2.1.1-11" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-2.1.1-12">
+            </ol>
+<p id="section-2.1.1.1-9">Now, whenever the client creates a client assertion for authentication
+to A-AS, the assertion consists of a JSON Web Token (JWT) that is signed
+by the client and contains, among others, the following claims:<a href="#section-2.1.1.1-9" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-2.1.1.1-10">
 <pre>
 "iss": "cid",
 "sub": "cid",
 "aud": "https://honest.com/token"
-</pre><a href="#section-2.1.1-12" class="pilcrow">¶</a>
+</pre><a href="#section-2.1.1.1-10" class="pilcrow">¶</a>
 </div>
-<p id="section-2.1.1-13">The client issued this client assertion to authenticate at A-AS, but
-due to the malicious use of H-AS' token endpoint in A-AS'
+<p id="section-2.1.1.1-11">Due to the malicious use of H-AS' token endpoint in A-AS'
 authorization server metadata, the <code>aud</code> claim contains H-AS' token
 endpoint.  Recall that both A-AS and H-AS registered the client with
 client ID <code>cid</code>, and that the client uses the same key pair for
 authentication at both authorization servers.  Hence, this client
-assertion - that the client just sent to A-AS' pushed authorization
-endpoint - is also a valid authentication credential for the client at
-H-AS.  The attacker can therefore use the client assertion to
-impersonate the client at H-AS, for example, in a client credentials
-grant.<a href="#section-2.1.1-13" class="pilcrow">¶</a></p>
-<p id="section-2.1.1-14"><span class="cref" id="impers-ex">Omit concrete examples here. Just say that the attacker
-can impersonate the client and may obtain access tokens, point to
-paper for details.<span class="crefSource">Tim W.</span></span><a href="#section-2.1.1-14" class="pilcrow">¶</a></p>
-<p id="section-2.1.1-15">TODO variants<a href="#section-2.1.1-15" class="pilcrow">¶</a></p>
+assertion is a valid valid authentication credential for the client at
+H-AS.<a href="#section-2.1.1.1-11" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.1-12">As described in <span>[<a href="#research.ust" class="cite xref">research.ust</a>]</span>, the attacker can then utilize the
+obtained client authentication assertion to impersonate the client and,
+for example, obtain access tokens.<a href="#section-2.1.1.1-12" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="countermeasures">
+<div id="AudienceInjectionEndpoints">
+<section id="section-2.1.1.2">
+            <h5 id="name-endpoints-requiring-client-">
+<a href="#section-2.1.1.2" class="section-number selfRef">2.1.1.2. </a><a href="#name-endpoints-requiring-client-" class="section-name selfRef">Endpoints Requiring Client Authentication</a>
+            </h5>
+<p id="section-2.1.1.2-1">As mentioned above, the attack is only possible if the client
+authenticates to an endpoint other than the token endpoint at A-AS.
+This is because if the client sends a token request to A-AS, it will use
+A-AS' token endpoint as published by A-AS and hence, send the token
+request to H-AS, i.e., the attacker cannot obtain the client assertion.<a href="#section-2.1.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.2-2">As detailed in <span>[<a href="#research.ust" class="cite xref">research.ust</a>]</span>, the attack is confirmed to be possible
+if the client authenticates with such client assertions at the following
+endpoints of A-AS:<a href="#section-2.1.1.2-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.1.1.2-3.1">
+                <p id="section-2.1.1.2-3.1.1">Pushed Authorization Endpoint (see <span>[<a href="#RFC9126" class="cite xref">RFC9126</a>]</span>)<a href="#section-2.1.1.2-3.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.1.1.2-3.2">
+                <p id="section-2.1.1.2-3.2.1">Token Revocation Endpoint (see <span>[<a href="#RFC7009" class="cite xref">RFC7009</a>]</span>)<a href="#section-2.1.1.2-3.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.1.1.2-3.3">
+                <p id="section-2.1.1.2-3.3.1">CIBA Backchannel Authentication Endpoint (see <span>[<a href="#OpenID.CIBA" class="cite xref">OpenID.CIBA</a>]</span>)<a href="#section-2.1.1.2-3.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.1.1.2-3.4">
+                <p id="section-2.1.1.2-3.4.1">Device Authorization Endpoint (see <span>[<a href="#RFC8628" class="cite xref">RFC8628</a>]</span>)<a href="#section-2.1.1.2-3.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+<p id="section-2.1.1.2-4">Note that this list of examples is not exhaustive. Hence, any client
+that might authenticate at any endpoint other than the token endpoint
+<span class="bcp14">SHOULD</span> employ countermeasures as described in
+<a href="#AudienceInjectionCountermeasures" class="auto internal xref">Section 2.1.2</a>.<a href="#section-2.1.1.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="AudienceInjectionAuthNMethods">
+<section id="section-2.1.1.3">
+            <h5 id="name-affected-client-authenticat">
+<a href="#section-2.1.1.3" class="section-number selfRef">2.1.1.3. </a><a href="#name-affected-client-authenticat" class="section-name selfRef">Affected Client Authentication Methods</a>
+            </h5>
+<p id="section-2.1.1.3-1">The same attacks are possible for the <code>private_key_jwt</code> client
+authentication method defined in <span>[<a href="#OpenID.Core" class="cite xref">OpenID.Core</a>]</span>, as well as
+instantiations of client authentication assertions defined in
+<span>[<a href="#RFC7521" class="cite xref">RFC7521</a>]</span>, including the SAML assertions defined in <span>[<a href="#RFC7522" class="cite xref">RFC7522</a>]</span>.<a href="#section-2.1.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.3-2">Furthermore, a similar attack is possible for <code>jwt-bearer</code> authorization
+grants as defined in <span><a href="https://rfc-editor.org/rfc/rfc7523#section-2.1" class="relref">Section 2.1</a> of [<a href="#RFC7523" class="cite xref">RFC7523</a>]</span>, albeit under
+additional assumptions (see <span>[<a href="#research.ust" class="cite xref">research.ust</a>]</span> for details).<a href="#section-2.1.1.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="AudienceInjectionCountermeasures">
 <section id="section-2.1.2">
           <h4 id="name-countermeasures">
 <a href="#section-2.1.2" class="section-number selfRef">2.1.2. </a><a href="#name-countermeasures" class="section-name selfRef">Countermeasures</a>
@@ -1452,6 +1486,10 @@ paper for details.<span class="crefSource">Tim W.</span></span><a href="#section
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="OpenID.CIBA">[OpenID.CIBA]</dt>
+        <dd>
+<span class="refAuthor">Fernandez, G.</span>, <span class="refAuthor">Walter, F.</span>, <span class="refAuthor">Nennker, A.</span>, <span class="refAuthor">Tonge, D.</span>, and <span class="refAuthor">B. Campbell</span>, <span class="refTitle">"OpenID Connect Client-Initiated Backchannel Authentication Flow - Core 1.0"</span>, <time datetime="2021-09" class="refDate">September 2021</time>, <span>&lt;<a href="https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html">https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="OpenID.Core">[OpenID.Core]</dt>
         <dd>
 <span class="refAuthor">Sakimura, N.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Jones, M.</span>, <span class="refAuthor">de Medeiros, B.</span>, and <span class="refAuthor">C. Mortimore</span>, <span class="refTitle">"OpenID Connect Core 1.0 incorporating errata set 2"</span>, <time datetime="2023-12" class="refDate">December 2023</time>, <span>&lt;<a href="https://openid.net/specs/openid-connect-core-1_0.html">https://openid.net/specs/openid-connect-core-1_0.html</a>&gt;</span>. </dd>
@@ -1460,9 +1498,25 @@ paper for details.<span class="crefSource">Tim W.</span></span><a href="#section
         <dd>
 <span class="refAuthor">Sakimura, N.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Jones, M.</span>, and <span class="refAuthor">E. Jay</span>, <span class="refTitle">"OpenID Connect Discovery 1.0 incorporating errata set 2"</span>, <time datetime="2023-12" class="refDate">December 2023</time>, <span>&lt;<a href="https://openid.net/specs/openid-connect-discovery-1_0.html">https://openid.net/specs/openid-connect-discovery-1_0.html</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="research.ust">[research.ust]</dt>
+        <dd>
+<span class="refAuthor">Hosseyni, P.</span>, <span class="refAuthor">Küsters, R.</span>, and <span class="refAuthor">T. Würtele</span>, <span class="refTitle">"Audience Injection Attacks: A New Class of Attacks on Web-Based Authorization and Authentication Standards"</span>, <time datetime="2025-03" class="refDate">March 2025</time>, <span>&lt;<a href="TODO">TODO</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7009">[RFC7009]</dt>
+        <dd>
+<span class="refAuthor">Lodderstedt, T., Ed.</span>, <span class="refAuthor">Dronia, S.</span>, and <span class="refAuthor">M. Scurtescu</span>, <span class="refTitle">"OAuth 2.0 Token Revocation"</span>, <span class="seriesInfo">RFC 7009</span>, <span class="seriesInfo">DOI 10.17487/RFC7009</span>, <time datetime="2013-08" class="refDate">August 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7009">https://www.rfc-editor.org/rfc/rfc7009</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7522">[RFC7522]</dt>
+        <dd>
+<span class="refAuthor">Campbell, B.</span>, <span class="refAuthor">Mortimore, C.</span>, and <span class="refAuthor">M. Jones</span>, <span class="refTitle">"Security Assertion Markup Language (SAML) 2.0 Profile for OAuth 2.0 Client Authentication and Authorization Grants"</span>, <span class="seriesInfo">RFC 7522</span>, <span class="seriesInfo">DOI 10.17487/RFC7522</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7522">https://www.rfc-editor.org/rfc/rfc7522</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8414">[RFC8414]</dt>
         <dd>
 <span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Sakimura, N.</span>, and <span class="refAuthor">J. Bradley</span>, <span class="refTitle">"OAuth 2.0 Authorization Server Metadata"</span>, <span class="seriesInfo">RFC 8414</span>, <span class="seriesInfo">DOI 10.17487/RFC8414</span>, <time datetime="2018-06" class="refDate">June 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8414">https://www.rfc-editor.org/rfc/rfc8414</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8628">[RFC8628]</dt>
+        <dd>
+<span class="refAuthor">Denniss, W.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Jones, M.</span>, and <span class="refAuthor">H. Tschofenig</span>, <span class="refTitle">"OAuth 2.0 Device Authorization Grant"</span>, <span class="seriesInfo">RFC 8628</span>, <span class="seriesInfo">DOI 10.17487/RFC8628</span>, <time datetime="2019-08" class="refDate">August 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8628">https://www.rfc-editor.org/rfc/rfc8628</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9126">[RFC9126]</dt>
       <dd>
@@ -1480,8 +1534,8 @@ paper for details.<span class="crefSource">Tim W.</span></span><a href="#section
       </h2>
 <p id="appendix-A-1">We would like to thank
 Kaixuan Luo,
-TODO add names, sort by last name
-for their valuable feedback and contributions to this document.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<span class="cref" id="acksAddNames">TODO add names, sort by last name.<span class="crefSource">Tim W.</span></span><a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-2">for their valuable feedback and contributions to this document.<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">

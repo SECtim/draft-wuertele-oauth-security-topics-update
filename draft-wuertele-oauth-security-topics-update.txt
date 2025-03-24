@@ -4,9 +4,10 @@
 
 Web Authorization Protocol                                    T. Würtele
 Internet-Draft                                               P. Hosseyni
-Updates: 6749, 6750, 9700 (if approved)          University of Stuttgart
-Intended status: Best Current Practice                     19 March 2025
-Expires: 20 September 2025
+Updates: 6749, 6750, 7521, 7522, 7523, 9700      University of Stuttgart
+         (if approved)                                     24 March 2025
+Intended status: Best Current Practice                                  
+Expires: 25 September 2025
 
 
                 OAuth 2.0 Security Best Current Practice
@@ -53,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 September 2025.
+   This Internet-Draft will expire on 25 September 2025.
 
 Copyright Notice
 
@@ -138,58 +139,45 @@ Table of Contents
 
 2.1.1.  Attack Description
 
-
-   // In its current form, the attack description is probably way too
-   // long and complex.  Maybe we can make it more accessible by
-   // introducing some more structure.  E.g., "Preconditions", "Attack
-   // Sequence"(?), "Impact", "Variants".
-   //
-   // -- Tim W.
-
-   The descriptions here follow [TODO paper], where additional details
+   The descriptions here follow [research.ust], where additional details
    of the attack are laid out.  Audience injection attacks require a
    client to interact with at least two authorization servers, one of
    which is malicious, and to authenticate to both with a signature-
    based authentication method using the same key pair.  The following
    description uses the jwt-bearer client authentication from [RFC7523],
-   see below for further variants.  Furthermore, the client needs to be
-   willing to authenticate at an endpoint other than the token endpoint
-   at the attacker authorization server.  The following description uses
-   the pushed authorization request endpoint defined by [RFC9126], see
-   below for further variants.
+   see Section 2.1.1.3 for other affected client authentication methods.
+   Furthermore, the client needs to be willing to authenticate at an
+   endpoint other than the token endpoint at the attacker authorization
+   server (see Section 2.1.1.2).
 
+2.1.1.1.  Core Attack Steps
 
-   // Mention OID Federation and FAPI 2.0 here as examples of profiles
-   // that force clients to do that?
-   //
-   // -- Tim W.
+   In the following, let H-AS be an honest authorization server and let
+   A-AS be an attacker-controlled authorization server.
 
    Assume that the authorization servers publish the following URIs for
-   their authorization, token, and pushed authorization request
-   endpoints, for example via mechanisms such as authorization server
-   metadata [RFC8414] or OpenID Discovery [OpenID.Discovery].  However,
-   audience injection attacks are also possible on clients with manually
-   configured authorization server metadata.
+   their token endpoints, for example via mechanisms such as
+   authorization server metadata [RFC8414] or OpenID Discovery
+   [OpenID.Discovery].  The exact publication mechanism is not relevant,
+   as audience injection attacks are also possible on clients with
+   manually configured authorization server metadata.
 
    Excerpt from H-AS' metadata:
 
    "issuer": "https://honest.com",
-   "authorization_endpoint": "https://honest.com/authorize",
    "token_endpoint": "https://honest.com/token",
-   "pushed_authorization_request_endpoint": "https://honest.com/par",
    ...
 
    Excerpt from A-AS' metadata:
 
    "issuer": "https://attacker.com",
-   "authorization_endpoint": "https://attacker.com/authorize",
    "token_endpoint": "https://honest.com/token",
-   "pushed_authorization_request_endpoint": "https://attacker.com/par",
    ...
 
    I.e., the attacker authorization server claims to use the honest
-   authorization server's token endpoint.  The attack now commences as
-   follows:
+   authorization server's token endpoint.  Note that the attacker
+   authorization server does not control this endpoint.  The attack then
+   commences as follows:
 
    1.  Client registers at H-AS, and gets assigned a client ID cid.
 
@@ -197,40 +185,62 @@ Table of Contents
        cid.  Note that the client ID is not a secret (Section 2.2 of
        [RFC6749]).
 
-   3.  Client starts an authorization code grant, e.g., triggered by the
-       attacker as a user of the client, with A-AS by sending a pushed
-       authorization request to A-AS' pushed authorization request
-       endpoint.
-
-   Part of that pushed authorization request is a client_assertion that
-   authenticates the client.  This client assertion consists of a JSON
-   Web Token (JWT) that is signed by the client and contains, among
-   others, the following claims:
+   Now, whenever the client creates a client assertion for
+   authentication to A-AS, the assertion consists of a JSON Web Token
+   (JWT) that is signed by the client and contains, among others, the
+   following claims:
 
    "iss": "cid",
    "sub": "cid",
    "aud": "https://honest.com/token"
 
-   The client issued this client assertion to authenticate at A-AS, but
-   due to the malicious use of H-AS' token endpoint in A-AS'
+   Due to the malicious use of H-AS' token endpoint in A-AS'
    authorization server metadata, the aud claim contains H-AS' token
    endpoint.  Recall that both A-AS and H-AS registered the client with
    client ID cid, and that the client uses the same key pair for
    authentication at both authorization servers.  Hence, this client
-   assertion - that the client just sent to A-AS' pushed authorization
-   endpoint - is also a valid authentication credential for the client
-   at H-AS.  The attacker can therefore use the client assertion to
-   impersonate the client at H-AS, for example, in a client credentials
-   grant.
+   assertion is a valid valid authentication credential for the client
+   at H-AS.
 
+   As described in [research.ust], the attacker can then utilize the
+   obtained client authentication assertion to impersonate the client
+   and, for example, obtain access tokens.
 
-   // Omit concrete examples here.  Just say that the attacker can
-   // impersonate the client and may obtain access tokens, point to
-   // paper for details.
-   //
-   // -- Tim W.
+2.1.1.2.  Endpoints Requiring Client Authentication
 
-   TODO variants
+   As mentioned above, the attack is only possible if the client
+   authenticates to an endpoint other than the token endpoint at A-AS.
+   This is because if the client sends a token request to A-AS, it will
+   use A-AS' token endpoint as published by A-AS and hence, send the
+   token request to H-AS, i.e., the attacker cannot obtain the client
+   assertion.
+
+   As detailed in [research.ust], the attack is confirmed to be possible
+   if the client authenticates with such client assertions at the
+   following endpoints of A-AS:
+
+   *  Pushed Authorization Endpoint (see [RFC9126])
+
+   *  Token Revocation Endpoint (see [RFC7009])
+
+   *  CIBA Backchannel Authentication Endpoint (see [OpenID.CIBA])
+
+   *  Device Authorization Endpoint (see [RFC8628])
+
+   Note that this list of examples is not exhaustive.  Hence, any client
+   that might authenticate at any endpoint other than the token endpoint
+   SHOULD employ countermeasures as described in Section 2.1.2.
+
+2.1.1.3.  Affected Client Authentication Methods
+
+   The same attacks are possible for the private_key_jwt client
+   authentication method defined in [OpenID.Core], as well as
+   instantiations of client authentication assertions defined in
+   [RFC7521], including the SAML assertions defined in [RFC7522].
+
+   Furthermore, a similar attack is possible for jwt-bearer
+   authorization grants as defined in Section 2.1 of [RFC7523], albeit
+   under additional assumptions (see [research.ust] for details).
 
 2.1.2.  Countermeasures
 
@@ -282,6 +292,13 @@ Table of Contents
 
 5.2.  Informative References
 
+   [OpenID.CIBA]
+              Fernandez, G., Walter, F., Nennker, A., Tonge, D., and B.
+              Campbell, "OpenID Connect Client-Initiated Backchannel
+              Authentication Flow - Core 1.0", September 2021,
+              <https://openid.net/specs/openid-client-initiated-
+              backchannel-authentication-core-1_0.html>.
+
    [OpenID.Core]
               Sakimura, N., Bradley, J., Jones, M., de Medeiros, B., and
               C. Mortimore, "OpenID Connect Core 1.0 incorporating
@@ -294,10 +311,31 @@ Table of Contents
               December 2023, <https://openid.net/specs/openid-connect-
               discovery-1_0.html>.
 
+   [research.ust]
+              Hosseyni, P., Küsters, R., and T. Würtele, "Audience
+              Injection Attacks: A New Class of Attacks on Web-Based
+              Authorization and Authentication Standards", March 2025,
+              <TODO>.
+
+   [RFC7009]  Lodderstedt, T., Ed., Dronia, S., and M. Scurtescu, "OAuth
+              2.0 Token Revocation", RFC 7009, DOI 10.17487/RFC7009,
+              August 2013, <https://www.rfc-editor.org/rfc/rfc7009>.
+
+   [RFC7522]  Campbell, B., Mortimore, C., and M. Jones, "Security
+              Assertion Markup Language (SAML) 2.0 Profile for OAuth 2.0
+              Client Authentication and Authorization Grants", RFC 7522,
+              DOI 10.17487/RFC7522, May 2015,
+              <https://www.rfc-editor.org/rfc/rfc7522>.
+
    [RFC8414]  Jones, M., Sakimura, N., and J. Bradley, "OAuth 2.0
               Authorization Server Metadata", RFC 8414,
               DOI 10.17487/RFC8414, June 2018,
               <https://www.rfc-editor.org/rfc/rfc8414>.
+
+   [RFC8628]  Denniss, W., Bradley, J., Jones, M., and H. Tschofenig,
+              "OAuth 2.0 Device Authorization Grant", RFC 8628,
+              DOI 10.17487/RFC8628, August 2019,
+              <https://www.rfc-editor.org/rfc/rfc8628>.
 
    [RFC9126]  Lodderstedt, T., Campbell, B., Sakimura, N., Tonge, D.,
               and F. Skokan, "OAuth 2.0 Pushed Authorization Requests",
@@ -306,7 +344,11 @@ Table of Contents
 
 Acknowledgments
 
-   We would like to thank Kaixuan Luo, TODO add names, sort by last name
+   We would like to thank Kaixuan Luo,
+   // TODO add names, sort by last name.
+   //
+   // -- Tim W.
+
    for their valuable feedback and contributions to this document.
 
 Authors' Addresses
