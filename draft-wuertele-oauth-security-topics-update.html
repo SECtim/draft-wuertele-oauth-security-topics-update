@@ -1054,7 +1054,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Würtele &amp; Hosseyni</td>
-<td class="center">Expires 25 September 2025</td>
+<td class="center">Expires 26 September 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1072,12 +1072,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc6749" class="eref">6749</a>, <a href="https://www.rfc-editor.org/rfc/rfc6750" class="eref">6750</a>, <a href="https://www.rfc-editor.org/rfc/rfc7521" class="eref">7521</a>, <a href="https://www.rfc-editor.org/rfc/rfc7522" class="eref">7522</a>, <a href="https://www.rfc-editor.org/rfc/rfc7523" class="eref">7523</a>, <a href="https://www.rfc-editor.org/rfc/rfc9700" class="eref">9700</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-03-24" class="published">24 March 2025</time>
+<time datetime="2025-03-25" class="published">25 March 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Best Current Practice</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-09-25">25 September 2025</time></dd>
+<dd class="expires"><time datetime="2025-09-26">26 September 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1134,7 +1134,7 @@ since the former documents have been published.<a href="#section-abstract-1" cla
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 25 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 26 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1411,7 +1411,52 @@ additional assumptions (see <span>[<a href="#research.ust" class="cite xref">res
           <h4 id="name-countermeasures">
 <a href="#section-2.1.2" class="section-number selfRef">2.1.2. </a><a href="#name-countermeasures" class="section-name selfRef">Countermeasures</a>
           </h4>
-<p id="section-2.1.2-1">TODO<a href="#section-2.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-1">At its core, audience injection attacks exploit the fact that, from the
+client's point of view, an authorization server's token endpoint is a
+mostly opaque value and does not uniquely identify an authorization
+server.  Therefore, an attacker authorization server may claim any URI
+as its token endpoint, including, for example, an honest authorization
+server's issuer identifier. Hence, as long as a client uses the token
+endpoint as an audience value when authenticating to the attacker
+authorization server, audience injection attacks are possible.
+Therefore, audience injection attacks need to be prevented by the
+client.<a href="#section-2.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-2">Note that the following countermeasures mandate the use of string
+audience values (as opposed to arrays). This is because <span><a href="https://rfc-editor.org/rfc/rfc7519#section-4.1.4" class="relref">Section 4.1.4</a> of [<a href="#RFC7519" class="cite xref">RFC7519</a>]</span> allows the receiver of an audience-restricted JWT to
+accept the JWT even if the receiver identifies with only one of the
+values in such an array.<a href="#section-2.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-3">Clients that interact with more than one authorization server and
+authenticate with signature-based client authentication methods <span class="bcp14">MUST</span>
+employ one of the following countermeasures, unless audience injection
+attacks are mitigated by other means, such as using fresh key material
+for each authorization server.<a href="#section-2.1.2-3" class="pilcrow">¶</a></p>
+<div id="authorization-server-issuer-identifier">
+<section id="section-2.1.2.1">
+            <h5 id="name-authorization-server-issuer">
+<a href="#section-2.1.2.1" class="section-number selfRef">2.1.2.1. </a><a href="#name-authorization-server-issuer" class="section-name selfRef">Authorization Server Issuer Identifier</a>
+            </h5>
+<p id="section-2.1.2.1-1">Clients <span class="bcp14">MUST</span> use the authorization server's issuer identifier (as
+defined in <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span>) as the sole audience value in client
+assertions.<a href="#section-2.1.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.2.1-2">For <code>jwt-bearer</code> client assertions as defined by <span>[<a href="#RFC7523" class="cite xref">RFC7523</a>]</span>, this
+mechanism is also described in <span>[<a href="#OAUTH-7523bis" class="cite xref">OAUTH-7523bis</a>]</span>.<a href="#section-2.1.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1.2.1-3">Note that "issuer identifier" here does not refer to the term "issuer"
+as defined in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>, but to the issuer identifier
+as used in <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> and <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span>.<a href="#section-2.1.2.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="exact-target-endpoint-uri">
+<section id="section-2.1.2.2">
+            <h5 id="name-exact-target-endpoint-uri">
+<a href="#section-2.1.2.2" class="section-number selfRef">2.1.2.2. </a><a href="#name-exact-target-endpoint-uri" class="section-name selfRef">Exact Target Endpoint URI</a>
+            </h5>
+<p id="section-2.1.2.2-1">Clients <span class="bcp14">MUST</span> use the exact endpoint URI to which a client assertion is
+sent as that client assertion's sole audience value.<a href="#section-2.1.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.2.2-2">This countermeasure can be used for authorization servers that do not
+use authorization server metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> or OpenID Discovery
+<span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span>.<a href="#section-2.1.2.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 </section>
@@ -1473,6 +1518,10 @@ additional assumptions (see <span>[<a href="#research.ust" class="cite xref">res
         <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC8414">[RFC8414]</dt>
+        <dd>
+<span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Sakimura, N.</span>, and <span class="refAuthor">J. Bradley</span>, <span class="refTitle">"OAuth 2.0 Authorization Server Metadata"</span>, <span class="seriesInfo">RFC 8414</span>, <span class="seriesInfo">DOI 10.17487/RFC8414</span>, <time datetime="2018-06" class="refDate">June 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8414">https://www.rfc-editor.org/rfc/rfc8414</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC9700">[RFC9700]</dt>
       <dd>
 <span class="refAuthor">Lodderstedt, T.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Labunets, A.</span>, and <span class="refAuthor">D. Fett</span>, <span class="refTitle">"Best Current Practice for OAuth 2.0 Security"</span>, <span class="seriesInfo">BCP 240</span>, <span class="seriesInfo">RFC 9700</span>, <span class="seriesInfo">DOI 10.17487/RFC9700</span>, <time datetime="2025-01" class="refDate">January 2025</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9700">https://www.rfc-editor.org/rfc/rfc9700</a>&gt;</span>. </dd>
@@ -1486,6 +1535,10 @@ additional assumptions (see <span>[<a href="#research.ust" class="cite xref">res
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="OAUTH-7523bis">[OAUTH-7523bis]</dt>
+        <dd>
+<span class="refAuthor">Jones, M. B.</span>, <span class="refAuthor">Campbell, B.</span>, and <span class="refAuthor">C. Mortimore</span>, <span class="refTitle">"JSON Web Token (JWT) Profile for OAuth 2.0 Client Authentication and Authorization Grants"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-oauth-rfc7523bis-00</span>, <time datetime="2025-02-21" class="refDate">21 February 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rfc7523bis-00">https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rfc7523bis-00</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="OpenID.CIBA">[OpenID.CIBA]</dt>
         <dd>
 <span class="refAuthor">Fernandez, G.</span>, <span class="refAuthor">Walter, F.</span>, <span class="refAuthor">Nennker, A.</span>, <span class="refAuthor">Tonge, D.</span>, and <span class="refAuthor">B. Campbell</span>, <span class="refTitle">"OpenID Connect Client-Initiated Backchannel Authentication Flow - Core 1.0"</span>, <time datetime="2021-09" class="refDate">September 2021</time>, <span>&lt;<a href="https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html">https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html</a>&gt;</span>. </dd>
@@ -1506,13 +1559,13 @@ additional assumptions (see <span>[<a href="#research.ust" class="cite xref">res
         <dd>
 <span class="refAuthor">Lodderstedt, T., Ed.</span>, <span class="refAuthor">Dronia, S.</span>, and <span class="refAuthor">M. Scurtescu</span>, <span class="refTitle">"OAuth 2.0 Token Revocation"</span>, <span class="seriesInfo">RFC 7009</span>, <span class="seriesInfo">DOI 10.17487/RFC7009</span>, <time datetime="2013-08" class="refDate">August 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7009">https://www.rfc-editor.org/rfc/rfc7009</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC7519">[RFC7519]</dt>
+        <dd>
+<span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Bradley, J.</span>, and <span class="refAuthor">N. Sakimura</span>, <span class="refTitle">"JSON Web Token (JWT)"</span>, <span class="seriesInfo">RFC 7519</span>, <span class="seriesInfo">DOI 10.17487/RFC7519</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7519">https://www.rfc-editor.org/rfc/rfc7519</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC7522">[RFC7522]</dt>
         <dd>
 <span class="refAuthor">Campbell, B.</span>, <span class="refAuthor">Mortimore, C.</span>, and <span class="refAuthor">M. Jones</span>, <span class="refTitle">"Security Assertion Markup Language (SAML) 2.0 Profile for OAuth 2.0 Client Authentication and Authorization Grants"</span>, <span class="seriesInfo">RFC 7522</span>, <span class="seriesInfo">DOI 10.17487/RFC7522</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7522">https://www.rfc-editor.org/rfc/rfc7522</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC8414">[RFC8414]</dt>
-        <dd>
-<span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Sakimura, N.</span>, and <span class="refAuthor">J. Bradley</span>, <span class="refTitle">"OAuth 2.0 Authorization Server Metadata"</span>, <span class="seriesInfo">RFC 8414</span>, <span class="seriesInfo">DOI 10.17487/RFC8414</span>, <time datetime="2018-06" class="refDate">June 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8414">https://www.rfc-editor.org/rfc/rfc8414</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8628">[RFC8628]</dt>
         <dd>

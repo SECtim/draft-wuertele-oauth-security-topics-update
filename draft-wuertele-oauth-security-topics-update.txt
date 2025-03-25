@@ -5,9 +5,9 @@
 Web Authorization Protocol                                    T. Würtele
 Internet-Draft                                               P. Hosseyni
 Updates: 6749, 6750, 7521, 7522, 7523, 9700      University of Stuttgart
-         (if approved)                                     24 March 2025
+         (if approved)                                     25 March 2025
 Intended status: Best Current Practice                                  
-Expires: 25 September 2025
+Expires: 26 September 2025
 
 
                 OAuth 2.0 Security Best Current Practice
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 September 2025.
+   This Internet-Draft will expire on 26 September 2025.
 
 Copyright Notice
 
@@ -244,7 +244,50 @@ Table of Contents
 
 2.1.2.  Countermeasures
 
-   TODO
+   At its core, audience injection attacks exploit the fact that, from
+   the client's point of view, an authorization server's token endpoint
+   is a mostly opaque value and does not uniquely identify an
+   authorization server.  Therefore, an attacker authorization server
+   may claim any URI as its token endpoint, including, for example, an
+   honest authorization server's issuer identifier.  Hence, as long as a
+   client uses the token endpoint as an audience value when
+   authenticating to the attacker authorization server, audience
+   injection attacks are possible.  Therefore, audience injection
+   attacks need to be prevented by the client.
+
+   Note that the following countermeasures mandate the use of string
+   audience values (as opposed to arrays).  This is because
+   Section 4.1.4 of [RFC7519] allows the receiver of an audience-
+   restricted JWT to accept the JWT even if the receiver identifies with
+   only one of the values in such an array.
+
+   Clients that interact with more than one authorization server and
+   authenticate with signature-based client authentication methods MUST
+   employ one of the following countermeasures, unless audience
+   injection attacks are mitigated by other means, such as using fresh
+   key material for each authorization server.
+
+2.1.2.1.  Authorization Server Issuer Identifier
+
+   Clients MUST use the authorization server's issuer identifier (as
+   defined in [RFC8414]) as the sole audience value in client
+   assertions.
+
+   For jwt-bearer client assertions as defined by [RFC7523], this
+   mechanism is also described in [OAUTH-7523bis].
+
+   Note that "issuer identifier" here does not refer to the term
+   "issuer" as defined in Section 4.4 of [RFC9700], but to the issuer
+   identifier as used in [RFC8414] and [OpenID.Discovery].
+
+2.1.2.2.  Exact Target Endpoint URI
+
+   Clients MUST use the exact endpoint URI to which a client assertion
+   is sent as that client assertion's sole audience value.
+
+   This countermeasure can be used for authorization servers that do not
+   use authorization server metadata [RFC8414] or OpenID Discovery
+   [OpenID.Discovery].
 
 2.2.  TODO Title - "Mix-up reloaded" content
 
@@ -285,12 +328,25 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
+   [RFC8414]  Jones, M., Sakimura, N., and J. Bradley, "OAuth 2.0
+              Authorization Server Metadata", RFC 8414,
+              DOI 10.17487/RFC8414, June 2018,
+              <https://www.rfc-editor.org/rfc/rfc8414>.
+
    [RFC9700]  Lodderstedt, T., Bradley, J., Labunets, A., and D. Fett,
               "Best Current Practice for OAuth 2.0 Security", BCP 240,
               RFC 9700, DOI 10.17487/RFC9700, January 2025,
               <https://www.rfc-editor.org/rfc/rfc9700>.
 
 5.2.  Informative References
+
+   [OAUTH-7523bis]
+              Jones, M. B., Campbell, B., and C. Mortimore, "JSON Web
+              Token (JWT) Profile for OAuth 2.0 Client Authentication
+              and Authorization Grants", Work in Progress, Internet-
+              Draft, draft-ietf-oauth-rfc7523bis-00, 21 February 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-oauth-
+              rfc7523bis-00>.
 
    [OpenID.CIBA]
               Fernandez, G., Walter, F., Nennker, A., Tonge, D., and B.
@@ -321,16 +377,15 @@ Table of Contents
               2.0 Token Revocation", RFC 7009, DOI 10.17487/RFC7009,
               August 2013, <https://www.rfc-editor.org/rfc/rfc7009>.
 
+   [RFC7519]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
+              (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
+              <https://www.rfc-editor.org/rfc/rfc7519>.
+
    [RFC7522]  Campbell, B., Mortimore, C., and M. Jones, "Security
               Assertion Markup Language (SAML) 2.0 Profile for OAuth 2.0
               Client Authentication and Authorization Grants", RFC 7522,
               DOI 10.17487/RFC7522, May 2015,
               <https://www.rfc-editor.org/rfc/rfc7522>.
-
-   [RFC8414]  Jones, M., Sakimura, N., and J. Bradley, "OAuth 2.0
-              Authorization Server Metadata", RFC 8414,
-              DOI 10.17487/RFC8414, June 2018,
-              <https://www.rfc-editor.org/rfc/rfc8414>.
 
    [RFC8628]  Denniss, W., Bradley, J., Jones, M., and H. Tschofenig,
               "OAuth 2.0 Device Authorization Grant", RFC 8628,
