@@ -260,15 +260,14 @@ additional assumptions (see {{research.ust}} for details).
 
 ### Countermeasures {#AudienceInjectionCountermeasures}
 
-At its core, audience injection attacks exploit the ambiguity in using
-the token endpoint to identify an authorization server as a client
-assertion's intended audience, and the fact that from the client's point
-of view, an (attacker) authorization server's token endpoint is a mostly
-opaque value. Note that an attacker authorization server may claim any
-URI as its token endpoint, including, for example, an honest
-authorization server's issuer identifier. Hence, as long as a client
-uses the token endpoint as an audience value when authenticating to the
-attacker authorization server, audience injection attacks are possible.
+At its core, audience injection attacks exploit the fact that, from the
+client's point of view, an authorization server's token endpoint is a
+mostly opaque value and does not uniquely identify an authorization
+server.  Therefore, an attacker authorization server may claim any URI
+as its token endpoint, including, for example, an honest authorization
+server's issuer identifier. Hence, as long as a client uses the token
+endpoint as an audience value when authenticating to the attacker
+authorization server, audience injection attacks are possible.
 Therefore, audience injection attacks need to be prevented by the
 client.
 
@@ -291,7 +290,7 @@ defined in {{!RFC8414}}) as the sole audience value in client
 assertions.
 
 For `jwt-bearer` client assertions as defined by {{RFC7523}}, this
-mechanism is described in more detail in {{OAUTH-7523bis}}.
+mechanism is also described in {{OAUTH-7523bis}}.
 
 Note that "issuer identifier" here does not refer to the term "issuer"
 as defined in {{Section 4.4 of RFC9700}}, but to the issuer identifier
