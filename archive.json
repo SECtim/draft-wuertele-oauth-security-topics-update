@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-23T01:46:18.225757+00:00",
+  "timestamp": "2025-03-25T01:42:00.143891+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -56,7 +56,7 @@
       "id": "I_kwDOOKn4ys6utShA",
       "title": "Description for Audience Injection Attacks",
       "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/2",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "SECtim",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -66,8 +66,8 @@
       "labels": [],
       "body": "",
       "createdAt": "2025-03-19T09:39:58Z",
-      "updatedAt": "2025-03-19T10:46:00Z",
-      "closedAt": null,
+      "updatedAt": "2025-03-24T16:07:13Z",
+      "closedAt": "2025-03-24T16:07:12Z",
       "comments": []
     },
     {
@@ -85,7 +85,68 @@
       "updatedAt": "2025-03-19T09:40:32Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 4,
+      "id": "I_kwDOOKn4ys6vXR8L",
+      "title": "What RFCs should this document update?",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/4",
+      "state": "OPEN",
+      "author": "SECtim",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "SECtim"
+      ],
+      "labels": [],
+      "body": "\"Update\" in the RFC \"updates\" list sense.\n\nWe certainly have 6749, 9700, and 6750 (due to the \"Mix-Up Reloaded\" issuer sharing cases, where a client ends up sending a bearer token to the wrong RS, thereby leaking it).\n\nProbably also 7521, 7522, and 7523 (or, at the very least, 7523).\n\nAnything else?",
+      "createdAt": "2025-03-24T06:13:20Z",
+      "updatedAt": "2025-03-24T06:13:20Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "number": 5,
+      "id": "PR_kwDOOKn4ys6Pz3-x",
+      "title": "Attack description for Audience Injection Attacks",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/5",
+      "state": "MERGED",
+      "author": "SECtim",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes #2 ",
+      "createdAt": "2025-03-24T06:17:11Z",
+      "updatedAt": "2025-03-24T16:07:12Z",
+      "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "baseRefName": "main",
+      "baseRefOid": "d698f037727d3a6d92acbbe4f763cb865c0cc9ad",
+      "headRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "headRefName": "aud_inj_attack_description_ph",
+      "headRefOid": "05d09878a63bfc68461eb929a3722de5f8f1cf68",
+      "closedAt": "2025-03-24T16:07:11Z",
+      "mergedAt": "2025-03-24T16:07:11Z",
+      "mergedBy": "PedramHD",
+      "mergeCommit": {
+        "oid": "150a5567dde5ecd6a4430b73ff294f5c853964f9"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOKn4ys6hkZs9",
+          "commit": {
+            "abbreviatedOid": "05d0987"
+          },
+          "author": "PedramHD",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-24T14:52:16Z",
+          "updatedAt": "2025-03-24T14:52:16Z",
+          "comments": []
+        }
+      ]
+    }
+  ]
 }
