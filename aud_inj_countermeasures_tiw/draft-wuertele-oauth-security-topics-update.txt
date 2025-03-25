@@ -5,9 +5,9 @@
 Web Authorization Protocol                                    T. Würtele
 Internet-Draft                                               P. Hosseyni
 Updates: 6749, 6750, 7521, 7522, 7523, 9700      University of Stuttgart
-         (if approved)                                     24 March 2025
+         (if approved)                                     25 March 2025
 Intended status: Best Current Practice                                  
-Expires: 25 September 2025
+Expires: 26 September 2025
 
 
                 OAuth 2.0 Security Best Current Practice
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 September 2025.
+   This Internet-Draft will expire on 26 September 2025.
 
 Copyright Notice
 
@@ -244,17 +244,16 @@ Table of Contents
 
 2.1.2.  Countermeasures
 
-   At its core, audience injection attacks exploit the ambiguity in
-   using the token endpoint to identify an authorization server as a
-   client assertion's intended audience, and the fact that from the
-   client's point of view, an (attacker) authorization server's token
-   endpoint is a mostly opaque value.  Note that an attacker
-   authorization server may claim any URI as its token endpoint,
-   including, for example, an honest authorization server's issuer
-   identifier.  Hence, as long as a client uses the token endpoint as an
-   audience value when authenticating to the attacker authorization
-   server, audience injection attacks are possible.  Therefore, audience
-   injection attacks need to be prevented by the client.
+   At its core, audience injection attacks exploit the fact that, from
+   the client's point of view, an authorization server's token endpoint
+   is a mostly opaque value and does not uniquely identify an
+   authorization server.  Therefore, an attacker authorization server
+   may claim any URI as its token endpoint, including, for example, an
+   honest authorization server's issuer identifier.  Hence, as long as a
+   client uses the token endpoint as an audience value when
+   authenticating to the attacker authorization server, audience
+   injection attacks are possible.  Therefore, audience injection
+   attacks need to be prevented by the client.
 
    Note that the following countermeasures mandate the use of string
    audience values (as opposed to arrays).  This is because
@@ -275,7 +274,7 @@ Table of Contents
    assertions.
 
    For jwt-bearer client assertions as defined by [RFC7523], this
-   mechanism is described in more detail in [OAUTH-7523bis].
+   mechanism is also described in [OAUTH-7523bis].
 
    Note that "issuer identifier" here does not refer to the term
    "issuer" as defined in Section 4.4 of [RFC9700], but to the issuer
