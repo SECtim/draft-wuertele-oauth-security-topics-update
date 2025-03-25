@@ -306,9 +306,6 @@ use authorization server metadata {{!RFC8414}} or OpenID Discovery
 {{OpenID.Discovery}}.
 
 
-
-
-
 ## TODO Title - "Mix-up reloaded" content
 
 TODO
