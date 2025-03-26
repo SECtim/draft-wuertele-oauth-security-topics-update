@@ -179,7 +179,7 @@ authorization server metadata.
 
 Excerpt from H-AS' metadata:
 
-~~~ javascript
+~~~ json
 "issuer": "https://honest.com",
 "token_endpoint": "https://honest.com/token",
 ...
@@ -187,13 +187,13 @@ Excerpt from H-AS' metadata:
 
 Excerpt from A-AS' metadata:
 
-~~~ javascript
+~~~ json
 "issuer": "https://attacker.com",
 "token_endpoint": "https://honest.com/token",
 ...
 ~~~
 
-I.e., the attacker authorization server claims to use the honest
+Therefore, the attacker authorization server claims to use the honest
 authorization server's token endpoint. Note that the attacker
 authorization server does not control this endpoint. The attack then
 commences as follows:
@@ -218,7 +218,7 @@ authorization server metadata, the `aud` claim contains H-AS' token
 endpoint.  Recall that both A-AS and H-AS registered the client with
 client ID `cid`, and that the client uses the same key pair for
 authentication at both authorization servers.  Hence, this client
-assertion is a valid valid authentication credential for the client at
+assertion is a valid authentication credential for the client at
 H-AS.
 
 As described in {{research.ust}}, the attacker can then utilize the
@@ -271,8 +271,8 @@ authorization server, audience injection attacks are possible.
 Therefore, audience injection attacks need to be prevented by the
 client.
 
-Note that the following countermeasures mandate the use of string
-audience values (as opposed to arrays). This is because {{Section 4.1.4
+Note that the following countermeasures mandate the use of single 
+audience value (as opposed to multiple audiences in array). This is because {{Section 4.1.3
 of ?RFC7519}} allows the receiver of an audience-restricted JWT to
 accept the JWT even if the receiver identifies with only one of the
 values in such an array.
