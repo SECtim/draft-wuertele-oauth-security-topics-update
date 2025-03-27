@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-25T01:42:00.143891+00:00",
+  "timestamp": "2025-03-27T01:41:10.265332+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -147,6 +147,76 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOOKn4ys6P-9zB",
+      "title": "Audience Injection Countermeasures",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/6",
+      "state": "MERGED",
+      "author": "SECtim",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "PedramHD"
+      ],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-03-25T06:11:32Z",
+      "updatedAt": "2025-03-25T10:11:26Z",
+      "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "baseRefName": "main",
+      "baseRefOid": "150a5567dde5ecd6a4430b73ff294f5c853964f9",
+      "headRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "headRefName": "aud_inj_countermeasures_tiw",
+      "headRefOid": "7f84fdc3550ad850b9c042bcc6ef65f7f04cd741",
+      "closedAt": "2025-03-25T10:11:26Z",
+      "mergedAt": "2025-03-25T10:11:26Z",
+      "mergedBy": "PedramHD",
+      "mergeCommit": {
+        "oid": "8b07a975b10da6081d50b0b040adb3013e83ed4a"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOKn4ys6ht1-7",
+          "commit": {
+            "abbreviatedOid": "7f84fdc"
+          },
+          "author": "PedramHD",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-25T10:09:21Z",
+          "updatedAt": "2025-03-25T10:09:21Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "PR_kwDOOKn4ys6QRyqR",
+      "title": "minor touch up",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/7",
+      "state": "OPEN",
+      "author": "adon-at-work",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I'm Adonis, one of the co-authors for the COAT and CORF work.\r\n\r\nThis audience injection attack is an interesting one. While reviewing what you guys have prepared for updating RFC9700, I spotted some non-controversial improvements as follows.\r\n\r\nI have other comments and questions regarding the attack and defense too, using my lens from both the academia and industry perspectives. I know Kaixuan is arranging a meeting between all of us, and we will discuss them. :)",
+      "createdAt": "2025-03-26T22:17:10Z",
+      "updatedAt": "2025-03-26T22:17:10Z",
+      "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "baseRefName": "main",
+      "baseRefOid": "8b07a975b10da6081d50b0b040adb3013e83ed4a",
+      "headRepository": "adon-at-work/draft-wuertele-oauth-security-topics-update",
+      "headRefName": "patch-1",
+      "headRefOid": "982fa5cc308d88e44e7c354096d034bf145125f4",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
