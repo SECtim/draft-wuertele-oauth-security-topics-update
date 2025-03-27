@@ -271,7 +271,7 @@ authorization server, audience injection attacks are possible.
 Therefore, audience injection attacks need to be prevented by the
 client.
 
-Note that the following countermeasures mandate the use of single 
+Note that the following countermeasures mandate the use of single
 audience value (as opposed to multiple audiences in array). This is because {{Section 4.1.3
 of ?RFC7519}} allows the receiver of an audience-restricted JWT to
 accept the JWT even if the receiver identifies with only one of the
