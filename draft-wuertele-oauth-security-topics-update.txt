@@ -399,7 +399,7 @@ Table of Contents
 
 Acknowledgments
 
-   We would like to thank Kaixuan Luo,
+   We would like to thank Adonis Fung, Kaixuan Luo,
    // TODO add names, sort by last name.
    //
    // -- Tim W.
