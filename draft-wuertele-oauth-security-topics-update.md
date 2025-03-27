@@ -179,7 +179,7 @@ authorization server metadata.
 
 Excerpt from H-AS' metadata:
 
-~~~ json
+~~~ javascript
 "issuer": "https://honest.com",
 "token_endpoint": "https://honest.com/token",
 ...
@@ -187,7 +187,7 @@ Excerpt from H-AS' metadata:
 
 Excerpt from A-AS' metadata:
 
-~~~ json
+~~~ javascript
 "issuer": "https://attacker.com",
 "token_endpoint": "https://honest.com/token",
 ...
