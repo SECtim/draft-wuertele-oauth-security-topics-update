@@ -326,6 +326,7 @@ This document has no IANA actions.
 {:numbered="false"}
 
 We would like to thank
+Adonis Fung,
 Kaixuan Luo,
 [^acksAddNames]{: source="Tim W."}
 
