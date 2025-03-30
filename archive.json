@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-27T01:41:10.265332+00:00",
+  "timestamp": "2025-03-30T01:48:25.584130+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -197,26 +197,81 @@
       "id": "PR_kwDOOKn4ys6QRyqR",
       "title": "minor touch up",
       "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/7",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "adon-at-work",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "I'm Adonis, one of the co-authors for the COAT and CORF work.\r\n\r\nThis audience injection attack is an interesting one. While reviewing what you guys have prepared for updating RFC9700, I spotted some non-controversial improvements as follows.\r\n\r\nI have other comments and questions regarding the attack and defense too, using my lens from both the academia and industry perspectives. I know Kaixuan is arranging a meeting between all of us, and we will discuss them. :)",
       "createdAt": "2025-03-26T22:17:10Z",
-      "updatedAt": "2025-03-26T22:17:10Z",
+      "updatedAt": "2025-03-27T22:25:11Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "8b07a975b10da6081d50b0b040adb3013e83ed4a",
       "headRepository": "adon-at-work/draft-wuertele-oauth-security-topics-update",
       "headRefName": "patch-1",
-      "headRefOid": "982fa5cc308d88e44e7c354096d034bf145125f4",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "1008401e47de198e0f5b080c7e8fbdedfa6588ec",
+      "closedAt": "2025-03-27T22:12:39Z",
+      "mergedAt": "2025-03-27T22:12:38Z",
+      "mergedBy": "SECtim",
+      "mergeCommit": {
+        "oid": "63c6bb01cc01bc7cb4002846328ae57a267b8920"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOOKn4ys6iI6xa",
+          "commit": {
+            "abbreviatedOid": "982fa5c"
+          },
+          "author": "SECtim",
+          "authorAssociation": "OWNER",
+          "state": "CHANGES_REQUESTED",
+          "body": "Thanks for taking the time to read through the proposed text and for improving it!",
+          "createdAt": "2025-03-27T08:15:49Z",
+          "updatedAt": "2025-03-27T08:16:49Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "Unfortunately, this cannot be `json`, because that leads to errors in the build pipeline (complaining that this is not valid JSON, which is true). We consciously decided not to omit the `...`  to clearly indicate that further metadata is needed.",
+              "createdAt": "2025-03-27T08:15:49Z",
+              "updatedAt": "2025-03-27T08:17:11Z"
+            },
+            {
+              "originalPosition": 14,
+              "body": "See above.",
+              "createdAt": "2025-03-27T08:15:57Z",
+              "updatedAt": "2025-03-27T08:16:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys6iUBmL",
+          "commit": {
+            "abbreviatedOid": "101491b"
+          },
+          "author": "SECtim",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-27T19:13:01Z",
+          "updatedAt": "2025-03-27T19:13:01Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOKn4ys6iUPPA",
+          "commit": {
+            "abbreviatedOid": "101491b"
+          },
+          "author": "PedramHD",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-27T19:40:41Z",
+          "updatedAt": "2025-03-27T19:40:41Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
