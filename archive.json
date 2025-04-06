@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-30T01:48:25.584130+00:00",
+  "timestamp": "2025-04-06T01:47:16.465496+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -32,6 +32,11 @@
       "name": "editorial",
       "description": "Typos, formatting, and the like.",
       "color": "17E24A"
+    },
+    {
+      "name": "Needs WG input",
+      "description": "Issue needs input from OAuth WG",
+      "color": "2D16D4"
     }
   ],
   "issues": [
@@ -44,10 +49,12 @@
       "author": "SECtim",
       "authorAssociation": "OWNER",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "Needs WG input"
+      ],
       "body": "So far, I've put \"OAuth 2.0 Security Best Current Practice\" as the title, but it might make sense to use a different title to at least indicate that this is an extension of an existing document of that name.",
       "createdAt": "2025-03-19T09:29:09Z",
-      "updatedAt": "2025-03-19T09:29:09Z",
+      "updatedAt": "2025-04-05T05:36:43Z",
       "closedAt": null,
       "comments": []
     },
@@ -97,12 +104,159 @@
       "assignees": [
         "SECtim"
       ],
-      "labels": [],
+      "labels": [
+        "Needs WG input"
+      ],
       "body": "\"Update\" in the RFC \"updates\" list sense.\n\nWe certainly have 6749, 9700, and 6750 (due to the \"Mix-Up Reloaded\" issuer sharing cases, where a client ends up sending a bearer token to the wrong RS, thereby leaking it).\n\nProbably also 7521, 7522, and 7523 (or, at the very least, 7523).\n\nAnything else?",
       "createdAt": "2025-03-24T06:13:20Z",
-      "updatedAt": "2025-03-24T06:13:20Z",
+      "updatedAt": "2025-04-05T05:36:24Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "SECtim",
+          "authorAssociation": "OWNER",
+          "body": "Probably also PAR",
+          "createdAt": "2025-04-04T06:18:40Z",
+          "updatedAt": "2025-04-04T06:18:40Z"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "I_kwDOOKn4ys6xHAmc",
+      "title": "In 2.1, clarify why the token EP is used as aud",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/8",
+      "state": "OPEN",
+      "author": "SECtim",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "SECtim",
+        "PedramHD"
+      ],
+      "labels": [],
+      "body": "Based on feedback by @adon-at-work to help readers",
+      "createdAt": "2025-04-04T06:32:42Z",
+      "updatedAt": "2025-04-05T05:34:57Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 9,
+      "id": "I_kwDOOKn4ys6xQcyD",
+      "title": "Make the description of audience injection attacks more self-contained",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/9",
+      "state": "OPEN",
+      "author": "SECtim",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "SECtim",
+        "PedramHD"
+      ],
+      "labels": [],
+      "body": "(This is part of the feedback by @adon-at-work)\nAs a reader, it would be more readable if it's more self-contained, an engineer is unlikely to go read a full academic paper. (A number of places is referring to paper for details, which is for now a TODO deadlink, and that gave me a hard time. I\u2019m expecting the WG or those first time reader who aren't familiar with the work may have the same impression).",
+      "createdAt": "2025-04-05T05:21:49Z",
+      "updatedAt": "2025-04-05T05:21:49Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 10,
+      "id": "I_kwDOOKn4ys6xQc7x",
+      "title": "Clarify the description of the AS issuer identifier defense",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/10",
+      "state": "OPEN",
+      "author": "SECtim",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "SECtim",
+        "PedramHD"
+      ],
+      "labels": [],
+      "body": "(This is part of the feedback by @adon-at-work)\n- 2.1.2.1 Reminder about validating issuer field from metadata file, as per [rfc8414#section-3.3](https://datatracker.ietf.org/doc/html/rfc8414#section-3.3). Reminder for not to extract issuer from the token_endpoint string (engineer may be tempted to do so given their current implementation).\n- 2.1.2.1 \u201c\u201dNote that \"issuer identifier\" here does not refer to the term \"issuer\" as defined in {{Section 4.4 of RFC9700}}, but to the issuer identifier as used in {{!RFC8414}} and {{OpenID.Discovery}}.\u201d\u201d What\u2019s the difference?",
+      "createdAt": "2025-04-05T05:23:23Z",
+      "updatedAt": "2025-04-05T05:23:23Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 11,
+      "id": "I_kwDOOKn4ys6xQdN-",
+      "title": "Discuss \"single value audience\" requirements",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/11",
+      "state": "OPEN",
+      "author": "SECtim",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "SECtim",
+        "PedramHD"
+      ],
+      "labels": [],
+      "body": "(This is part of the feedback by @adon-at-work)\n2.1.2.2 aud=single target endpoint\n- single audience requirement. multiple audiences I think isn't necessarily a bad thing, as long as they are all belonging to the same issuer. ex. [[h-as.com/token](http://h-as.com/token), [h-as.com/revoke](http://h-as.com/revoke)]\n- What's the expectation if I need a cla for token negotiation and then later for revocation. I kinda think it could be a transactional process, I got a token, finish my task, and do clean up. I think it makes sense to reuse the same cla for both. But if its single aud, then i gotta create cla twice, one per endpoint. This can discourage people to cleanup/call revoke given the performance penalty (jti was introduced there for performance/replay reason).\n- let's say we want to allow multiple aud from the same issuer. or more generally, as is today, when people put multiple aud, what's one-time use of `jti`mean? is that one-time use per aud, or across all audiences. should we clarify?",
+      "createdAt": "2025-04-05T05:26:13Z",
+      "updatedAt": "2025-04-05T08:18:14Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "SECtim",
+          "authorAssociation": "OWNER",
+          "body": "> multiple audiences I think isn't necessarily a bad thing, as long as they are all belonging to the same issuer\n\nThat would require normative changes to the AS; i.e., the AS then MUST verify that it can identify with _all_ elements in the `aud` array before accepting a client assertion (or, maybe better: all elements must be endpoints of the AS). Not necessarily a reason to not include this proposal, but something to be aware of.\n\n> But if its single aud, then i gotta create cla twice, one per endpoint.\n\nOnly when using the \"exact endpoint\" audience defense, i.e., when no issuer identifier is available.\n\n> This can discourage people to cleanup/call revoke given the performance penalty (jti was introduced there for performance/replay reason).\n\nI wouldn't say that `jti` was introduced to enable replay - actually, quite the opposite: To (at least optionally) prevent replay. For example, the default for [OpenID Connect authentication JWTs](https://openid.net/specs/openid-connect-core-1_0.html#ClientAuthentication) is \"These tokens MUST only be used once\". In the IETF world, the usual formulation is something like \"MAY use `jti` to ensure that JWTs are not replayed\", e.g., in [RFC7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.7), [RFC7521](https://datatracker.ietf.org/doc/html/rfc7521#section-5.1), [RFC7522](https://datatracker.ietf.org/doc/html/rfc7522#section-3), [RFC7523](https://datatracker.ietf.org/doc/html/rfc7523#section-3), and [RFC9449](https://datatracker.ietf.org/doc/html/rfc9449#name-dpop-proof-jwt-syntax).\n\n> let's say we want to allow multiple aud from the same issuer. or more generally, as is today, when people put multiple aud, what's one-time use of jti mean? is that one-time use per aud, or across all audiences. should we clarify?\n\nThat's a can of worms this document certainly should not open, because it has nothing to do with audience injection attacks or their mitigation.\nThat said, in my opinion, the original formulations around `jti` and JWT replay/reuse are somewhat unfortunate, because they end up saying \"do whatever you want\" (with the exception of OIDC, but that also leaves the door open to \"unless conditions for reuse were negotiated between the parties\"), instead of giving clear options with their respective pros and cons.\n\n---\n\nSo, to summarize what I think:\n- This document should definitely avoid talking about `jti` and JWT replay/reuse.\n- I am in principle open to discuss the possibility of allowing `aud` arrays, but at least for RFCs 7521, 7522, 7523, and 9126, as well as the OIDF specs OIDC, CIBA, FAPI 1.0, and FAPI 2.0, corresponding updates/drafts thereof do require single-valued audiences; so talking about multi-valued `aud`s here might confuse people.",
+          "createdAt": "2025-04-05T08:18:13Z",
+          "updatedAt": "2025-04-05T08:18:13Z"
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "id": "I_kwDOOKn4ys6xQeXp",
+      "title": "Clarify that proposed fixes do not require AS changes",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/12",
+      "state": "OPEN",
+      "author": "SECtim",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "SECtim",
+        "PedramHD"
+      ],
+      "labels": [],
+      "body": "@adon-at-work's initial feedback includes:\n\n> Draft does NOT mention the need for AS server change. But the openid letter clearly spells it out.\n> - Should AS change its enforcement first (ex. accepting token endpoint today but some clients are presenting aud=issuer)? Or should clients go first? It\u2019s practically impossible to coordinate so many parties to agree on a change, even more unlikely to happen at the same time. Then people will naturally ask for backward compatibility.\n> - Think about the owner of the malicious AS, he will likely have no incentive to update\u2026 but will come up with all kinds of excuses like I can\u2019t update because I have no engineering resources\u2026 Will client still need to send token_endpoint to those not updating yet?\n\n=> Draft should state and explain why the \"aud = issuer identifier\" and \"aud = exact endpoint\" defenses do not require any AS changes.",
+      "createdAt": "2025-04-05T05:30:03Z",
+      "updatedAt": "2025-04-05T06:16:13Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 13,
+      "id": "I_kwDOOKn4ys6xQfO1",
+      "title": "Discuss proposed alternative defense",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/13",
+      "state": "OPEN",
+      "author": "SECtim",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "SECtim",
+        "PedramHD"
+      ],
+      "labels": [],
+      "body": "(This is part of the feedback by @adon-at-work)\n\n> Easiest and most pragmatic solution that works overnight, that requires only client changes. Client ensures that there\u2019re no overlaps of client_id and token_endpoint pairs for all its ASes (be it existing ones or those by DCR in the future). Unlikely there\u2019s a legit use case where the pair would be the same across two different issuers. Should there be an existing collision, as a remedy, the app can re-register to get a new client_id over DCR from one of the issuers (the legit one is unlikely to reuse client_id) to make things unique.\n\nThink about whether this works and what the client has to watch out for. If viable as a defense, consider adding it.",
+      "createdAt": "2025-04-05T05:33:18Z",
+      "updatedAt": "2025-04-05T08:42:42Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "SECtim",
+          "authorAssociation": "OWNER",
+          "body": "Also consider ecosystems that always use the same client_id across ASs (e.g., OpenID Federation).",
+          "createdAt": "2025-04-05T05:34:20Z",
+          "updatedAt": "2025-04-05T05:34:20Z"
+        },
+        {
+          "author": "SECtim",
+          "authorAssociation": "OWNER",
+          "body": "> requires only client changes\n\nThat is also true for the \"aud = issuer identifier\" and \"aud = exact endpoint\" defenses (see #12).\n\n> Client ensures that there\u2019re no overlaps of client_id and token_endpoint pairs for all its ASes\n\nI actually think that's not sufficient to prevent audience injection attacks, at least not in general. Consider a client that always includes the token and revocation endpoints in its client assertions (which is perfectly fine w.r.t. the relevant standards). In that case, the attacker AS can publish the following metadata (excerpt):\n```\ntoken_endpoint: att.com/token,\nrevocation_endpoint: hon.com/token\n```\nThe client's token request (to what the client thinks is the attacker AS) goes to `att.com/token` (i.e., to the attacker) and includes a client assertion with `aud: [\"att.com/token\", \"hon.com/token\"]`. That `aud` value is also valid for requests to `hon.com/token` (and maybe other endpoints of `hon.com` as well, see #8). Hence, this is an instance of an audience injection attack.\n\nWithout AS changes, most combinations of endpoints with client authentication can be (ab)used in one way or the other by an attacker to obtain a client assertion that's valid somewhere else _unless_ the client chooses an `aud` value that's either the issuer identifier or the exact target endpoint. Hence, I'd be very careful in trying to come up with some \"clever\" way for the client to ensure its AS registrations are \"not attackable\" (and, what's more: Any such requirement on the client would be in conflict with the current and widely implemented logic of \"client ID and AS endpoints are provided by the AS and (mostly) opaque values to the client\" with only very minimal restrictions, such as mandatory HTTPS for the token endpoint).\n\nAlso note that just doing another round of DCR - even if feasible, think of stuff like initial access tokens that are typically one-time use - is not at all guaranteed to result in a different client ID. In some cases, having the same client ID for all registrations of a given client (even across ASs) is mandatory, e.g., in OpenID Federation.\n\nI.e., I think this mechanism might introduce problems in practice and, more importantly, doesn't reliably work as a defense.",
+          "createdAt": "2025-04-05T08:42:41Z",
+          "updatedAt": "2025-04-05T08:42:41Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -272,6 +426,84 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 14,
+      "id": "PR_kwDOOKn4ys6RfYTK",
+      "title": "Clarify that none of the current countermeasures require AS changes",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/14",
+      "state": "OPEN",
+      "author": "SECtim",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Do we need to explicitly explain why an AS change (e.g., to only accept its issuer identifier) does not help at all in preventing the attacks?\r\n\r\nFixes #12",
+      "createdAt": "2025-04-05T06:14:18Z",
+      "updatedAt": "2025-04-05T06:14:18Z",
+      "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "baseRefName": "main",
+      "baseRefOid": "f9ff75120236075925338e7a366b168b5d4f13cf",
+      "headRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "headRefName": "fix_12",
+      "headRefOid": "9f0f4ddf7bd7f3659b965bc47fa2ceb670cd9ffd",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 15,
+      "id": "PR_kwDOOKn4ys6RffU5",
+      "title": "Require clients to validate the issuer identifier",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/15",
+      "state": "OPEN",
+      "author": "SECtim",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Also, better describe the difference to the \"issuer\" in RFC 9700.\r\n\r\nFixes #10",
+      "createdAt": "2025-04-05T06:37:29Z",
+      "updatedAt": "2025-04-05T06:37:30Z",
+      "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "baseRefName": "main",
+      "baseRefOid": "f9ff75120236075925338e7a366b168b5d4f13cf",
+      "headRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "headRefName": "fix_10",
+      "headRefOid": "ca7cef755d0329c4cf114b31f83cbf0c6501d38d",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 16,
+      "id": "PR_kwDOOKn4ys6Rfiei",
+      "title": "Explain why clients regularly use the token EP as audience",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/16",
+      "state": "OPEN",
+      "author": "SECtim",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #8",
+      "createdAt": "2025-04-05T07:04:09Z",
+      "updatedAt": "2025-04-05T07:04:09Z",
+      "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "baseRefName": "main",
+      "baseRefOid": "f9ff75120236075925338e7a366b168b5d4f13cf",
+      "headRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "headRefName": "fix_8",
+      "headRefOid": "4e2708494311ef9b35031d9b01359938d24b61bc",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
