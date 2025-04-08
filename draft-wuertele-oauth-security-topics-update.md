@@ -287,7 +287,7 @@ for each authorization server.
 
 Clients MUST use the authorization server's issuer identifier as defined
 in {{!RFC8414}}/{{OpenID.Discovery}} as the sole audience value in
-client assertions. Clients they MUST retrieve and validate this value as
+client assertions. Clients MUST retrieve and validate this value as
 described in {{Section 3.3 of !RFC8414}}/Section 4.3 of
 {{OpenID.Discovery}}.
 
