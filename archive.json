@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-06T01:47:16.465496+00:00",
+  "timestamp": "2025-04-08T01:42:35.771430+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -193,7 +193,7 @@
       "labels": [],
       "body": "(This is part of the feedback by @adon-at-work)\n2.1.2.2 aud=single target endpoint\n- single audience requirement. multiple audiences I think isn't necessarily a bad thing, as long as they are all belonging to the same issuer. ex. [[h-as.com/token](http://h-as.com/token), [h-as.com/revoke](http://h-as.com/revoke)]\n- What's the expectation if I need a cla for token negotiation and then later for revocation. I kinda think it could be a transactional process, I got a token, finish my task, and do clean up. I think it makes sense to reuse the same cla for both. But if its single aud, then i gotta create cla twice, one per endpoint. This can discourage people to cleanup/call revoke given the performance penalty (jti was introduced there for performance/replay reason).\n- let's say we want to allow multiple aud from the same issuer. or more generally, as is today, when people put multiple aud, what's one-time use of `jti`mean? is that one-time use per aud, or across all audiences. should we clarify?",
       "createdAt": "2025-04-05T05:26:13Z",
-      "updatedAt": "2025-04-05T08:18:14Z",
+      "updatedAt": "2025-04-07T22:34:23Z",
       "closedAt": null,
       "comments": [
         {
@@ -202,6 +202,13 @@
           "body": "> multiple audiences I think isn't necessarily a bad thing, as long as they are all belonging to the same issuer\n\nThat would require normative changes to the AS; i.e., the AS then MUST verify that it can identify with _all_ elements in the `aud` array before accepting a client assertion (or, maybe better: all elements must be endpoints of the AS). Not necessarily a reason to not include this proposal, but something to be aware of.\n\n> But if its single aud, then i gotta create cla twice, one per endpoint.\n\nOnly when using the \"exact endpoint\" audience defense, i.e., when no issuer identifier is available.\n\n> This can discourage people to cleanup/call revoke given the performance penalty (jti was introduced there for performance/replay reason).\n\nI wouldn't say that `jti` was introduced to enable replay - actually, quite the opposite: To (at least optionally) prevent replay. For example, the default for [OpenID Connect authentication JWTs](https://openid.net/specs/openid-connect-core-1_0.html#ClientAuthentication) is \"These tokens MUST only be used once\". In the IETF world, the usual formulation is something like \"MAY use `jti` to ensure that JWTs are not replayed\", e.g., in [RFC7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.7), [RFC7521](https://datatracker.ietf.org/doc/html/rfc7521#section-5.1), [RFC7522](https://datatracker.ietf.org/doc/html/rfc7522#section-3), [RFC7523](https://datatracker.ietf.org/doc/html/rfc7523#section-3), and [RFC9449](https://datatracker.ietf.org/doc/html/rfc9449#name-dpop-proof-jwt-syntax).\n\n> let's say we want to allow multiple aud from the same issuer. or more generally, as is today, when people put multiple aud, what's one-time use of jti mean? is that one-time use per aud, or across all audiences. should we clarify?\n\nThat's a can of worms this document certainly should not open, because it has nothing to do with audience injection attacks or their mitigation.\nThat said, in my opinion, the original formulations around `jti` and JWT replay/reuse are somewhat unfortunate, because they end up saying \"do whatever you want\" (with the exception of OIDC, but that also leaves the door open to \"unless conditions for reuse were negotiated between the parties\"), instead of giving clear options with their respective pros and cons.\n\n---\n\nSo, to summarize what I think:\n- This document should definitely avoid talking about `jti` and JWT replay/reuse.\n- I am in principle open to discuss the possibility of allowing `aud` arrays, but at least for RFCs 7521, 7522, 7523, and 9126, as well as the OIDF specs OIDC, CIBA, FAPI 1.0, and FAPI 2.0, corresponding updates/drafts thereof do require single-valued audiences; so talking about multi-valued `aud`s here might confuse people.",
           "createdAt": "2025-04-05T08:18:13Z",
           "updatedAt": "2025-04-05T08:18:13Z"
+        },
+        {
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": ">  use jti to ensure that JWTs are not replayed\n\nSure. I should word it more carefully. I meant \"jti was introduced there for (trading off between) performance/replay reason\". Performance-critical applications may not want to use `jti`, where security-critical applications use `jti` to prevent replay.\n\nThere were (at least) two specs regarding `jti`\n- https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.7 says `jti` is optional, whereas\n- https://openid.net/specs/openid-connect-core-1_0.html#ClientAuthentication says `jti` is required \n\nI missed the 2nd spec initially, and thought that most people aren't using `jti` since it's optional (given that replay is, to certain degree, mitigated by `exp` already). So I raised the concerns. \n\nSince `jti` is already a required thing in the context of using jwt as client authentication, then I assume people is likely re-generating a new cla fresh anyway whenever it hits an endpoint. So, I agree we should not bring up `jti`.",
+          "createdAt": "2025-04-07T22:32:21Z",
+          "updatedAt": "2025-04-07T22:34:22Z"
         }
       ]
     },
@@ -239,7 +246,7 @@
       "labels": [],
       "body": "(This is part of the feedback by @adon-at-work)\n\n> Easiest and most pragmatic solution that works overnight, that requires only client changes. Client ensures that there\u2019re no overlaps of client_id and token_endpoint pairs for all its ASes (be it existing ones or those by DCR in the future). Unlikely there\u2019s a legit use case where the pair would be the same across two different issuers. Should there be an existing collision, as a remedy, the app can re-register to get a new client_id over DCR from one of the issuers (the legit one is unlikely to reuse client_id) to make things unique.\n\nThink about whether this works and what the client has to watch out for. If viable as a defense, consider adding it.",
       "createdAt": "2025-04-05T05:33:18Z",
-      "updatedAt": "2025-04-05T08:42:42Z",
+      "updatedAt": "2025-04-07T22:03:38Z",
       "closedAt": null,
       "comments": [
         {
@@ -255,6 +262,13 @@
           "body": "> requires only client changes\n\nThat is also true for the \"aud = issuer identifier\" and \"aud = exact endpoint\" defenses (see #12).\n\n> Client ensures that there\u2019re no overlaps of client_id and token_endpoint pairs for all its ASes\n\nI actually think that's not sufficient to prevent audience injection attacks, at least not in general. Consider a client that always includes the token and revocation endpoints in its client assertions (which is perfectly fine w.r.t. the relevant standards). In that case, the attacker AS can publish the following metadata (excerpt):\n```\ntoken_endpoint: att.com/token,\nrevocation_endpoint: hon.com/token\n```\nThe client's token request (to what the client thinks is the attacker AS) goes to `att.com/token` (i.e., to the attacker) and includes a client assertion with `aud: [\"att.com/token\", \"hon.com/token\"]`. That `aud` value is also valid for requests to `hon.com/token` (and maybe other endpoints of `hon.com` as well, see #8). Hence, this is an instance of an audience injection attack.\n\nWithout AS changes, most combinations of endpoints with client authentication can be (ab)used in one way or the other by an attacker to obtain a client assertion that's valid somewhere else _unless_ the client chooses an `aud` value that's either the issuer identifier or the exact target endpoint. Hence, I'd be very careful in trying to come up with some \"clever\" way for the client to ensure its AS registrations are \"not attackable\" (and, what's more: Any such requirement on the client would be in conflict with the current and widely implemented logic of \"client ID and AS endpoints are provided by the AS and (mostly) opaque values to the client\" with only very minimal restrictions, such as mandatory HTTPS for the token endpoint).\n\nAlso note that just doing another round of DCR - even if feasible, think of stuff like initial access tokens that are typically one-time use - is not at all guaranteed to result in a different client ID. In some cases, having the same client ID for all registrations of a given client (even across ASs) is mandatory, e.g., in OpenID Federation.\n\nI.e., I think this mechanism might introduce problems in practice and, more importantly, doesn't reliably work as a defense.",
           "createdAt": "2025-04-05T08:42:41Z",
           "updatedAt": "2025-04-05T08:42:41Z"
+        },
+        {
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I agree with everything you said. \n\nBut as I emphasized, the alternative defense is a **quick-and-dirty** fix (and surely it comes with all those \"cleverness\" concerns here and there as you tried to enumerate...). \n\nThe fundamental difference between our believes may be that I assume a change to `aud=token_EP` will introduce backward compatibility issues, since most (or at least some) ASes accept `aud=token_EP` **only**, as influenced and suggested by many of those specs. But apparently, you seem to expect *all* ASes to readily take any values that identify themselves (could be issuer, token_EP, par_EP, etc, and so no AS change is needed). \n\nIf the assumption is right, there will be compatibility issue. So in this imperfect world, what can a client do to secure itself while still keeping the lights on when these \"standard-non-compliant\" servers will only accept \"aud=token_EP\"?\n\n> Without AS changes, most combinations of endpoints with client authentication can be (ab)used in one way or the other by an attacker to obtain a client assertion that's valid somewhere else unless the client chooses an aud value that's either the issuer identifier or the exact target endpoint.\n\nAgree. Multiple values in aud is asking for trouble.\n\nI see here you're implicitly expecting client to use a **single** aud value for your solution to be secured too. If a client uses the same client_id across all ASes and include all issuers in its `aud=[issuer1, issuer2]`, then it can be screwed too. \n\nSimilarly, the alternative fix is meant for a vulnerable client that uses a **single** `aud = token_EP`. If we want to generalize, it could be said as \"there\u2019re no overlaps of client_id and token_endpoint (or whatever values client use in the aud) pairs for all its ASes\". But of course, this discussion is meaningful only if you're convinced about the backward compatibility issue.",
+          "createdAt": "2025-04-07T21:22:43Z",
+          "updatedAt": "2025-04-07T22:03:37Z"
         }
       ]
     }
@@ -439,7 +453,7 @@
       "labels": [],
       "body": "Do we need to explicitly explain why an AS change (e.g., to only accept its issuer identifier) does not help at all in preventing the attacks?\r\n\r\nFixes #12",
       "createdAt": "2025-04-05T06:14:18Z",
-      "updatedAt": "2025-04-05T06:14:18Z",
+      "updatedAt": "2025-04-07T20:01:18Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "f9ff75120236075925338e7a366b168b5d4f13cf",
@@ -451,7 +465,28 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOOKn4ys6jyseW",
+          "commit": {
+            "abbreviatedOid": "9f0f4dd"
+          },
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-07T20:00:55Z",
+          "updatedAt": "2025-04-07T20:01:18Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "Based on Section 4.1.3 of RFC7519, the very generic clause of how `aud` can be used, it sounds like you're saying the authorization servers are expected to **readily** accept `aud={issuer}`, `aud={token_endpoint}`, `aud={revoke_endpoint}`, `aud={par_endpoint}` etc that identify themselves. Is this realistic though, when most other specs were suggesting clients to send `aud={token_endpoint}`?\r\n\r\nMy two cents. Think about I'm building a client that wants to support 3 servers. It's always better to define a clear (and standardized) contract between clients and servers. A client then needs to not to maintain a map like serverA can only take `token_endpoint`, while server B&C accept only `issuer` (nowhere this is communicated through openid/oauth metadata??).",
+              "createdAt": "2025-04-07T20:00:55Z",
+              "updatedAt": "2025-04-07T20:14:31Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 15,
@@ -465,7 +500,7 @@
       "labels": [],
       "body": "Also, better describe the difference to the \"issuer\" in RFC 9700.\r\n\r\nFixes #10",
       "createdAt": "2025-04-05T06:37:29Z",
-      "updatedAt": "2025-04-05T06:37:30Z",
+      "updatedAt": "2025-04-07T20:06:29Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "f9ff75120236075925338e7a366b168b5d4f13cf",
@@ -477,7 +512,28 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOOKn4ys6jywD7",
+          "commit": {
+            "abbreviatedOid": "ca7cef7"
+          },
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-07T20:06:28Z",
+          "updatedAt": "2025-04-07T20:06:29Z",
+          "comments": [
+            {
+              "originalPosition": 9,
+              "body": "Clients ~they~ MUST retrieve",
+              "createdAt": "2025-04-07T20:06:29Z",
+              "updatedAt": "2025-04-07T20:06:29Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 16,
@@ -491,7 +547,7 @@
       "labels": [],
       "body": "Fixes #8",
       "createdAt": "2025-04-05T07:04:09Z",
-      "updatedAt": "2025-04-05T07:04:09Z",
+      "updatedAt": "2025-04-07T20:04:52Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "f9ff75120236075925338e7a366b168b5d4f13cf",
@@ -502,7 +558,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thanks",
+          "createdAt": "2025-04-07T20:04:51Z",
+          "updatedAt": "2025-04-07T20:04:51Z"
+        }
+      ],
       "reviews": []
     }
   ]
