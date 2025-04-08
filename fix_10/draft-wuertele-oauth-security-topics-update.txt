@@ -5,9 +5,9 @@
 Web Authorization Protocol                                    T. Würtele
 Internet-Draft                                               P. Hosseyni
 Updates: 6749, 6750, 7521, 7522, 7523, 9700      University of Stuttgart
-         (if approved)                                      5 April 2025
+         (if approved)                                      8 April 2025
 Intended status: Best Current Practice                                  
-Expires: 7 October 2025
+Expires: 10 October 2025
 
 
                 OAuth 2.0 Security Best Current Practice
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 October 2025.
+   This Internet-Draft will expire on 10 October 2025.
 
 Copyright Notice
 
@@ -271,8 +271,8 @@ Table of Contents
 
    Clients MUST use the authorization server's issuer identifier as
    defined in [RFC8414]/[OpenID.Discovery] as the sole audience value in
-   client assertions.  Clients they MUST retrieve and validate this
-   value as described in Section 3.3 of [RFC8414]/Section 4.3 of
+   client assertions.  Clients MUST retrieve and validate this value as
+   described in Section 3.3 of [RFC8414]/Section 4.3 of
    [OpenID.Discovery].
 
    For jwt-bearer client assertions as defined by [RFC7523], this
