@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-08T01:42:35.771430+00:00",
+  "timestamp": "2025-04-10T01:42:46.585953+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -246,7 +246,7 @@
       "labels": [],
       "body": "(This is part of the feedback by @adon-at-work)\n\n> Easiest and most pragmatic solution that works overnight, that requires only client changes. Client ensures that there\u2019re no overlaps of client_id and token_endpoint pairs for all its ASes (be it existing ones or those by DCR in the future). Unlikely there\u2019s a legit use case where the pair would be the same across two different issuers. Should there be an existing collision, as a remedy, the app can re-register to get a new client_id over DCR from one of the issuers (the legit one is unlikely to reuse client_id) to make things unique.\n\nThink about whether this works and what the client has to watch out for. If viable as a defense, consider adding it.",
       "createdAt": "2025-04-05T05:33:18Z",
-      "updatedAt": "2025-04-07T22:03:38Z",
+      "updatedAt": "2025-04-09T20:17:29Z",
       "closedAt": null,
       "comments": [
         {
@@ -269,6 +269,20 @@
           "body": "I agree with everything you said. \n\nBut as I emphasized, the alternative defense is a **quick-and-dirty** fix (and surely it comes with all those \"cleverness\" concerns here and there as you tried to enumerate...). \n\nThe fundamental difference between our believes may be that I assume a change to `aud=token_EP` will introduce backward compatibility issues, since most (or at least some) ASes accept `aud=token_EP` **only**, as influenced and suggested by many of those specs. But apparently, you seem to expect *all* ASes to readily take any values that identify themselves (could be issuer, token_EP, par_EP, etc, and so no AS change is needed). \n\nIf the assumption is right, there will be compatibility issue. So in this imperfect world, what can a client do to secure itself while still keeping the lights on when these \"standard-non-compliant\" servers will only accept \"aud=token_EP\"?\n\n> Without AS changes, most combinations of endpoints with client authentication can be (ab)used in one way or the other by an attacker to obtain a client assertion that's valid somewhere else unless the client chooses an aud value that's either the issuer identifier or the exact target endpoint.\n\nAgree. Multiple values in aud is asking for trouble.\n\nI see here you're implicitly expecting client to use a **single** aud value for your solution to be secured too. If a client uses the same client_id across all ASes and include all issuers in its `aud=[issuer1, issuer2]`, then it can be screwed too. \n\nSimilarly, the alternative fix is meant for a vulnerable client that uses a **single** `aud = token_EP`. If we want to generalize, it could be said as \"there\u2019re no overlaps of client_id and token_endpoint (or whatever values client use in the aud) pairs for all its ASes\". But of course, this discussion is meaningful only if you're convinced about the backward compatibility issue.",
           "createdAt": "2025-04-07T21:22:43Z",
           "updatedAt": "2025-04-07T22:03:37Z"
+        },
+        {
+          "author": "SECtim",
+          "authorAssociation": "OWNER",
+          "body": "> fundamental difference between our believes\n\nI agree that we seem to have different believes \ud83d\ude04 \n\n> a change to aud=token_EP will introduce backward compatibility issues, since most (or at least some) ASes accept aud=token_EP only, as influenced and suggested by many of those specs. But apparently, you seem to expect all ASes to readily take any values that identify themselves (could be issuer, token_EP, par_EP, etc, and so no AS change is needed).\n\nMy take on this is twofold: First, the \"expectation\" that an AS will accept the exact target endpoint and its issuer identifier as `aud` is a normative requirement in all specs (that I am aware of) outside of the \"original culprits (OIDC, RFCs 752x)\" that do say something about the `aud` values an AS has to accept (RFC 9126 and CIBA) contain a sentence like: _\"the authorization server MUST accept its issuer identifier, token endpoint URL, or pushed authorization request endpoint URL as values that identify it as an intended audience.\"_ (quote is from the Pushed AuthZ Request RFC)\n\nSecond, in any case, I think we do agree that the current normative language around what `aud` values an AS is allowed to accept does not conflict with the proposed fixes, i.e., they do not require normative changes to the AS.\n\n> So in this imperfect world, what can a client do to secure itself while still keeping the lights on when these \"standard-non-compliant\" servers will only accept \"aud=token_EP\"?\n\nIf you as a client are willing to continue using an AS that\n1. Requires authentication at more than the token endpoint;\n2. Expects its token endpoint as the sole `aud` value at ALL these endpoints (keep in mind, for at least CIBA and PAR, an AS is _explicitly_ required to accept the respective exact endpoint as `aud`);\n3. Does not care enough about its clients' security to change what `aud` values it accepts; and \n4. Does not offer a way for you as a client to update your registered key material\n   1. Note 1: the current text explicitly mentions the possibility of using different key material for each AS as an alternative defense\n   2. Note 2: it is sufficient if the AS just allows the client to rotate their authentication public key, i.e., the AS does not need to support full-blown Dynamic Client Management or similar (and while not _required_ in any spec that I know of - albeit some specs like RFC 7591, OIDC, and OIDC DCR do explicitly mention key rotation, FAPI 2.0 SP \"recommends\" it - I think we can agree that not allowing key rotation is a red flag in the first place)\n\n... then yes, the currently proposed fixes cannot be applied to all communication with that particular AS.\nThat said, I'd argue that this is such a special case that it does not justify including a defense...\n- That will only work in this very particular special case (assuming that some other things are clarified, e.g., the handling of `mtls_endpoint_aliases`),\n- Relies on the AS continuing to only accept its token endpoint,\n- Should certainly NOT be used when any other defense is available,\n- Relies on the client not doing \"strange, but technically allowed\" things when talking to the attacker AS (like using the attacker AS' PAR endpoint as an `aud` value for requests to other endpoints of the attacker AS; note that it is the attacker who \"defines\" what it wants from the client, so if the client wants to talk to the attacker AS, it has to comply), and\n- Breaks currently allowed setups where multiple perfectly honest, standards-compliant ASs may share a token endpoint (probably not a _common_ case, but allowed nonetheless).\n\n... in a BCP update. Including a \"quick and dirty\" works-in-some-scenarios-but-not-in-others defense has huge potential for confusion - and I'd expect to then see clients implement this less-than-ideal defense, but never re-evaluating whether an actual fix can be deployed at a later time.\n\n> But of course, this discussion is meaningful only if you're convinced about the backward compatibility issue.\n\nAs of right now, I am not really convinced that backward compatibility will be a huge issue (see the enumeration of preconditions above). That said, I still see value in discussing, because I may of course overlook things.\n\n---\n\n> I see here you're implicitly expecting client to use a single aud value for your solution to be secured too.\n\nThat is not an implicit expectation, the current text very much explicitly says \"sole audience value\".\n\n> If a client uses the same client_id across all ASes and include all issuers in its aud=[issuer1, issuer2], then it can be screwed too.\n\nIf a client issues an assertion that is _intended_ (which is what `aud` expresses) to be valid at multiple ASs, then it shouldn't come as a surprise that this assertion _will_ be valid at (those exact!) multiple ASs - hence, I would not consider that an attack.\nThat said, _intending_ an authentication credential for multiple ASs (that the client generally has to assume will be issuing different client_ids) is a very strange choice by the client, albeit technically allowed (but will be forbidden by the proposed fixes, not only in this document, but also the proposed updates to RFCs 752x, OIDC, CIBA, ..., which I think is a good thing).\n\n> the alternative fix is meant for a vulnerable client that uses a single aud = token_EP.\n\nI am not sure what you're trying to say here - that the alternative fix is only meant for clients that use single-valued `aud`? For which AS(s)? Or something entirely different?",
+          "createdAt": "2025-04-08T08:08:05Z",
+          "updatedAt": "2025-04-08T08:08:05Z"
+        },
+        {
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Let's not go line by line about my previous response. With due respect, I disagree your counterexample serves to invalidate a quick-and-dirty fix, which is meant to a quick and dirty fix.\n\n---\n\nMore importantly, as a reader from the engineering world, if I read OIDC (specifically [section 9](https://openid.net/specs/openid-connect-core-1_0.html#ClientAuthentication) and may be also RFC752x), and implemented everything there with AS accepting **only** token EP (note that there're no such Updates/Deprecates header on OIDC docs), I'll be happily declaring that I'm fully standard-compliant. It's unlikely I'd go look at CIBA and RFC9126 (PAR) until there's a need to support those extensions.\n\nAnd if we read the whole passages from CIBA and RFC9126(PAR) in their entirety, they both recognized there's ambiguity on `aud` value, and thus backward compatibility issues. People can always say I gotta balance resources/risk among priorities other than just security. Putting myself into the shoes of the opposing side, some will likely argue that they're NOT a normative change anyone has to follow or have followed, since (1) they have no Updates/Deprecates header for the older RFC/OIDC; (2) they can be interpreted as extension-specific; (3) the last \"MUST\" sentence that you quoted is also a conditional statement applicable to those who need/want to facilitate interoperability; and/or (4) the last sentence from CIBA and RFC9126 sound kinda incompatible with each other if I need to support both CIBA and RFC9126. It doesn't mean/matter if I, as a security folk, fully agree, that's just how the world works. You will understand as you enter the industry. :)\n\nFrom [CIBA](https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html#auth_request)\n\n> Note that there's some potential ambiguity around the appropriate audience value to use when JWT client assertion based authentication is employed. To address that ambiguity the Issuer Identifier of the OP SHOULD be used as the value of the audience. To facilitate interoperability, the OP MUST accept its Issuer Identifier, Token Endpoint URL, or Backchannel Authentication Endpoint URL as values that identify it as an intended audience.\n\nFrom [RFC9126](https://datatracker.ietf.org/doc/html/rfc9126#section-2-5)\n\n> Due to historical reasons, there is potential ambiguity regarding the appropriate audience value to use when employing JWT client assertion-based authentication (defined in [Section 2.2](https://www.rfc-editor.org/rfc/rfc7523#section-2.2) of [[RFC7523](https://datatracker.ietf.org/doc/html/rfc7523)] with private_key_jwt or client_secret_jwt authentication method names per Section 9 of [[OIDC](http://openid.net/specs/openid-connect-core-1_0.html)]). To address that ambiguity, the issuer identifier URL of the authorization server according to [[RFC8414](https://datatracker.ietf.org/doc/html/rfc8414)] SHOULD be used as the value of the audience. In order to facilitate interoperability, the authorization server MUST accept its issuer identifier, token endpoint URL, or pushed authorization request endpoint URL as values that identify it as an intended audience.\n\nMy two cents. May be I'm wrong, BCP is BCP, technically it's not a standard. No matter what will be written, people might not have different opinions on considering anything there as normative changes or not. Regardless, your contribution on writing up a useful BCP is valuable, take the chance to cleanup the mess. Give a comprehensive guide on how things can be best fixed, and leave no/less ambiguity so people can have excuses. And that's my perhaps naive belief. :)\n\nAnd so, just as a random reader (who'd appreciate a well-documented reference to use against Goliath :)), I'd love to see:\n- at least recognize the ambiguity like CIBA/RFC9126, so people know a client change from token_EP to something else may be a breaking change, since it does not guarantee server acceptance. If it just works, cool!\n- the BCP / most recommended `aud` value a client should send. conforming to CIBA and RFC9126, apparently should be the issuer.\n- the BCP for AS, what `aud` value should it accept? regardless of whether it's interpreted as normative or just a BCP recommendation. You probably want AS to accept only either issuer or target-specific endpoint URL. I'd argue making it target endpoint specific is never clearly spelled out by any other spec. For instance, PAR endpoint should not take aud=token_EP, and token_endpoint should not take aud=par_EP, unless for interoperability/historical reasons.\n- the BCP if just in case a client cannot get all your ASes to comply, then there comes recommendations in decreasing preference. 1. use different (the current draft uses the word \"fresh\") key material per AS; 2. ensure no overlapping of (client_id, aud) among all supported current and future ASes (unless absolutely required... it's okay to condition that), etc...\n\nThey're my little suggestions for you to consider and decide one way or the other. Thanks and appreciate that. :)",
+          "createdAt": "2025-04-09T18:58:38Z",
+          "updatedAt": "2025-04-09T20:17:28Z"
         }
       ]
     }
@@ -453,7 +467,7 @@
       "labels": [],
       "body": "Do we need to explicitly explain why an AS change (e.g., to only accept its issuer identifier) does not help at all in preventing the attacks?\r\n\r\nFixes #12",
       "createdAt": "2025-04-05T06:14:18Z",
-      "updatedAt": "2025-04-07T20:01:18Z",
+      "updatedAt": "2025-04-08T08:55:11Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "f9ff75120236075925338e7a366b168b5d4f13cf",
@@ -485,6 +499,26 @@
               "updatedAt": "2025-04-07T20:14:31Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys6j3Y6L",
+          "commit": {
+            "abbreviatedOid": "9f0f4dd"
+          },
+          "author": "SECtim",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-08T08:55:11Z",
+          "updatedAt": "2025-04-08T08:55:11Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "From a (pure) spec perspective, the AS is ready to accept these values due to the very generic language in RFC 7519. For some endpoints like PAR and CIBA, that's also explicitly required by the respective specs (see the discussion in #13). I.e., there are no _normative_ changes to the AS, which is what the current text says.\r\n\r\nThat said (and taking into consideration the engineer perspective): What is your proposal? Should the text explicitly say that even though there as no normative changes, a concrete AS implementation may need to be adapted? Or are you suggesting to make normative changes, i.e., _requiring_ as AS to (only?) accept its issuer identifier and/or the exact endpoint as `aud`, even though that's not strictly necessary to prevent the attack?\r\n\r\n> It's always better to define a clear (and standardized) contract between clients and servers. A client then needs to not to maintain a map like serverA can only take token_endpoint, while server B&C accept only issuer\r\n\r\nThe current text actually does this (albeit not in a normative way) - it basically says: If you as a client use Discovery/AS Metadata with that AS, then use the issuer identifier; otherwise, use the exact endpoint URI (as the sole `aud` value in both cases). The AS can safely accept both (or, for example, require its clients to always use AS Metadata, and hence, the issuer identifier, as is the case, e.g., for FAPI 2.0 SP).\r\n\r\nDo you propose to make this distinction (AS Metadata/Discovery => Issuer Identifier; otherwise => exact endpoint) an explicit normative requirement?\r\nWe tried to avoid that to leave ecosystems the option to, e.g., always use the issuer identifier, even if they don't use AS Metadata/Discovery (in which case the client needs to validate the \"issuer identifier to endpoints\" mapping out of band, but getting AS information out of band, e.g., by configuration, is a common practice anyway; and the language in #15 clearly requires clients to actually validate this mapping).\r\nNote that leaving this option open is also necessary to not create a conflict with the OAuth WG's 7523-bis draft and the current text for an OIDC errata that require clients to use the issuer identifier (regardless of whether the AS Metadata/Discovery mechanism is used).\r\n\r\n>  (nowhere this is communicated through openid/oauth metadata??).\r\n\r\nTrue, it currently isn't and never was - this problem isn't new. Actually, this is another reason for expecting that many of the ASs that rely on clients getting all required metadata via AS Metadata/Discovery will already be pretty liberal in what they accept as `aud`.",
+              "createdAt": "2025-04-08T08:55:11Z",
+              "updatedAt": "2025-04-08T08:55:11Z"
+            }
+          ]
         }
       ]
     },
@@ -500,13 +534,13 @@
       "labels": [],
       "body": "Also, better describe the difference to the \"issuer\" in RFC 9700.\r\n\r\nFixes #10",
       "createdAt": "2025-04-05T06:37:29Z",
-      "updatedAt": "2025-04-07T20:06:29Z",
+      "updatedAt": "2025-04-08T08:11:41Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "f9ff75120236075925338e7a366b168b5d4f13cf",
       "headRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "headRefName": "fix_10",
-      "headRefOid": "ca7cef755d0329c4cf114b31f83cbf0c6501d38d",
+      "headRefOid": "a20f0032e69b0b5bc0e494a0e583322763bdddc7",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -530,6 +564,26 @@
               "body": "Clients ~they~ MUST retrieve",
               "createdAt": "2025-04-07T20:06:29Z",
               "updatedAt": "2025-04-07T20:06:29Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys6j241Z",
+          "commit": {
+            "abbreviatedOid": "ca7cef7"
+          },
+          "author": "SECtim",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-04-08T08:09:54Z",
+          "updatedAt": "2025-04-08T08:09:55Z",
+          "comments": [
+            {
+              "originalPosition": 9,
+              "body": "Good catch! Thanks!",
+              "createdAt": "2025-04-08T08:09:54Z",
+              "updatedAt": "2025-04-08T08:09:55Z"
             }
           ]
         }
