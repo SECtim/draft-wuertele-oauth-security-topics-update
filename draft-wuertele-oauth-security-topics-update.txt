@@ -5,9 +5,9 @@
 Web Authorization Protocol                                    T. Würtele
 Internet-Draft                                               P. Hosseyni
 Updates: 6749, 6750, 7521, 7522, 7523, 9700      University of Stuttgart
-         (if approved)                                     27 March 2025
+         (if approved)                                     11 April 2025
 Intended status: Best Current Practice                                  
-Expires: 28 September 2025
+Expires: 13 October 2025
 
 
                 OAuth 2.0 Security Best Current Practice
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 September 2025.
+   This Internet-Draft will expire on 13 October 2025.
 
 Copyright Notice
 
@@ -370,8 +370,8 @@ Table of Contents
    [research.ust]
               Hosseyni, P., Küsters, R., and T. Würtele, "Audience
               Injection Attacks: A New Class of Attacks on Web-Based
-              Authorization and Authentication Standards", March 2025,
-              <TODO>.
+              Authorization and Authentication Standards", April 2025,
+              <https://eprint.iacr.org/2025/629>.
 
    [RFC7009]  Lodderstedt, T., Ed., Dronia, S., and M. Scurtescu, "OAuth
               2.0 Token Revocation", RFC 7009, DOI 10.17487/RFC7009,
