@@ -93,8 +93,8 @@ informative:
       name: Ralf Küsters
     - ins: T. Würtele
       name: Tim Würtele
-    date: TODO
-    target: TODO
+    date: April 2025
+    target: https://eprint.iacr.org/2025/629
     title: "Audience Injection Attacks: A New Class of Attacks on Web-Based Authorization and Authentication Standards"
 
 --- abstract
