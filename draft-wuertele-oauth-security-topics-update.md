@@ -283,7 +283,21 @@ employ one of the following countermeasures, unless audience injection
 attacks are mitigated by other means, such as using fresh key material
 for each authorization server.
 
-#### Authorization Server Issuer Identifier
+Note that the countermeasures described in
+{{AudienceInjectionCountermeasuresASissuer}} and
+{{AudienceInjectionCountermeasuresTargetEP}} do not imply any normative
+changes to the authorization server: {{Section 4.1.3 of ?RFC7519}}
+requires the authorization server to only accept a JWT if the
+authorization server can identify itself with (at least one of the
+elements in) the JWT's audience value. Authentication JWTs produced by a
+client implementing one of these countermeasures meet this condition.
+Of course, an authorization server MAY still decide to only accept its
+issuer identifier ({{AudienceInjectionCountermeasuresASissuer}}) or the
+endpoint that received the JWT
+({{AudienceInjectionCountermeasuresTargetEP}}) as an audience value, for
+example, to force its clients to adopt the respective countermeasure.
+
+#### Authorization Server Issuer Identifier {#AudienceInjectionCountermeasuresASissuer}
 
 Clients MUST use the authorization server's issuer identifier (as
 defined in {{!RFC8414}}) as the sole audience value in client
@@ -296,7 +310,8 @@ Note that "issuer identifier" here does not refer to the term "issuer"
 as defined in {{Section 4.4 of RFC9700}}, but to the issuer identifier
 as used in {{!RFC8414}} and {{OpenID.Discovery}}.
 
-#### Exact Target Endpoint URI
+
+#### Exact Target Endpoint URI {#AudienceInjectionCountermeasuresTargetEP}
 
 Clients MUST use the exact endpoint URI to which a client assertion is
 sent as that client assertion's sole audience value.
