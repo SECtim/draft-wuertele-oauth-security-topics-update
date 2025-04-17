@@ -366,26 +366,26 @@ use authorization server metadata {{!RFC8414}} or OpenID Discovery
 ## Updates to Mix-Up Attacks {#MixUpUpdate}
 Mix-up attacks can occur in scenarios where an OAuth client interacts with two or more authorization servers and at least one authorization server is under the control of the attacker.
 
-This section updates {{Section 4.4 of !RFC9700}} to introduce additional variants of mix-up attacks that can occur when clients use distinct redirection URIs for different authorization servers, and to clarify the applicability of countermeasures to different mix-up attack variants.
+This section extends the mix-up attack analysis in {{Section 4.4 of !RFC9700}} by introducing additional attack variants that can occur when clients use distinct redirection URIs for each authorization server, and clarifies the applicability of countermeasures to different mix-up attack variants.
 
 ### Updates to "Per-AS Redirect URIs" Mix-Up Variant {#PerASUpdate}
 
-The original mix-up attack described in the initial paragraphs of {{Section 4.4.1 of !RFC9700}} specifies "the client stores the authorization server chosen by the user in a session bound to the user's browser and uses the same redirection URI for each authorization server" as one of its attack preconditions. It does not assume other flaws, such as a redirection URI validation flaw at the authorization server (see {{Section 4.1 of !RFC9700}}).
+The original mix-up attack described in the initial paragraphs of {{Section 4.4.1 of !RFC9700}} specifies, as one of its preconditions, that "the client stores the authorization server chosen by the user in a session bound to the user's browser and uses the same redirection URI for each authorization server". It does not assume other flaws, such as a redirection URI validation flaw at the authorization server (see {{Section 4.1 of !RFC9700}}).
 
-If the client instead uses a distinct redirection URI for each authorization server (i.e., Per-AS Redirect URIs), three subvariants of mix-up attacks remain possible. The description of "Per-AS Redirect URIs" mix-up variant in {{Section 4.4.1 of !RFC9700}} is replaced by the following, with Subvariant 1 and 3 not covered in the original text:
+If the client instead uses a distinct redirection URI for each authorization server (i.e., Per-AS Redirect URIs), three subvariants of mix-up attacks remain possible. The following replaces the description of the "Per-AS Redirect URIs" mix-up variant in {{Section 4.4.1 of !RFC9700}}, with subvariants 1 and 3 newly introduced in this document:
 
 
-* Per-AS Redirect URIs: There are three subvariants of mix-up attacks when the client uses distinct redirection URIs for different authorization servers.
+* Per-AS Redirect URIs: There are three subvariants of mix-up attacks when the client uses distinct redirection URIs for each authorization server.
 
 {:style="empty"}
-* Subvariant 1: If the client uses different redirection URIs for different authorization servers but treats them as the same URI (i.e., the client continues to store the authorization server chosen by the user in a session and does not use the redirection URI to distinguish authorization servers), a slight variant of the original mix-up attack would still work (see Footnote 7 of {{arXiv.1601.01229}} and Section 4.2.1 of {{research.cuhk}}). An attacker can achieve this by replacing the redirection URI as well as the client ID at A-AS with those at H-AS in the authorization request, when redirecting the browser to the authorization endpoint of H-AS.
-* Specifically, assuming that the client issues the redirection URI https://client.com/9XpLmK2qR/cb for H-AS and https://client.com/4FvBn8TzY/cb for A-AS, an attack is feasible with the following modifications to Step 2 and Step 3:
+* Subvariant 1: If the client uses different redirection URIs for different authorization servers but treats them as the same URI (i.e., the client continues to store the authorization server chosen by the user in a session and does not use the redirection URI to differentiate authorization servers), a slight variant of the original mix-up attack would still work (see Footnote 7 of {{arXiv.1601.01229}} and Section 4.2.1 of {{research.cuhk}}). An attacker can achieve this by replacing the redirection URI as well as the client ID at A-AS with those at H-AS in the authorization request, when redirecting the browser to the authorization endpoint of H-AS.
+* Specifically, assuming that the client issues the redirection URI `https://client.com/9XpLmK2qR/cb` for H-AS and `https://client.com/4FvBn8TzY/cb` for A-AS, an attack is feasible with the following modifications to Step 2 and Step 3:
 * 2\. The client stores in the user's session that the user selected "A-AS" and redirects the user to A-AS's authorization endpoint with a Location header containing the URL `https://attacker.example/authorize?response_type=code&client_id=666RVZJTA`
   `&redirect_uri=https%3A%2F%2Fclient.com%2F4FvBn8TzY%2Fcb`.
 * 3\. When the user's browser navigates to the attacker's authorization endpoint, the attacker immediately redirects the browser to the authorization endpoint of H-AS. In the authorization request, the attacker replaces the client ID of the client at A-AS with the client's ID at H-AS, and replaces the redirection URI of A-AS with the redirection URI of H-AS. Therefore, the browser receives a redirection (`303 See Other`) with a Location header pointing to `https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ`
   `&redirect_uri=https%3A%2F%2Fclient.com%2F9XpLmK2qR%2Fcb`.
 * Subvariant 2: If clients use different redirection URIs for different authorization servers, clients do not store the selected authorization server in the user's session, and authorization servers do not check the redirection URIs properly, attackers can mount an attack called "Cross Social-Network Request Forgery". These attacks have been observed in practice. Refer to {{research.jcs_14}} for details.
-* Subvariant 3: If clients use different redirection URIs for different authorization servers, clients do not store the selected authorization server in the user's session, and authorization servers properly check the redirection URIs, attackers can still mount an attack called "Naïve RP Session Integrity Attack". Note that this attack has a different attack goal from other mix-up attack variants, for not obtaining an authorization code or access token, but forcing the user to use an attacker's authorization code or access token for H-AS. See Section 3.4 of {{arXiv.1601.01229}} and Section 4.2.2 of {{research.cuhk}} for details.
+* Subvariant 3: If clients use different redirection URIs for different authorization servers, clients do not store the selected authorization server in the user's session, and authorization servers properly check the redirection URIs, attackers can still mount an attack called "Naïve RP Session Integrity Attack". Note that unlike other mix-up variants, the goal of this attack is not to obtain an authorization code or access token, but to force the client to use an attacker's authorization code or access token for H-AS. See Section 3.4 of {{arXiv.1601.01229}} and Section 4.2.2 of {{research.cuhk}} for details.
 
 [^standalonesection]{: source="Kaixuan L."}
 
@@ -393,16 +393,16 @@ If the client instead uses a distinct redirection URI for each authorization ser
 
 ### Clarifications on Countermeasures for Mix-Up Variants {#CountermeasureUpdate}
 
-According to the countermeasures specified in {{Section 4.4.2 of !RFC9700}} (hereafter referred to as "existing mix-up countermeasures"), both defenses require the client to store and compare the issuer identifier of the authorization server. The defenses are sufficient to protect against most mix-up attack variants, with the following cases requiring clarification:
+According to the countermeasures specified in {{Section 4.4.2 of !RFC9700}} (referred to hereafter as "existing mix-up countermeasures"), both defenses require the client to store and compare the issuer identifier of the authorization server. The defenses are sufficient to protect against most mix-up attack variants, with a few specific cases requiring clarification:
 
-In the second paragraph of {{Section 4.4.2 of !RFC9700}}, it is said that
+The second paragraph of {{Section 4.4.2 of !RFC9700}} contains the following statement:
 
 {:style="empty"}
 * The issuer serves ... as an abstract identifier for the combination of the authorization endpoint and token endpoint that are to be used in the flow. If an issuer identifier is not available ..., a different unique identifier for this tuple or the tuple itself can be used instead.
 
-For the mix-up attack variant in "Implicit Grant", since the flow does not involve a token endpoint, the authorization endpoint MAY be used as the equivalent of issuer if an issuer identifier is not available. Then, clients MUST follow existing mix-up countermeasures to defend against mix-up attacks.
+For the mix-up attack variant in "Implicit Grant", since the flow does not involve a token endpoint, the authorization endpoint MAY be used as the equivalent of issuer if an issuer identifier is not available. Then, clients MUST apply existing mix-up countermeasures.
 
-For all three subvariants under the "Per-AS Redirect URIs" variant, clients MUST follow existing mix-up countermeasures to defend against mix-up attacks. Clients MAY choose to reuse the per-AS redirection URI already configured in their deployments to satisfy the "distinct redirection URI for each issuer" requirement when implementing the "Mix-Up Defense via Distinct Redirect URIs" countermeasure ({{Section 4.4.2.2 of !RFC9700}}). For subvariant 2 ("Cross Social-Network Request Forgery"), existing mix-up countermeasures alone are not sufficient. In addition, authorization servers MUST apply exact redirection URI matching, as specified in {{Section 4.1.3 of !RFC9700}}.
+For all three subvariants of the "Per-AS Redirect URIs" variant, clients MUST follow existing mix-up countermeasures to defend against mix-up attacks. Clients MAY choose to reuse the per-AS redirection URI already configured in their deployments to satisfy the "distinct redirection URI for each issuer" requirement when implementing the "Mix-Up Defense via Distinct Redirect URIs" defense ({{Section 4.4.2.2 of !RFC9700}}). For subvariant 2 ("Cross Social-Network Request Forgery"), the existing mix-up countermeasures alone are insufficient. In addition, authorization servers MUST enforce exact redirection URI matching, as specified in {{Section 4.1.3 of !RFC9700}}.
 
 Note that when the issuer identifier is not unique to a client (i.e., the client can interact with multiple configurations of the same authorization server), the security considerations are discussed in {{OpenEcosystem}}.
 
@@ -421,7 +421,7 @@ The means through which the client registers with an authorization server typica
 In open ecosystems such as integration platforms (e.g., workflow automation platforms and virtual assistants/agents), the client may operate a platform, offering an open marketplace to offload the integration of resources to external developers. These developers preconfigure at the platform, enabling the client to readily access various resources and allowing end-users of the client to choose which ones to use.
 To streamline the integration process, the client typically welcomes external developers manually registering the configurations required to access their resources at the client's website (e.g., via a developer console).
 
-This specification defines "Client Configuration" as a bundle of configurations that enable a client in open ecosystems to access a protected resource. This set of developer-registered configurations typically involves:
+This specification defines "client configuration" as a bundle of configurations that enable a client in open ecosystems to access a protected resource. This set of developer-registered configurations typically involves:
 
 * Authorization server information, including endpoints of the authorization server. In addition to a manual approach entering the fields at the client's website, clients in open ecosystems could also support fetching authorization server information via authorization server metadata {{?RFC8414}}.
 * Client registration information at the authorization server, including client identifier and client credentials for client authentication. In addition to a manual approach entering the fields at the client's website, clients in open ecosystems could also support fetching registration information via dynamic client registration {{?RFC7591}}.
@@ -442,7 +442,7 @@ In traditional OAuth deployments, it is assumed that a malicious entity cannot r
 
 However, in open ecosystems, such assumptions no longer hold. Authorization servers and resource servers are all configurable by external developers at the client. The new registration pattern does not, and fundamentally cannot ensure that a given authorization server or resource server is authentic or registered by the entity that hosts the protected resource.
 
-This is because clients in open ecosystems may legitimately use the same authorization server across different client configurations, as developers are allowed to build custom functionalities that access the same resources. As a result, an attacker may register an attacker-controlled authorization server, or an honest authorization server owned by someone else, possibly one that is already registered under a different client configuration at the same client.
+This is because clients in open ecosystems may legitimately use the same authorization server across different client configurations, as developers are allowed to build custom functionalities that access the same resources. As a result, an attacker may register an attacker-controlled authorization server, or an honest authorization server owned by someone else -- possibly one that is already registered under a different client configuration at the same client.
 
 ### Mix-Up Attacks Reloaded {#MixUpReloaded}
 
@@ -461,7 +461,7 @@ Furthermore, multiple client configurations may use the same authorization serve
 To manage such scenarios, the client shall treat each client configuration independently, even if they share the same issuer. This typically requires the client to keep track of the client configuration chosen by the user during an OAuth flow, instead of tracking the authorization server, as seen in typical mix-up attacks. For example, the client might store a unique identifier for each client configuration in the user's session, or assign each client configuration a distinct redirection URI.
 This allows the client to reliably distinguish between client configurations, retrieve the correct client registration information for token requests, and access the intended protected resources.
 
-Attackers can exploit this setup to mount a mix-up attack, by targeting the honeset authorization server from an honest client configuration using an attacker-controlled authorization server from an attacker-controlled client configuration. The attack steps are similar to the original mix-up attack described in the initial paragraphs of {{Section 4.4.1 of !RFC9700}}. For details on this attack vector, see "Cross-app OAuth Account Takeover" (COAT) and "Cross-app OAuth Request Forgery" (CORF) from Section 4.2 of {{research.cuhk}}.
+Attackers can exploit this setup to mount a mix-up attack, by targeting the honest authorization server from an honest client configuration using an attacker-controlled authorization server from an attacker-controlled client configuration. The attack steps are similar to the original mix-up attack described in the initial paragraphs of {{Section 4.4.1 of !RFC9700}}. For details on this attack vector, see "Cross-app OAuth Account Takeover" (COAT) and "Cross-app OAuth Request Forgery" (CORF) from Section 4.2 of {{research.cuhk}}.
 
 
 #### Countermeasures {#ReloadedCountermeasure}
@@ -496,7 +496,7 @@ Different from mix-up attacks, client configuration confusion attacks do not inv
 
 Client configuration confusion attacks are feasible if a client satisfies the following preconditions:
 
-1. The client has at least two client configurations, one of which is malicious. The client allows for the two client configurations to use different resource servers, but sharing the same authorization server issuer identifier (i.e., issuer-sharing client configurations);
+1. The client has at least two client configurations, one of which is malicious. The client allows for the two client configurations to use different resource servers, but sharing the same authorization server (i.e., issuer-sharing client configurations);
 2. The client stores the client configuration chosen by the user in a session bound to the user's browser and uses the same redirection URI for at least the issuer-sharing, if not all, client configurations;
 3. The client uses the same client ID across the issuer-sharing client configurations;
 4. Regarding client authentication, one of the following applies:
@@ -504,7 +504,7 @@ Client configuration confusion attacks are feasible if a client satisfies the fo
 * The client authenticates at the authorization server in both client configurations with signature-based authentication method using the same key pair (e.g., the `jwt-bearer` client authentication from {{!RFC7523}});
 * The client interacts with the authorization server without requiring client authentication (i.e., using implicit grant, or with public client);
 
-Consequently, the client authentication assertion for both client configurations would pass the validation at the shared authorization server (or there is no client authentication). This enables a client configuration confusion attack by an attacker-controlled client configuration tricking end-users to authorize the client ID at an honest authorization server (a registered client at an honest client configuration), completing the OAuth flow and leaking access tokens to an attacker-controlled resource server.
+Consequently, the client authentication assertions for the two client configurations would be both valid at the shared authorization server (or there is no client authentication). This enables a client configuration confusion attack by an attacker-controlled client configuration tricking end-users to authorize the client ID at an honest authorization server (a registered client at an honest client configuration), completing the OAuth flow and leaking access tokens to an attacker-controlled resource server.
 
 For brevity of presentation, in the following, let H-AS, H-RS, and H-Config denote an honest authorization server, resource server, and client configuration, respectively. Let A-AS, A-RS, and A-Config denote an attacker-controlled authorization server, resource server, and client configuration, respectively.
 
