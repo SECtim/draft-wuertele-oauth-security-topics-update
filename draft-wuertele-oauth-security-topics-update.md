@@ -446,7 +446,7 @@ This is because clients in open ecosystems may legitimately use the same authori
 
 ### Mix-Up Attacks Reloaded {#MixUpReloaded}
 
-This section provides a tailored attack description and practical defense for mix-up attacks in open ecosystems. The descriptions here follow {{research.cuhk}}, where additional details of the attack are laid out.
+This section provides a tailored attack description and practical countermeasure for mix-up attacks in open ecosystems. The descriptions here follow {{research.cuhk}}, where additional details are laid out.
 
 #### Attack Description {#ReloadedDescription}
 
@@ -455,18 +455,18 @@ This section provides a tailored attack description and practical defense for mi
 {:style="empty"}
 * This can be the case, for example, if the attacker uses dynamic registration to register the client at their own authorization server, or if an authorization server becomes compromised.
 
-OAuth deployments in open ecosystems extend the above scenarios: an attacker can register a new client configuration, thereby proactively introducing an attacker-controlled authorization server at the client.
+OAuth deployments in open ecosystems extend the above scenarios: an attacker can proactively introduce an attacker-controlled authorization server by registering a new client configuration at the client.
 
-Furthermore, multiple client configurations may use the same authorization server (i.e., sharing the issuer identifier), yet interact with their respective resource servers differently.
-To manage such scenarios, the client shall treat each client configuration independently, even if they share the same issuer. This typically requires the client to keep track of the client configuration chosen by the user during an OAuth flow, instead of tracking the authorization server, as seen in typical mix-up attacks. For example, the client might store a unique identifier for each client configuration in the user's session, or assign each client configuration a distinct redirection URI.
-This allows the client to reliably distinguish between client configurations, retrieve the correct client registration information for token requests, and access the intended protected resources.
+Furthermore, multiple client configurations may use the same authorization server (i.e., sharing the issuer identifier), yet interact with their respective resource servers in distinct ways.
+To manage such scenarios, the client shall treat each client configuration independently, even if they share the same issuer. This typically requires the client to keep track of the client configuration chosen by the user during the OAuth flow, instead of tracking the authorization server, as seen in typical mix-up attacks. For example, the client may store a unique identifier for each client configuration in the user's session, or assign each client configuration a distinct redirection URI.
+This enables the client to distinguish among client configurations, retrieve the correct client registration information for token requests, and access the intended protected resources.
 
-Attackers can exploit this setup to mount a mix-up attack, by targeting the honest authorization server from an honest client configuration using an attacker-controlled authorization server from an attacker-controlled client configuration. The attack steps are similar to the original mix-up attack described in the initial paragraphs of {{Section 4.4.1 of !RFC9700}}. For details on this attack vector, see "Cross-app OAuth Account Takeover" (COAT) and "Cross-app OAuth Request Forgery" (CORF) from Section 4.2 of {{research.cuhk}}.
+Attackers can exploit this setup to mount a mix-up attack, using a malicious authorization server from an attacker-controlled client configuration to target the honest authorization server from an honest client configuration. The attack steps are similar to the original mix-up attack described in the initial paragraphs of {{Section 4.4.1 of !RFC9700}}. For details on this attack vector, see "Cross-app OAuth Account Takeover" (COAT) and "Cross-app OAuth Request Forgery" (CORF) in Section 4.2 of {{research.cuhk}}.
 
 
 #### Countermeasures {#ReloadedCountermeasure}
 
-At its core, a client in open ecosystems may be registered with multiple configurations of the same authorization server, and therefore the issuer identifier may not be unique to a client. While the existing mix-up countermeasures in {{Section 4.4.2 of !RFC9700}} are sufficient, a variant of the "Mix-Up Defense via Distinct Redirect URIs" defense described in {{Section 4.4.2.2 of !RFC9700}} MAY be deployed instead for practical reasons:
+At its core, a client in open ecosystems may be registered with multiple configurations of the same authorization server, and therefore the issuer identifier may not be unique to the client. While the existing mix-up countermeasures in {{Section 4.4.2 of !RFC9700}} are sufficient, a variant of the "Mix-Up Defense via Distinct Redirect URIs" defense described in {{Section 4.4.2.2 of !RFC9700}} MAY be deployed instead for practical reasons:
 
 {:style="empty"}
 * To apply this defense, clients MUST use a distinct redirection URI for each client configuration they interact with. Clients MUST check that the authorization response was received from the correct client configuration by comparing the distinct redirection URI for the client configuration to the URI where the authorization response was received on. If there is a mismatch, the client MUST abort the flow.
@@ -475,11 +475,11 @@ At its core, a client in open ecosystems may be registered with multiple configu
 
 [^discussion]: We currently mark this variant defense as a `MAY`/`OPTIONAL` to apply; if implemented, implementers `MUST` adhere to the requirements specified in the defense. This is open for discussion.
 
-To maximize compatibility, this countermeasure imposes no new requirements on authorization servers compliant with the original OAuth 2.0 specification {{!RFC6749}}. This is essential for securing open ecosystem deployments, where clients may be integrated with numerous client configurations, and many authorization servers may not support the "Mix-Up Defense via Issuer Identification" defense described in {{Section 4.4.2.1 of !RFC9700}} (e.g., returning the issuer information via an `iss` parameter in the authorization response {{?RFC9207}}).
+To maximize compatibility, this countermeasure imposes no new requirements on authorization servers compliant with the original OAuth 2.0 specification {{!RFC6749}}. This is essential for securing open ecosystems where clients may be integrated with numerous client configurations, and many authorization servers may not support the "Mix-Up Defense via Issuer Identification" defense described in {{Section 4.4.2.1 of !RFC9700}} (e.g., returning the issuer information via an `iss` parameter in the authorization response {{?RFC9207}}).
 
 To ease the development burden, compared to the "Mix-Up Defense via Distinct Redirect URIs" defense outlined in {{Section 4.4.2.2 of !RFC9700}}, this countermeasure does not require clients to manage issuer identifiers exclusively for mix-up defense. Instead, it relies on existing isolation boundaries that already serve the functional need of differentiating client configurations. This is essential for securing existing open ecosystem deployments, where clients may not keep track of issuer identifiers in the first place.
 
-Note that this countermeasure does not intend to redefine the concept of issuer (or issuer identifier) from an authorization server-specific identifier to be bound to client configurations. Nor does it invalidate the countermeasures described in {{Section 4.4.2 of !RFC9700}} and clarified in {{CountermeasureUpdate}}, which remain sufficient to mitigate mix-up attacks in open ecosystems. Rather, this countermeasure MAY serve as an alternative defense.
+Note that this countermeasure does not intend to redefine the concept of issuer (or issuer identifier) from an authorization server-specific identifier to one bound to client configurations. Nor does it invalidate the existing countermeasures described in {{Section 4.4.2 of !RFC9700}} and clarified in {{CountermeasureUpdate}}, which remain sufficient to mitigate mix-up attacks in open ecosystems. Rather, this countermeasure MAY serve as an alternative defense.
 
 ### Client Configuration Confusion Attack {#ConfigConfusion}
 
