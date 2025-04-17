@@ -409,40 +409,40 @@ Note that when the issuer identifier is not unique to a client (i.e., the client
 
 ## Attacks in Open Ecosystems {#OpenEcosystem}
 
-This subsection describes the OAuth use case and attacks in emerging open ecosystems, along with tailored countermeasures for practical deployments.
+This section describes the OAuth use case and associated attacks in open ecosystems, along with practical countermeasures tailored to such environments.
 
 ### OAuth in Open Ecosystems {#Scenario}
 
-In traditional OAuth deployments, a client registers with an authorization server to access protected resources hosted by a resource server.
+In traditional OAuth deployments, the client registers with an authorization server to access protected resources hosted by a resource server.
 The choice of what resources to access (and thus which authorization and resource servers to contact) is at the discretion of the client (or client developer).
 A client may access different resources from distinct resource servers, thereby requiring the client to register with multiple authorization servers.
 The means through which the client registers with an authorization server typically involve the client developer manually registering the client at the authorization server's website, or by using Dynamic Client Registration {{?RFC7591}}.
 
-In open ecosystems such as integration platforms (e.g., workflow automation platforms and virtual assistants/agents), the client may operate a platform, offering an open marketplace to offload the integration of resources to external developers. These developers preconfigure at the platform, enabling the client to readily access various resources and allowing end-users of the client to choose which ones to use.
+In open ecosystems such as integration platforms (e.g., workflow automation platforms and virtual assistants/agents), the client often operates a platform that offers an open marketplace to offload the integration of resources to external developers. These developers preconfigure at the platform, enabling the client to readily access various resources and allowing end-users of the client to choose which ones to use.
 To streamline the integration process, the client typically welcomes external developers manually registering the configurations required to access their resources at the client's website (e.g., via a developer console).
 
-This specification defines "client configuration" as a bundle of configurations that enable a client in open ecosystems to access a protected resource. This set of developer-registered configurations typically involves:
+This document defines "client configuration" as a bundle of configuration elements that enable a client in open ecosystems to access a protected resource. A client configuration typically includes:
 
-* Authorization server information, including endpoints of the authorization server. In addition to a manual approach entering the fields at the client's website, clients in open ecosystems could also support fetching authorization server information via authorization server metadata {{?RFC8414}}.
-* Client registration information at the authorization server, including client identifier and client credentials for client authentication. In addition to a manual approach entering the fields at the client's website, clients in open ecosystems could also support fetching registration information via dynamic client registration {{?RFC7591}}.
-* Resource access information, including endpoints of the resource server, and even custom code run at the client side to assist in processing protected resources.
+* Authorization server information, including endpoint URLs of the authorization server. In addition to a manual approach where external developers enter the fields at the client's website, clients could also support fetching authorization server information via authorization server metadata {{?RFC8414}}.
+* Client registration information at the authorization server, including client identifier and client credentials for client authentication. In addition to a manual approach where external developers enter the fields at the client's website, clients could also support fetching registration information via dynamic client registration {{?RFC7591}}.
+* Resource access information, including endpoint URLs of the resource server, and even custom code run at the client side to assist in processing protected resources.
 
-A client configuration goes beyond a simple HTTP service that provides resources, and becomes an application-like entity that enhances the resource access experience at the client. This registration pattern in open ecosystems expands the use of OAuth in dynamic scenarios, creating new challenges with respect to functionality and security beyond the scope of {{!RFC9700}}.
+A client configuration goes beyond a simple HTTP service that provides resources, and forms an application-like entity that enhances the client's ability to interact with protected resources. This registration pattern in open ecosystems expands the use of OAuth in dynamic scenarios, creating new challenges with respect to functionality and security beyond the scope of {{!RFC9700}}.
 
 ### Attack Scenario {#AttackScenario}
 
-With this new registration model, OAuth in open ecosystems introduces several implications:
+With the new registration model, OAuth in open ecosystems introduces two notable implications:
 
-* Low barrier for malicious infiltration: It becomes easier to introduce malicious client configurations, including attacker-controlled authorization servers and resource servers, enabling practical attacks.
+* Lower barrier for malicious infiltration: It becomes easier to introduce malicious client configurations, including attacker-controlled authorization servers and resource servers, thereby enabling practical attacks.
 * New requirements for handling shared issuers: Clients must support potentially issuer-sharing client configurations to fulfill functional needs, which in turn introduces new security requirements.
 
-While the first implication is straightforward since the responsibility of integrating resources is shifted to external developers in an open marketplace, the second implication is further explained below.
+While the first implication is relatively straightforward since the responsibility of integrating resources is shifted to external developers in an open marketplace, the second implication is further explained below.
 
-In traditional OAuth deployments, it is assumed that a malicious entity cannot register one of the benign authorization servers (i.e., one sharing the issuer of H-AS) at the client. Under this assumption, the issuer serves as a unique identifier for a client. This has led to the common practice of clients tracking "the authorization server chosen by the user" during OAuth flows and the adoption of existing mix-up defenses, which are all based on the issuer concept that uniquely identifies each authorization server.
+In traditional OAuth deployments, it is assumed that a malicious actor cannot register one of the benign authorization servers (i.e., one sharing the issuer of H-AS) at the client. Under this assumption, the issuer serves as a unique identifier to a client. This has led to the common practice of clients tracking "the authorization server chosen by the user" during OAuth flows, and to the adoption of existing mix-up defenses, which are all based on the issuer concept that uniquely identifies each authorization server.
 
-However, in open ecosystems, such assumptions no longer hold. Authorization servers and resource servers are all configurable by external developers at the client. The new registration pattern does not, and fundamentally cannot ensure that a given authorization server or resource server is authentic or registered by the entity that hosts the protected resource.
+However, in open ecosystems, such assumption no longer hold. Authorization servers and resource servers are all configurable by external developers at the client. The new registration pattern does not, and fundamentally cannot ensure that a given authorization server or resource server is authentic or registered by the entity that hosts the protected resource.
 
-This is because clients in open ecosystems may legitimately use the same authorization server across different client configurations, as developers are allowed to build custom functionalities that access the same resources. As a result, an attacker may register an attacker-controlled authorization server, or an honest authorization server owned by someone else -- possibly one that is already registered under a different client configuration at the same client.
+This is because clients in open ecosystems may legitimately use the same authorization server across multiple client configurations, as developers are allowed to build custom functionalities that access the same resources. As a result, an attacker may register either an authorization server under their control, or an honest authorization server owned by someone else -- including one that is already registered under a different client configuration at the same client.
 
 ### Mix-Up Attacks Reloaded {#MixUpReloaded}
 
