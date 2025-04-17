@@ -444,8 +444,6 @@ However, in open ecosystems, such assumptions no longer hold. Authorization serv
 
 This is because clients in open ecosystems may legitimately use the same authorization server across different client configurations, as developers are allowed to build custom functionalities that access the same resources. As a result, an attacker may register an attacker-controlled authorization server, or an honest authorization server owned by someone else, possibly one that is already registered under a different client configuration at the same client.
 
-For brevity of presentation, in the following, let H-AS, H-RS, and H-Config denote an honest authorization server, resource server, and client configuration, respectively. Let A-AS, A-RS, and A-Config denote an attacker-controlled authorization server, resource server, and client configuration, respectively.
-
 ### Mix-Up Attacks Reloaded {#MixUpReloaded}
 
 This section provides a tailored attack description and practical defense for mix-up attacks in open ecosystems. The descriptions here follow {{research.cuhk}}, where additional details of the attack are laid out.
@@ -463,7 +461,7 @@ Furthermore, multiple client configurations may use the same authorization serve
 To manage such scenarios, the client shall treat each client configuration independently, even if they share the same issuer. This typically requires the client to keep track of the client configuration chosen by the user during an OAuth flow, instead of tracking the authorization server, as seen in typical mix-up attacks. For example, the client might store a unique identifier for each client configuration in the user's session, or assign each client configuration a distinct redirection URI.
 This allows the client to reliably distinguish between client configurations, retrieve the correct client registration information for token requests, and access the intended protected resources.
 
-Attackers can exploit this setup to mount a mix-up attack, by targeting the H-AS from an honest client configuration (H-Config) using an A-AS from an attacker-controlled client configuration (A-Config). The attack steps are similar to the original mix-up attack described in the initial paragraphs of {{Section 4.4.1 of !RFC9700}}. For details on this attack vector, see "Cross-app OAuth Account Takeover" (COAT) and "Cross-app OAuth Request Forgery" (CORF) from Section 4.2 of {{research.cuhk}}.
+Attackers can exploit this setup to mount a mix-up attack, by targeting the honeset authorization server from an honest client configuration using an attacker-controlled authorization server from an attacker-controlled client configuration. The attack steps are similar to the original mix-up attack described in the initial paragraphs of {{Section 4.4.1 of !RFC9700}}. For details on this attack vector, see "Cross-app OAuth Account Takeover" (COAT) and "Cross-app OAuth Request Forgery" (CORF) from Section 4.2 of {{research.cuhk}}.
 
 
 #### Countermeasures {#ReloadedCountermeasure}
@@ -506,7 +504,9 @@ Client configuration confusion attacks are feasible if a client satisfies the fo
 * The client authenticates at the authorization server in both client configurations with signature-based authentication method using the same key pair (e.g., the `jwt-bearer` client authentication from {{!RFC7523}});
 * The client interacts with the authorization server without requiring client authentication (i.e., using implicit grant, or with public client);
 
-Consequently, the client authentication assertion valid for A-Config would also be valid for H-Config (or there is no client authentication). This enables a client configuration confusion attack by the A-Config tricking end-users to authorize the client ID at H-AS (a registered client at H-Config), completing the OAuth flow and leaking access tokens to A-RS.
+Consequently, the client authentication assertion for both client configurations would pass the validation at the shared authorization server (or there is no client authentication). This enables a client configuration confusion attack by an attacker-controlled client configuration tricking end-users to authorize the client ID at an honest authorization server (a registered client at an honest client configuration), completing the OAuth flow and leaking access tokens to an attacker-controlled resource server.
+
+For brevity of presentation, in the following, let H-AS, H-RS, and H-Config denote an honest authorization server, resource server, and client configuration, respectively. Let A-AS, A-RS, and A-Config denote an attacker-controlled authorization server, resource server, and client configuration, respectively.
 
 ##### Core Attack Steps {#ConfusionCoreSteps}
 
@@ -529,9 +529,8 @@ When the client has to register the authorization server for each client configu
 Unlike the situation in {{AudienceInjection}}, since A-Config uses H-AS instead of A-AS, the attacker cannot directly control which client ID the authorization server issues to A-Config in dynamic client registration.
 However, according to {{Section 3.2.1 of ?RFC7591}} (Client Information Response):
 
-{:style="empty"}
-* client_id
-*   REQUIRED.  OAuth 2.0 client identifier string.  It SHOULD NOT be currently valid for any other registered client, though an authorization server MAY issue the same client identifier to multiple instances of a registered client at its discretion.
+client_id
+: OAuth 2.0 client identifier string.  It SHOULD NOT be currently valid for any other registered client, though an authorization server MAY issue the same client identifier to multiple instances of a registered client at its discretion.
 
 The second half of the last sentence explicitly allows a client to obtain a client ID of the same value within two client registrations, as long as the client is not considered as two unrelated registered client, but two instances of a registered client by the authorization server.
 
