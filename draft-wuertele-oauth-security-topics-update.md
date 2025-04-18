@@ -488,7 +488,7 @@ Note that this countermeasure does not intend to redefine the concept of issuer 
 [^alternativename]: Alternative Names: RS/AS-RS Mix-up/Confusion. Any better ideas?
 
 When client authentication is not required such as in the implicit grant or for a public client, or when signature-based client authentication methods such as `private_key_jwt` (as defined in {{OpenID.Core}}) or signed JWTs (as defined in {{!RFC7521}} and {{!RFC7523}}) are used, a malicious client configuration may be able to obtain an access token from an honest authorization server.
-This is achieved by registering the honest authorization server at the client under a malicious client configuration, and tricking the client into sending its access tokens to the resource server under the attacker's control, instead of using them at the honest resource server.
+This is achieved by registering an honest authorization server at the client under a malicious client configuration, and tricking the client into sending its access tokens to the resource server under the attacker's control, instead of using them at the honest resource server.
 
 Unlike mix-up attacks, client configuration confusion attacks do not involve a malicious authorization server, but involve an attacker-controlled resource server wrapped in a malicious client configuration.
 
@@ -510,7 +510,7 @@ For brevity of presentation, in the following, let H-AS, H-RS, and H-Config deno
 
 ##### Core Attack Steps {#ConfusionCoreSteps}
 
-In the following, it is further assumed that the client is registered with H-AS (URI: https://honest.as.example, client ID: 7ZGZldHQ) for both client configurations. The client is configured to use A-RS (URI: https://attacker.example/resource) for A-Config and H-RS (URL: https://honest.as.example/resource) for H-Config. URLs shown in the following example are shortened for presentation to include only parameters relevant to the attack.
+In the following, it is further assumed that the client is registered with H-AS (URI: `https://honest.as.example`, client ID: `7ZGZldHQ`) for both client configurations. The client is configured to use A-RS (URI: `https://attacker.example/resource`) for A-Config and H-RS (URL: `https://honest.as.example/resource`) for H-Config. URLs shown in the following example are shortened for presentation to include only parameters relevant to the attack.
 
 Attack on the authorization code grant and implicit grant:
 
