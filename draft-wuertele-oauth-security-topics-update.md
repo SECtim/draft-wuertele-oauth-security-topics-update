@@ -504,8 +504,6 @@ Client configuration confusion attacks are feasible if a client satisfies the fo
 * The client authenticates to the authorization server in both client configurations with a signature-based authentication method using the same key pair (e.g., the `jwt-bearer` client authentication from {{!RFC7523}}).
 * The client interacts with the authorization server in both client configurations without requiring client authentication (i.e., using the implicit grant, or as a public client).
 
-Consequently, the client authentication assertions for the two client configurations would be both valid at the shared authorization server (or no client authentication is required). This enables a client configuration confusion attack, in which an attacker-controlled client configuration causes end-users to authorize the client ID at an honest authorization server (a registered client under an honest client configuration), completing the OAuth flow and leaking access tokens to an attacker-controlled resource server.
-
 For brevity of presentation, in the following, let H-AS, H-RS, and H-Config denote an honest authorization server, resource server, and client configuration, respectively. Let A-AS, A-RS, and A-Config denote an attacker-controlled authorization server, resource server, and client configuration, respectively.
 
 ##### Core Attack Steps {#ConfusionCoreSteps}
