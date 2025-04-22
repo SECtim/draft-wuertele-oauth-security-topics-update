@@ -487,56 +487,58 @@ Note that this countermeasure does not intend to redefine the concept of issuer 
 
 [^alternativename]: Alternative Names: RS/AS-RS Mix-up/Confusion. Any better ideas?
 
-When client authentication is not required such as in the implicit grant or for a public client, or when signature-based client authentication methods such as `private_key_jwt` (as defined in {{OpenID.Core}}) or signed JWTs (as defined in {{!RFC7521}} and {{!RFC7523}}) are used, a malicious client configuration may be able to obtain an access token from an honest authorization server.
-This is achieved by registering an honest authorization server at the client under a malicious client configuration, and tricking the client into sending its access tokens to the resource server under the attacker's control, instead of using them at the honest resource server.
+When client authentication is not required such as in the implicit grant or for a public client, or when signature-based client authentication methods such as `private_key_jwt` (as defined in {{OpenID.Core}}) or signed JWTs (as defined in {{!RFC7521}} and {{!RFC7523}}) are used, a malicious resource server may be able to obtain an access token issued by an honest authorization server.
+This is achieved by registering an honest authorization server at the client under a malicious client configuration, pairing it with an attacker-controlled resource server, thus tricking the client into sending its access tokens to the attacker instead of using them at the honest resource server.
 
-Unlike mix-up attacks, client configuration confusion attacks do not involve a malicious authorization server, but involve an attacker-controlled resource server wrapped in a malicious client configuration.
+Unlike mix-up attacks or audience injection attacks, client configuration confusion attacks do not involve a malicious authorization server, but rather an honest one used in a malicious client configuration.
 
 #### Attack Description {#ConfigConfusionAttack}
 
 Client configuration confusion attacks are feasible if a client satisfies the following preconditions:
 
-1. The client has at least two client configurations, one of which is malicious. The client allows for the two client configurations to use different resource servers, but sharing the same authorization server (i.e., issuer-sharing client configurations);
-2. The client stores the client configuration chosen by the user in a session bound to the user's browser and uses the same redirection URI for at least the issuer-sharing, if not all, client configurations;
-3. The client uses the same client ID across the issuer-sharing client configurations;
+1. The client has at least two client configurations, one of which is configured by an attacker. The client allows for the two configurations to use the same authorization server (i.e., issuer-sharing client configurations) but different resource servers.
+2. The client stores the client configuration chosen by the user in a session bound to the user's browser and assigns the same redirection URI for at least the issuer-sharing, if not all, client configurations.
+3. The client uses the same client ID across the issuer-sharing client configurations.
 4. Regarding client authentication, one of the following applies:
 
-* The client authenticates at the authorization server in both client configurations with signature-based authentication method using the same key pair (e.g., the `jwt-bearer` client authentication from {{!RFC7523}});
-* The client interacts with the authorization server without requiring client authentication (i.e., using implicit grant, or with public client);
+* The client authenticates to the authorization server in both client configurations with a signature-based authentication method using the same key pair (e.g., the `jwt-bearer` client authentication from {{!RFC7523}}).
+* The client interacts with the authorization server in both client configurations without requiring client authentication (i.e., using the implicit grant, or as a public client).
 
-Consequently, the client authentication assertions for the two client configurations would be both valid at the shared authorization server (or there is no client authentication). This enables a client configuration confusion attack, in which an attacker-controlled client configuration tricks end-users to authorize the client ID at an honest authorization server (a registered client at an honest client configuration), completing the OAuth flow and leaking access tokens to an attacker-controlled resource server.
+Consequently, the client authentication assertions for the two client configurations would be both valid at the shared authorization server (or no client authentication is required). This enables a client configuration confusion attack, in which an attacker-controlled client configuration causes end-users to authorize the client ID at an honest authorization server (a registered client under an honest client configuration), completing the OAuth flow and leaking access tokens to an attacker-controlled resource server.
 
 For brevity of presentation, in the following, let H-AS, H-RS, and H-Config denote an honest authorization server, resource server, and client configuration, respectively. Let A-AS, A-RS, and A-Config denote an attacker-controlled authorization server, resource server, and client configuration, respectively.
 
 ##### Core Attack Steps {#ConfusionCoreSteps}
 
-In the following, it is further assumed that the client is registered with H-AS (URI: `https://honest.as.example`, client ID: `7ZGZldHQ`) for both client configurations. The client is configured to use A-RS (URI: `https://attacker.example/resource`) for A-Config and H-RS (URL: `https://honest.as.example/resource`) for H-Config. URLs shown in the following example are shortened for presentation to include only parameters relevant to the attack.
+In the following, it is further assumed that the client is registered with H-AS for both client configurations. The client is configured to use A-RS for A-Config and H-RS for H-Config.
 
-Attack on the authorization code grant and implicit grant:
+Attack on the authorization code grant:
 
 1. The user selects to start the grant using A-Config (e.g., by clicking on a button on the client's website).
-2. The client stores in the user's session that the user selected "A-Config" and redirects the user to H-AS's authorization endpoint with a Location header containing the URL `https://attacker.example/authorize?response_type=code&client_id=666RVZJTA`.
-3. The user authorizes the client to access their resources at H-AS. H-AS issues a code (or an access token, if implicit grant is used) and sends it (via the browser) back to the client.
-4. The client redeems the code issued by H-AS at H-AS's token endpoint. The assertion for client authentication, if it exists, would be identical across A-Config and H-Config, passing the validation at H-AS. This step is omitted in implicit grant.
+2. The client stores in the user's session that the user selected "A-Config" and redirects the user to H-AS's authorization endpoint.
+3. The user authorizes the client to access their resources at H-AS. Having validated that the client ID and redirection URI match the ones registered for H-Config, H-AS issues a code and sends it (via the browser) back to the client.
+4. The client redeems the code issued by H-AS at H-AS's token endpoint. To authenticate with H-AS, the client creates a client assertion signed by itself. Recall that both A-Config and H-Config registered the client with H-AS under the same client ID, and that the client uses the same key pair for authentication at H-AS. Hence, this client assertion, if required, would be a valid authentication credential for the client at H-AS. Note that generating and validating client assertions in this step is optional for public clients.
 5. Since the client stores "A-Config" in the user's session, it sends the access token to A-RS. The attacker therefore obtains the user's access token issued by H-AS.
 
+Variant in Implicit Grant:
+In the implicit grant, H-AS issues an access token instead of the code in Step 3. Step 4 is omitted. The rest of the attack proceeds as above.
 
 ##### Notice on Sharing Client IDs
 
-For the attack to work, A-Config and H-Config need to share the same client ID during registration (precondition 3 in {{ConfigConfusionAttack}}). This can be the case, for example, if an attacker as an external developer, can control the client ID being used in A-Config in manual registration, or if the client uses dynamic registration to register the same client ID as H-Config, as detailed below.
+For the attack to work, A-Config and H-Config need to share the same client ID during registration (precondition 3 in {{ConfigConfusionAttack}}). This can be the case, for example, if an attacker as an external developer, can control the client ID being used in A-Config in manual registration, or if the client uses dynamic registration to get assigned the same client ID as in H-Config, as detailed below.
 
-When the client is designed to register the authorization server for each client configuration via dynamic client registration once, A-Config and H-Config could feasibly share the same client ID.
-Unlike the situation in {{AudienceInjection}}, since A-Config uses H-AS instead of A-AS, the attacker cannot directly control which client ID the authorization server issues to A-Config in dynamic client registration.
+When the client is designed to perform dynamic client registration once per client configuration, A-Config and H-Config could feasibly share the same client ID.
+Unlike the situation in {{AudienceInjection}}, since A-Config uses H-AS instead of A-AS, the attacker cannot directly control which client ID the authorization server assigns to A-Config.
 However, according to {{Section 3.2.1 of ?RFC7591}} (Client Information Response):
 
 client_id
 : OAuth 2.0 client identifier string.  It SHOULD NOT be currently valid for any other registered client, though an authorization server MAY issue the same client identifier to multiple instances of a registered client at its discretion.
 
-The second half of the last sentence explicitly allows a client to obtain a client ID of the same value within two client registrations, as long as the client is not considered to be two unrelated registered clients, but two instances of a registered client by the authorization server.
+The second half of the last sentence explicitly allows a client to obtain a client ID of the same value across multiple client registrations, as long as the client is not considered to be unrelated registered clients by the authorization server, but instances of the same registered client.
 
-Returning the same client ID is intended for registering different "client instances", i.e., different deployed instances of the same piece of client software (see {{Section 1.2 of ?RFC7591}}). However, the authorization server cannot distinguish between this case and a client registering multiple times for different client configurations.
+This behavior is intended for registering different "client instances", i.e., different deployed instances of the same piece of client software (see {{Section 1.2 of ?RFC7591}}). However, the authorization server cannot distinguish between this case and a client registering multiple times for different client configurations.
 
-Therefore, a client interacting with A-Config and H-Config could obtain the same client ID, if the client, based on A-Config, initiates dynamic registration at H-AS. The authorization server, recognizing it is the same client sending the two client registration requests (e.g., indicated by the identical "software statement" provided by the client), is likely to return the same client ID according to {{Section A.4.2 of ?RFC7591}}:
+Therefore, a client interacting with A-Config and H-Config could feasibly obtain the same client ID, when the client, based on A-Config, initiates dynamic registration at H-AS. The authorization server, recognizing the two client registration requests as originating from the same client (e.g., indicated by the identical "software statement" provided by the client), is likely to return the same client ID according to {{Section A.4.2 of ?RFC7591}}:
 
 {:style="empty"}
 * Particular authorization servers might choose, for instance, to maintain a mapping between software statement values and client identifier values, and return the same client identifier value for all registration requests for a particular piece of software.
@@ -544,9 +546,9 @@ Therefore, a client interacting with A-Config and H-Config could obtain the same
 
 #### Countermeasures {#ConfigConfusionCounter}
 
-Similar to mix-up attacks involving issuer-sharing client configurations ({{ReloadedCountermeasure}}), the gist of client configuration confusion defense is to ensure that the attacker-controlled client configuration cannot use the existing client registered at the honest authorization server under the honest client configuration, by enforcing redirection URI distinctions.
+Similar to mix-up attacks involving issuer-sharing client configurations ({{ReloadedCountermeasure}}), the core of the defense against client configuration confusion is for the client to prevent an attacker-controlled client configuration from using the registered client at the honest authorization server under an honest client configuration. This can be achieved by enforcing redirection URI distinctions.
 
-Clients that interact with more than one client configuration and either authenticate with signature-based client authentication methods or support at least one authorization server that does not require client authentication MUST employ the following countermeasure, unless client configuration confusion attacks are mitigated by other means, such as using fresh key material for each authorization server with signature-based client authentication methods and disallowing any authorization server without client authentication.
+Clients that interact with more than one client configuration and support authorization servers that either use signature-based client authentication methods or do not require client authentication MUST employ the following countermeasure, unless client configuration confusion attacks are mitigated by other means, such as using fresh key material for each authorization server employing signature-based client authentication, and disallowing any authorization server that does not require client authentication.
 
 
 {:style="empty"}
@@ -554,7 +556,7 @@ Clients that interact with more than one client configuration and either authent
 
 This countermeasure can be considered an actionable approach to mitigating the "Counterfeit Resource Server" threat (see "Access Token Phishing by Counterfeit Resource Server" in {{Section 4.9.1 of !RFC9700}}) within the context of open ecosystems.
 
-Note that the countermeasures for mix-up attacks (defined in {{Section 4.4.2 of !RFC9700}} and clarified in {{CountermeasureUpdate}}) do not mitigate client configuration confusion attack, because the malicious and honest client configurations have the same issuer identifier of the honest authorization server. Instead, the countermeasure above suggests that clients store and compare a unique identifier that could distinguish issuer-sharing client configurations.
+Note that the countermeasures for mix-up attacks (defined in {{Section 4.4.2 of !RFC9700}} and clarified in {{CountermeasureUpdate}}) do not mitigate client configuration confusion attacks, because the malicious and honest client configurations have the same issuer identifier of the honest authorization server. Instead, the countermeasure above suggests that clients store and compare a unique identifier that could distinguish issuer-sharing client configurations.
 
 # Security Considerations {#Security}
 
