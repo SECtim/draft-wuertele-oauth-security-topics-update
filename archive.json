@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-20T01:50:03.016524+00:00",
+  "timestamp": "2025-04-24T01:45:38.407808+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -285,6 +285,70 @@
           "updatedAt": "2025-04-10T22:58:19Z"
         }
       ]
+    },
+    {
+      "number": 18,
+      "id": "I_kwDOOKn4ys6zhnK0",
+      "title": "Make \"Updates to Mix-Up Attacks\" subsection more self-contained",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/18",
+      "state": "OPEN",
+      "author": "KevinLuo2000",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "(This is part of the feedback by @adon-at-work on #17, to be resolved by @KevinLuo2000)\n\n> My first impression after reading the first few sections in 2.2 is like it\u2019s written more like attacking RFC9700 4.4 line by line or as if presenting a diff for D Fett\u2019s considerations of updating his spec than targeting someone who has no knowledge about mix-up. The fact that I need to open two specs side-by-side will fail to gain any tractions from engineers IMO. The spec should be much more self-contained, and the requirements to click on a link is optional. It is extremely hard to follow, even for me. \n>\n> This new RFC draft implies that we\u2019re no more in the mentality of filing an errata to RFC9700 nor making last minute modification suggestions before RFC9700 was published. Your section 2.3 seems to be starting fresh with a new attack (even claiming a huge scope, as huge as \u201cAttacks in open ecosystems\u201d), which is good.",
+      "createdAt": "2025-04-22T19:26:26Z",
+      "updatedAt": "2025-04-22T20:06:31Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 19,
+      "id": "I_kwDOOKn4ys6zhwVk",
+      "title": "Clarify the application scenario and attack scenario of \"Open Ecosystems\"",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/19",
+      "state": "OPEN",
+      "author": "KevinLuo2000",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "(This is part of the feedback by @adon-at-work on https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/17, to be resolved by @KevinLuo2000)\n\n**Condense Section 2.3.1 \"OAuth in Open Ecosystems\" and Section 2.3.2 \"Attack Scenario\":**\n\n> More generally, quite many content isn\u2019t written like a spec, but more like a blog/paper/story, and it will surprise those who come for a very cold BCP or a spec. Whether it\u2019s traditional/new, less barrier, and how open is irrelevant from spec perspective, they\u2019re more like market trends or just considerations for evaluating security risk/impact only. A link to perhaps a blog for such content (or a presentation talking about reversal) could be good, but they shouldn\u2019t be the main text of the spec. Those information, if absolutely relevant, should be compressed no more than 1 paragraph. I\u2019m afraid the more content you have, the harder it is to get consensus with a broad community. My point is less is better when drafting up the spec.\n\n**Clarify the scope of \"Open Ecosystems\":**\n\n> I have to also admit that I have a different opinion on DCR. May be I should not accuse it with \u201cno body using it\u201d or \u201cimpractical\u201d, when I lately figured the open-banking standard backed by UK gov has DCR standardized (99% similar to OAuth2 DCR as I briefly overviewed). Think about there\u2019s a universal banking app that works across all different (UK) banks. I assume a user can just go to such a universal banking app, choose let\u2019s say HSBC (which under the hood hits HSBC\u2019s DCR) or even directly specify any URL that conforms to the UK open-banking standard. Then the client negotiates some client credential for oauth client authentication, and subsequently launches auth code grant to authenticate the user too. \n> \n> I don\u2019t know whether we should classify it as open-ecosystem, where the app will then speak the same standardized banking protocols regardless of what bank resource servers are. May be they can support bank/issuer-sharing oauth scenarios since even a single user can have multiple bank accounts with a single bank. But it does have certain openness where a user can dynamically feed a new OAuth \u201cclient-configuration\u201d at will, and can face COAT attacks. \n> \n> I don\u2019t know how widely adopted that thing is, may be there\u2019s just some part of the world in EU we don\u2019t know enough. Let\u2019s just assume this existed, or may hypothetically exist in the future as a properly valid use case. Hence, I want AS-sharing to be described just as a characteristic by itself, instead of tiring it to and put it under a section of open-ecosystem. \n> \n> One line on AS-sharing, I think, is good and succinct enough to bring up the problem:\n> > AS-sharing. a client can use a (honest) AS, with multiple sets of different client credentials (e.g.., client id), for legitimate purposes.\n> \n",
+      "createdAt": "2025-04-22T19:46:12Z",
+      "updatedAt": "2025-04-22T19:46:12Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 20,
+      "id": "I_kwDOOKn4ys6zhycn",
+      "title": "Decide whether to include \"Client Configuration Confusion\"",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/20",
+      "state": "OPEN",
+      "author": "KevinLuo2000",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "(This is part of the feedback by @adon-at-work on #17, to be resolved by @KevinLuo2000)\n\n> I don\u2019t have a good idea how 2.3.4 should be structured, but I\u2019m very afraid that may stir up more debate as one may argue it shouldn\u2019t be as an OAuth protocol issue. For argument sake, it\u2019s more a resource server issue, or more like an issue of \u201copen-ecosystem\u201d where access token is given to a resource endpoint controlled by attacker. I want it in, as 2.3, like a section of its own, as I think it\u2019s valuable to the community, but hesitate that people might not be very receptive, and it may take a lot more battles to fight that section in.\n",
+      "createdAt": "2025-04-22T19:51:03Z",
+      "updatedAt": "2025-04-22T19:51:03Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 21,
+      "id": "I_kwDOOKn4ys6zh1Kx",
+      "title": "Restructure \"Mix-up Reloaded\"-related Sections",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/21",
+      "state": "OPEN",
+      "author": "KevinLuo2000",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "(This is part of the feedback by @adon-at-work on #17, to be resolved by @KevinLuo2000)\n\n> With due respect, I recommend the following structure, with contents from 2.3.3 absorbed in appropriate sections.\n> \n> I suppose we should write it as a new attack, either we call it Advanced Mix-up Attacks (if you want to honor D Fett) or COAT and CORF Attacks, or even COAT and CORF (aka. Advanced mix-up). As you introduce it, may be we should just say this section 2.2 supersedes mix-up as defined in RFC9700 and/or we should frame there\u2019re n variants, and certain variants is covered by RFC9700.\n> \n> **2.2.1 Attack Description**\n> \u201cThe description here follows RFC9700 section 4.4 (kinda give credit to them), with new variants of the attack outlined below.\u201d\n> \n> Preconditions:\n> * copy presumptions that are still valid, probably we will use only the first one in 4.4\n> * **AS-sharing. a client can use a (honest) AS, with multiple sets of different client credentials (e.g.., client id), for legitimate purposes.** (RFC9700 implicitly assumed/implied otherwise. Just in case a client can guarantee uniqueness of AS, RFC9700 4.4 suffices\u2026 I assume this is true. If not, we may point to a discussion section.)\n> A final paragraph like \u201cHence this advanced mix-up requires less assumptions than the mixup in RFC9700.\u201d\n> And so we split the discussion into 2 subsections\n> \n> **2.2.1.1 Same redirect_uri**\n> Same as 4.4.1 + redirect_uri in the attack steps\n> Variants:\n> * Mix-Up with Interception. (same as 4.4.4.1) still copy their text\n> * Implicit Grant(same as 4.4.4.1) still copy their text\n> * OpenID Connect(same as 4.4.4.1) still copy their text\n> * Na\u00efve\u2026 or CORF (new)\n> * Whatever other new variant\n> \n> **2.2.1.2 Distinct redirect_uri**\n> Open this paragraph with why it can still fail, as opposed to understanding in RFC9700.\n> Same as 4.4.1 with distinct redirect_uri adjusted accordingly in attack steps\n> \n> Variants:\n> * Mix-Up with Interception. refer to 2.2.2.1\n> * Implicit Grant. refer to 2.2.2.1\n> * OpenID Connect. refer to 2.2.2.1\n> * Inherit other in 2.2.2.1\n> * Add any new, if any\n> \n> (new and old) Variants corresponding and unique to distinct redirect_uri.\n> \n> **2.2.2 Countermeasures.**\n> 2.2.2.1\n> When precondition 2 does not hold, or when client has enforced that the AS-sharing condition will NOT exist. One may refer to 4.4.2, except with the following cavets/updates\u2026\u2026 this is basically your draft. But please make those suggested defenses split also in bullet form that kinda correspond to Variant list (better if you can come up with a name for them instead of Variant 1,2,3).\n> \n> 2.2.2.2\n> Given precondition 2, 2.2.1.1 needs to change to use distinct redirect_uri, right?",
+      "createdAt": "2025-04-22T19:56:57Z",
+      "updatedAt": "2025-04-22T19:56:57Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -633,15 +697,15 @@
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
-      "body": "Implements #3.\r\n\r\nCurrently, I separated the mix-up updates that are open ecosystem-agnostic (Section 2.2) from those that have to do with the open ecosystem/issuer-sharing setting (Section 2.3.1-2.3.3), and added a preliminary draft on the newly-developed RS mix-up idea (Section 2.3.4, now referred to as \u201cClient Configuration Confusion Attack\u201d).\r\n\r\nThe contents are based on:\r\n\r\n- Our original proposed updates to IETF [Dec 2024-Jan 2025]\r\n- Feedback from Aaron, Daniel, Guido, and others at OAuth Security Workshop [Feb 2025]\r\n    - Especially, clearly define what constitutes an integrated \u201capp\u201d, and use an alternative term to avoid the confusion with what an \u201capplication\u201c usually stands for in OAuth\r\n- Follow-up discussions (mainly with @SECtim) in the OAuth Security Workshop\u2019s \\#mix-up-attacks Slack channel [Mar-Apr 2025]\r\nas well as invaluable insights/feedback from one-on-one discussions/group meeting with @adon-at-work @SECtim @PedramHD , and my research group.\r\n\r\nNote that I still have some unresolved comments from @adon-at-work side, regarding the structure and writing style. I will post them as GitHub issues and start resolving them in the upcoming days.",
+      "body": "Resolves #3.\r\n\r\nPreview: https://kevinluo2000.github.io/TestIETF/draft-wuertele-oauth-security-topics-update.html\r\n\r\nCurrently, I separated the mix-up updates that are open ecosystem-agnostic (Section 2.2) from those that have to do with the open ecosystem/issuer-sharing setting (Section 2.3.1-2.3.3), and added a preliminary draft on the newly-developed RS mix-up idea (Section 2.3.4, now referred to as \u201cClient Configuration Confusion Attack\u201d).\r\n\r\nThe contents are based on:\r\n\r\n- Our original proposed updates to IETF [Dec 2024-Jan 2025]\r\n- Feedback from Aaron, Daniel, Guido, and others at OAuth Security Workshop [Feb 2025]\r\n    - Especially, clearly define what constitutes an integrated \u201capp\u201d, and use an alternative term to avoid the confusion with what an \u201capplication\u201c usually stands for in OAuth\r\n- Follow-up discussions (mainly with @SECtim) in the OAuth Security Workshop\u2019s \\#mix-up-attacks Slack channel [Mar-Apr 2025]\r\nas well as invaluable insights/feedback from one-on-one discussions/group meeting with @adon-at-work @SECtim @PedramHD , and my research group.\r\n\r\nNote that I still have some unresolved comments from @adon-at-work side, regarding the structure and writing style. I will post them as GitHub issues and start resolving them in the upcoming days.",
       "createdAt": "2025-04-18T06:06:35Z",
-      "updatedAt": "2025-04-18T06:19:30Z",
+      "updatedAt": "2025-04-22T19:19:12Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "6f69cf88e001293e53f2e88d103f4cbf1646788a",
       "headRepository": "KevinLuo2000/draft-wuertele-oauth-security-topics-update",
       "headRefName": "main",
-      "headRefOid": "1d3b3f87ae3eb832c38128ab9e04149bae47a376",
+      "headRefOid": "b79c01cb5e109587962c0b07014b155b7dc8b432",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
