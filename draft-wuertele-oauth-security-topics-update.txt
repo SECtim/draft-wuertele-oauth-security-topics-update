@@ -202,6 +202,14 @@ Table of Contents
    assertion is a valid authentication credential for the client at
    H-AS.
 
+   The use of the token endpoint to identify the authorization server as
+   a client assertion's audience even for client assertions that are not
+   sent to the token endpoint is encouraged, or at least allowed by many
+   standards, including [RFC7521], [RFC7522], [RFC7523], [RFC9126],
+   [OpenID.Core], [OpenID.CIBA], and all standards referencing the IANA
+   registry for OAuth Token Endpoint Authentication Methods for
+   available client authentication methods.
+
    As described in [research.ust], the attacker can then utilize the
    obtained client authentication assertion to impersonate the client
    and, for example, obtain access tokens.

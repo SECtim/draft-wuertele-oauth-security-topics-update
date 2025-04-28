@@ -1352,9 +1352,16 @@ client ID <code>cid</code>, and that the client uses the same key pair for
 authentication at both authorization servers.  Hence, this client
 assertion is a valid authentication credential for the client at
 H-AS.<a href="#section-2.1.1.1-11" class="pilcrow">¶</a></p>
-<p id="section-2.1.1.1-12">As described in <span>[<a href="#research.ust" class="cite xref">research.ust</a>]</span>, the attacker can then utilize the
+<p id="section-2.1.1.1-12">The use of the token endpoint to identify the authorization server as a
+client assertion's audience even for client assertions that are not sent
+to the token endpoint is encouraged, or at least allowed by many
+standards, including <span>[<a href="#RFC7521" class="cite xref">RFC7521</a>]</span>, <span>[<a href="#RFC7522" class="cite xref">RFC7522</a>]</span>, <span>[<a href="#RFC7523" class="cite xref">RFC7523</a>]</span>, <span>[<a href="#RFC9126" class="cite xref">RFC9126</a>]</span>,
+<span>[<a href="#OpenID.Core" class="cite xref">OpenID.Core</a>]</span>, <span>[<a href="#OpenID.CIBA" class="cite xref">OpenID.CIBA</a>]</span>, and all standards referencing the IANA
+registry for OAuth Token Endpoint Authentication Methods for available
+client authentication methods.<a href="#section-2.1.1.1-12" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.1-13">As described in <span>[<a href="#research.ust" class="cite xref">research.ust</a>]</span>, the attacker can then utilize the
 obtained client authentication assertion to impersonate the client and,
-for example, obtain access tokens.<a href="#section-2.1.1.1-12" class="pilcrow">¶</a></p>
+for example, obtain access tokens.<a href="#section-2.1.1.1-13" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="AudienceInjectionEndpoints">
