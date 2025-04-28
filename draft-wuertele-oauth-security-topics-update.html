@@ -1448,14 +1448,18 @@ example, to force its clients to adopt the respective countermeasure.<a href="#s
             <h5 id="name-authorization-server-issuer">
 <a href="#section-2.1.2.1" class="section-number selfRef">2.1.2.1. </a><a href="#name-authorization-server-issuer" class="section-name selfRef">Authorization Server Issuer Identifier</a>
             </h5>
-<p id="section-2.1.2.1-1">Clients <span class="bcp14">MUST</span> use the authorization server's issuer identifier (as
-defined in <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span>) as the sole audience value in client
-assertions.<a href="#section-2.1.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.2.1-1">Clients <span class="bcp14">MUST</span> use the authorization server's issuer identifier as defined
+in <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span>/<span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span> as the sole audience value in
+client assertions. Clients <span class="bcp14">MUST</span> retrieve and validate this value as
+described in <span><a href="https://rfc-editor.org/rfc/rfc8414#section-3.3" class="relref">Section 3.3</a> of [<a href="#RFC8414" class="cite xref">RFC8414</a>]</span>/Section 4.3 of
+<span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span>.<a href="#section-2.1.2.1-1" class="pilcrow">¶</a></p>
 <p id="section-2.1.2.1-2">For <code>jwt-bearer</code> client assertions as defined by <span>[<a href="#RFC7523" class="cite xref">RFC7523</a>]</span>, this
 mechanism is also described in <span>[<a href="#OAUTH-7523bis" class="cite xref">OAUTH-7523bis</a>]</span>.<a href="#section-2.1.2.1-2" class="pilcrow">¶</a></p>
 <p id="section-2.1.2.1-3">Note that "issuer identifier" here does not refer to the term "issuer"
 as defined in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>, but to the issuer identifier
-as used in <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> and <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span>.<a href="#section-2.1.2.1-3" class="pilcrow">¶</a></p>
+defined in <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> and <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span>. In particular, the
+issuer identifier is not just "an abstract identifier for the
+combination the authorization endpoint and token endpoint".<a href="#section-2.1.2.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="AudienceInjectionCountermeasuresTargetEP">
