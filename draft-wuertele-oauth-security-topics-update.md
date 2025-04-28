@@ -299,16 +299,20 @@ example, to force its clients to adopt the respective countermeasure.
 
 #### Authorization Server Issuer Identifier {#AudienceInjectionCountermeasuresASissuer}
 
-Clients MUST use the authorization server's issuer identifier (as
-defined in {{!RFC8414}}) as the sole audience value in client
-assertions.
+Clients MUST use the authorization server's issuer identifier as defined
+in {{!RFC8414}}/{{OpenID.Discovery}} as the sole audience value in
+client assertions. Clients MUST retrieve and validate this value as
+described in {{Section 3.3 of !RFC8414}}/Section 4.3 of
+{{OpenID.Discovery}}.
 
 For `jwt-bearer` client assertions as defined by {{RFC7523}}, this
 mechanism is also described in {{OAUTH-7523bis}}.
 
 Note that "issuer identifier" here does not refer to the term "issuer"
 as defined in {{Section 4.4 of RFC9700}}, but to the issuer identifier
-as used in {{!RFC8414}} and {{OpenID.Discovery}}.
+defined in {{!RFC8414}} and {{OpenID.Discovery}}. In particular, the
+issuer identifier is not just "an abstract identifier for the
+combination the authorization endpoint and token endpoint".
 
 
 #### Exact Target Endpoint URI {#AudienceInjectionCountermeasuresTargetEP}
