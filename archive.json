@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-24T01:45:38.407808+00:00",
+  "timestamp": "2025-04-29T01:46:56.146066+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -126,7 +126,7 @@
       "id": "I_kwDOOKn4ys6xHAmc",
       "title": "In 2.1, clarify why the token EP is used as aud",
       "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/8",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "SECtim",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -136,8 +136,8 @@
       "labels": [],
       "body": "Based on feedback by @adon-at-work to help readers",
       "createdAt": "2025-04-04T06:32:42Z",
-      "updatedAt": "2025-04-05T05:34:57Z",
-      "closedAt": null,
+      "updatedAt": "2025-04-28T14:05:34Z",
+      "closedAt": "2025-04-28T14:05:33Z",
       "comments": []
     },
     {
@@ -164,7 +164,7 @@
       "id": "I_kwDOOKn4ys6xQc7x",
       "title": "Clarify the description of the AS issuer identifier defense",
       "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/10",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "SECtim",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -174,8 +174,8 @@
       "labels": [],
       "body": "(This is part of the feedback by @adon-at-work)\n- 2.1.2.1 Reminder about validating issuer field from metadata file, as per [rfc8414#section-3.3](https://datatracker.ietf.org/doc/html/rfc8414#section-3.3). Reminder for not to extract issuer from the token_endpoint string (engineer may be tempted to do so given their current implementation).\n- 2.1.2.1 \u201c\u201dNote that \"issuer identifier\" here does not refer to the term \"issuer\" as defined in {{Section 4.4 of RFC9700}}, but to the issuer identifier as used in {{!RFC8414}} and {{OpenID.Discovery}}.\u201d\u201d What\u2019s the difference?",
       "createdAt": "2025-04-05T05:23:23Z",
-      "updatedAt": "2025-04-05T05:23:23Z",
-      "closedAt": null,
+      "updatedAt": "2025-04-28T13:59:03Z",
+      "closedAt": "2025-04-28T13:59:03Z",
       "comments": []
     },
     {
@@ -217,7 +217,7 @@
       "id": "I_kwDOOKn4ys6xQeXp",
       "title": "Clarify that proposed fixes do not require AS changes",
       "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/12",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "SECtim",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -227,8 +227,8 @@
       "labels": [],
       "body": "@adon-at-work's initial feedback includes:\n\n> Draft does NOT mention the need for AS server change. But the openid letter clearly spells it out.\n> - Should AS change its enforcement first (ex. accepting token endpoint today but some clients are presenting aud=issuer)? Or should clients go first? It\u2019s practically impossible to coordinate so many parties to agree on a change, even more unlikely to happen at the same time. Then people will naturally ask for backward compatibility.\n> - Think about the owner of the malicious AS, he will likely have no incentive to update\u2026 but will come up with all kinds of excuses like I can\u2019t update because I have no engineering resources\u2026 Will client still need to send token_endpoint to those not updating yet?\n\n=> Draft should state and explain why the \"aud = issuer identifier\" and \"aud = exact endpoint\" defenses do not require any AS changes.",
       "createdAt": "2025-04-05T05:30:03Z",
-      "updatedAt": "2025-04-05T06:16:13Z",
-      "closedAt": null,
+      "updatedAt": "2025-04-28T13:55:04Z",
+      "closedAt": "2025-04-28T13:55:03Z",
       "comments": []
     },
     {
@@ -524,24 +524,26 @@
       "id": "PR_kwDOOKn4ys6RfYTK",
       "title": "Clarify that none of the current countermeasures require AS changes",
       "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/14",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "SECtim",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Do we need to explicitly explain why an AS change (e.g., to only accept its issuer identifier) does not help at all in preventing the attacks?\r\n\r\nFixes #12",
       "createdAt": "2025-04-05T06:14:18Z",
-      "updatedAt": "2025-04-08T08:55:11Z",
+      "updatedAt": "2025-04-28T13:55:02Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "f9ff75120236075925338e7a366b168b5d4f13cf",
       "headRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "headRefName": "fix_12",
       "headRefOid": "9f0f4ddf7bd7f3659b965bc47fa2ceb670cd9ffd",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-04-28T13:55:02Z",
+      "mergedAt": "2025-04-28T13:55:02Z",
+      "mergedBy": "PedramHD",
+      "mergeCommit": {
+        "oid": "6938a933310a9677d05bea44fcf77d8d444c9bad"
+      },
       "comments": [],
       "reviews": [
         {
@@ -583,6 +585,19 @@
               "updatedAt": "2025-04-08T08:55:11Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys6m21wq",
+          "commit": {
+            "abbreviatedOid": "9f0f4dd"
+          },
+          "author": "PedramHD",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-04-28T13:54:23Z",
+          "updatedAt": "2025-04-28T13:54:23Z",
+          "comments": []
         }
       ]
     },
@@ -591,24 +606,26 @@
       "id": "PR_kwDOOKn4ys6RffU5",
       "title": "Require clients to validate the issuer identifier",
       "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/15",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "SECtim",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Also, better describe the difference to the \"issuer\" in RFC 9700.\r\n\r\nFixes #10",
       "createdAt": "2025-04-05T06:37:29Z",
-      "updatedAt": "2025-04-08T08:11:41Z",
+      "updatedAt": "2025-04-28T13:59:02Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "f9ff75120236075925338e7a366b168b5d4f13cf",
       "headRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "headRefName": "fix_10",
       "headRefOid": "a20f0032e69b0b5bc0e494a0e583322763bdddc7",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-04-28T13:59:02Z",
+      "mergedAt": "2025-04-28T13:59:02Z",
+      "mergedBy": "PedramHD",
+      "mergeCommit": {
+        "oid": "98ba90c9a9c1e7c957c3f34c67e4a00b49dd976f"
+      },
       "comments": [],
       "reviews": [
         {
@@ -650,6 +667,19 @@
               "updatedAt": "2025-04-08T08:09:55Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys6m25ZY",
+          "commit": {
+            "abbreviatedOid": "a20f003"
+          },
+          "author": "PedramHD",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-04-28T13:58:38Z",
+          "updatedAt": "2025-04-28T13:58:38Z",
+          "comments": []
         }
       ]
     },
@@ -658,24 +688,26 @@
       "id": "PR_kwDOOKn4ys6Rfiei",
       "title": "Explain why clients regularly use the token EP as audience",
       "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/16",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "SECtim",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Fixes #8",
       "createdAt": "2025-04-05T07:04:09Z",
-      "updatedAt": "2025-04-07T20:04:52Z",
+      "updatedAt": "2025-04-28T14:05:33Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "f9ff75120236075925338e7a366b168b5d4f13cf",
       "headRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "headRefName": "fix_8",
       "headRefOid": "4e2708494311ef9b35031d9b01359938d24b61bc",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-04-28T14:05:32Z",
+      "mergedAt": "2025-04-28T14:05:32Z",
+      "mergedBy": "PedramHD",
+      "mergeCommit": {
+        "oid": "30f3313b338b3482190f7eb21f2c40bd40180461"
+      },
       "comments": [
         {
           "author": "adon-at-work",
@@ -685,7 +717,21 @@
           "updatedAt": "2025-04-07T20:04:51Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOOKn4ys6m2_LD",
+          "commit": {
+            "abbreviatedOid": "4e27084"
+          },
+          "author": "PedramHD",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-04-28T14:05:16Z",
+          "updatedAt": "2025-04-28T14:05:16Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 17,
