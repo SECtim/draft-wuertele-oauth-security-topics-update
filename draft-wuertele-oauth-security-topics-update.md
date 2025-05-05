@@ -119,7 +119,7 @@ informative:
     - ins: J. Lecomte
       name: Julien Lecomte
     date: August 2025
-    target: https://mobitec.ie.cuhk.edu.hk/cross-app-oauth-security/paper.pdf
+    target: https://www.usenix.org/system/files/conference/usenixsecurity25/sec24winter-prepub-332-luo.pdf
     refcontent: "34th USENIX Security Symposium (USENIX Security 25)"
     title: "Universal Cross-app Attacks: Exploiting and Securing OAuth 2.0 in Integration Platforms"
   arXiv.1601.01229:
