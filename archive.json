@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-06T01:47:52.003155+00:00",
+  "timestamp": "2025-05-11T01:53:48.884160+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -346,7 +346,7 @@
       "labels": [],
       "body": "(This is part of the feedback by @adon-at-work on #17, to be resolved by @KevinLuo2000)\n\n> With due respect, I recommend the following structure, with contents from 2.3.3 absorbed in appropriate sections.\n> \n> I suppose we should write it as a new attack, either we call it Advanced Mix-up Attacks (if you want to honor D Fett) or COAT and CORF Attacks, or even COAT and CORF (aka. Advanced mix-up). As you introduce it, may be we should just say this section 2.2 supersedes mix-up as defined in RFC9700 and/or we should frame there\u2019re n variants, and certain variants is covered by RFC9700.\n> \n> **2.2.1 Attack Description**\n> \u201cThe description here follows RFC9700 section 4.4 (kinda give credit to them), with new variants of the attack outlined below.\u201d\n> \n> Preconditions:\n> * copy presumptions that are still valid, probably we will use only the first one in 4.4\n> * **AS-sharing. a client can use a (honest) AS, with multiple sets of different client credentials (e.g.., client id), for legitimate purposes.** (RFC9700 implicitly assumed/implied otherwise. Just in case a client can guarantee uniqueness of AS, RFC9700 4.4 suffices\u2026 I assume this is true. If not, we may point to a discussion section.)\n> A final paragraph like \u201cHence this advanced mix-up requires less assumptions than the mixup in RFC9700.\u201d\n> And so we split the discussion into 2 subsections\n> \n> **2.2.1.1 Same redirect_uri**\n> Same as 4.4.1 + redirect_uri in the attack steps\n> Variants:\n> * Mix-Up with Interception. (same as 4.4.4.1) still copy their text\n> * Implicit Grant(same as 4.4.4.1) still copy their text\n> * OpenID Connect(same as 4.4.4.1) still copy their text\n> * Na\u00efve\u2026 or CORF (new)\n> * Whatever other new variant\n> \n> **2.2.1.2 Distinct redirect_uri**\n> Open this paragraph with why it can still fail, as opposed to understanding in RFC9700.\n> Same as 4.4.1 with distinct redirect_uri adjusted accordingly in attack steps\n> \n> Variants:\n> * Mix-Up with Interception. refer to 2.2.2.1\n> * Implicit Grant. refer to 2.2.2.1\n> * OpenID Connect. refer to 2.2.2.1\n> * Inherit other in 2.2.2.1\n> * Add any new, if any\n> \n> (new and old) Variants corresponding and unique to distinct redirect_uri.\n> \n> **2.2.2 Countermeasures.**\n> 2.2.2.1\n> When precondition 2 does not hold, or when client has enforced that the AS-sharing condition will NOT exist. One may refer to 4.4.2, except with the following cavets/updates\u2026\u2026 this is basically your draft. But please make those suggested defenses split also in bullet form that kinda correspond to Variant list (better if you can come up with a name for them instead of Variant 1,2,3).\n> \n> 2.2.2.2\n> Given precondition 2, 2.2.1.1 needs to change to use distinct redirect_uri, right?",
       "createdAt": "2025-04-22T19:56:57Z",
-      "updatedAt": "2025-04-22T19:56:57Z",
+      "updatedAt": "2025-05-09T02:23:55Z",
       "closedAt": null,
       "comments": []
     }
