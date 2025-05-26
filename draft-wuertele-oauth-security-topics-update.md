@@ -278,6 +278,14 @@ authentication at both authorization servers.  Hence, this client
 assertion is a valid authentication credential for the client at
 H-AS.
 
+The use of the token endpoint to identify the authorization server as a
+client assertion's audience even for client assertions that are not sent
+to the token endpoint is encouraged, or at least allowed by many
+standards, including {{RFC7521}}, {{RFC7522}}, {{RFC7523}}, {{RFC9126}},
+{{OpenID.Core}}, {{OpenID.CIBA}}, and all standards referencing the IANA
+registry for OAuth Token Endpoint Authentication Methods for available
+client authentication methods.
+
 As described in {{research.ust}}, the attacker can then utilize the
 obtained client authentication assertion to impersonate the client and,
 for example, obtain access tokens.
@@ -340,20 +348,39 @@ employ one of the following countermeasures, unless audience injection
 attacks are mitigated by other means, such as using fresh key material
 for each authorization server.
 
-#### Authorization Server Issuer Identifier
+Note that the countermeasures described in
+{{AudienceInjectionCountermeasuresASissuer}} and
+{{AudienceInjectionCountermeasuresTargetEP}} do not imply any normative
+changes to the authorization server: {{Section 4.1.3 of ?RFC7519}}
+requires the authorization server to only accept a JWT if the
+authorization server can identify itself with (at least one of the
+elements in) the JWT's audience value. Authentication JWTs produced by a
+client implementing one of these countermeasures meet this condition.
+Of course, an authorization server MAY still decide to only accept its
+issuer identifier ({{AudienceInjectionCountermeasuresASissuer}}) or the
+endpoint that received the JWT
+({{AudienceInjectionCountermeasuresTargetEP}}) as an audience value, for
+example, to force its clients to adopt the respective countermeasure.
 
-Clients MUST use the authorization server's issuer identifier (as
-defined in {{!RFC8414}}) as the sole audience value in client
-assertions.
+#### Authorization Server Issuer Identifier {#AudienceInjectionCountermeasuresASissuer}
+
+Clients MUST use the authorization server's issuer identifier as defined
+in {{!RFC8414}}/{{OpenID.Discovery}} as the sole audience value in
+client assertions. Clients MUST retrieve and validate this value as
+described in {{Section 3.3 of !RFC8414}}/Section 4.3 of
+{{OpenID.Discovery}}.
 
 For `jwt-bearer` client assertions as defined by {{RFC7523}}, this
 mechanism is also described in {{OAUTH-7523bis}}.
 
 Note that "issuer identifier" here does not refer to the term "issuer"
 as defined in {{Section 4.4 of RFC9700}}, but to the issuer identifier
-as used in {{!RFC8414}} and {{OpenID.Discovery}}.
+defined in {{!RFC8414}} and {{OpenID.Discovery}}. In particular, the
+issuer identifier is not just "an abstract identifier for the
+combination the authorization endpoint and token endpoint".
 
-#### Exact Target Endpoint URI
+
+#### Exact Target Endpoint URI {#AudienceInjectionCountermeasuresTargetEP}
 
 Clients MUST use the exact endpoint URI to which a client assertion is
 sent as that client assertion's sole audience value.
