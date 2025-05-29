@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-27T01:48:31.645995+00:00",
+  "timestamp": "2025-05-29T01:50:07.113127+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -745,13 +745,13 @@
       "labels": [],
       "body": "Resolves #3.\r\n\r\nPreview: https://kevinluo2000.github.io/TestIETF/draft-wuertele-oauth-security-topics-update.html\r\n\r\nCurrently, I separated the mix-up updates that are open ecosystem-agnostic (Section 2.2) from those that have to do with the open ecosystem/issuer-sharing setting (Section 2.3.1-2.3.3), and added a preliminary draft on the newly-developed RS mix-up idea (Section 2.3.4, now referred to as \u201cClient Configuration Confusion Attack\u201d).\r\n\r\nThe contents are based on:\r\n\r\n- Our original proposed updates to IETF [Dec 2024-Jan 2025]\r\n- Feedback from Aaron, Daniel, Guido, and others at OAuth Security Workshop [Feb 2025]\r\n    - Especially, clearly define what constitutes an integrated \u201capp\u201d, and use an alternative term to avoid the confusion with what an \u201capplication\u201c usually stands for in OAuth\r\n- Follow-up discussions (mainly with @SECtim) in the OAuth Security Workshop\u2019s \\#mix-up-attacks Slack channel [Mar-Apr 2025]\r\nas well as invaluable insights/feedback from one-on-one discussions/group meeting with @adon-at-work @SECtim @PedramHD , and my research group.\r\n\r\nNote that I still have some unresolved comments from @adon-at-work side, regarding the structure and writing style. I will post them as GitHub issues and start resolving them in the upcoming days.",
       "createdAt": "2025-04-18T06:06:35Z",
-      "updatedAt": "2025-05-26T03:39:27Z",
+      "updatedAt": "2025-05-28T07:55:45Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "30f3313b338b3482190f7eb21f2c40bd40180461",
       "headRepository": "KevinLuo2000/draft-wuertele-oauth-security-topics-update",
       "headRefName": "main",
-      "headRefOid": "e8dabb12a9d35bd5a906bca98e64cbf148883772",
+      "headRefOid": "74ab774e5a4e3ab861280f785552b31de0339b9a",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
