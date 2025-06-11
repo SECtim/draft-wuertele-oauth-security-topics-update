@@ -404,29 +404,45 @@ This section extends the mix-up attack analysis in {{Section 4.4 of !RFC9700}}. 
 
 ### Updates to "Per-AS Redirect URIs" Mix-Up Variant {#PerASUpdate}
 
-The main mix-up attack variant described in the initial paragraphs of {{Section 4.4.1 of !RFC9700}} specifies, as one of its preconditions, that "the client stores the authorization server chosen by the user in a session bound to the user's browser and uses the same redirection URI for each authorization server".
+The basic mix-up attack described in the initial paragraphs of {{Section 4.4.1 of !RFC9700}} specifies, as one of its preconditions, that "the client stores the authorization server chosen by the user in a session bound to the user's browser and uses the same redirection URI for each authorization server".
 
-If the client instead uses a distinct redirection URI for each authorization server (i.e., Per-AS Redirect URIs), three subvariants of mix-up attacks remain possible. The following replaces the description of the "Per-AS Redirect URIs" mix-up variant in {{Section 4.4.1 of !RFC9700}}, with subvariants 1 and 2 newly introduced in this document:
+If the client instead uses a distinct redirection URI for each authorization server (i.e., Per-AS Redirect URIs), three subvariants of mix-up attacks are still possible. This section updates the description of the "Per-AS Redirect URIs" mix-up variant in {{Section 4.4.1 of !RFC9700}}, with subvariants 1 and 2 newly introduced in this document:
 
 
 Per-AS Redirect URIs: There are three subvariants of mix-up attacks when the client uses distinct redirection URIs for each authorization server.
 
-* Subvariant 1: If the client uses different redirection URIs for different authorization servers but treats them as the same URI (i.e., the client continues to store the authorization server chosen by the user in a session and does not use the redirection URI to differentiate authorization servers at the redirection endpoint), a slight variant of the main mix-up attack variant would still work (see Footnote 7 of {{arXiv.1601.01229}} and Section 4.2.1 of {{research.cuhk}}). An attacker can achieve this by replacing the redirection URI as well as the client ID at A-AS with those at H-AS in the authorization request, when redirecting the browser to the authorization endpoint of H-AS.
+Subvariant 1: Advanced Mix-up Attack. If the client uses different redirection URIs for different authorization servers but treats them as the same URI, a slight variant of the basic mix-up attack remains possible (see Footnote 7 of {{arXiv.1601.01229}} and Section 4.2.1 of {{research.cuhk}}). In this attack, the attacker not only replaces the client ID as in the basic mix-up attack, but also replaces the redirection URI when redirecting the browser to the authorization endpoint of the honest authorization server.
 
-{:style="empty"}
-* Specifically, assuming that the client issues the redirection URI `https://client.com/9XpLmK2qR/cb` for H-AS and `https://client.com/4FvBn8TzY/cb` for A-AS, an attack is feasible with the following modifications to Step 2 and Step 3:
-* 2\. The client stores in the user's session that the user selected "A-AS" and redirects the user to A-AS's authorization endpoint with a Location header containing the URL `https://attacker.example/authorize?response_type=code&client_id=666RVZJTA`
+This advanced mix-up attack is described in detail below, with the Preconditions as well as Step 2 and Step 3 updated compared to the basic mix-up attack.
+
+
+Preconditions: For this variant of the attack to work, it is assumed that
+
+* the implicit or authorization code grant is used with multiple authorization servers of which one is considered "honest" (H-AS) and one is operated by the attacker (A-AS), and
+* the client stores the authorization server chosen by the user in a session bound to the user's browser and uses distinct redirection URIs for different authorization servers, but treats them as the same URI (i.e., it does not use the redirection URI to differentiate authorization servers at the redirection endpoint).
+
+In the following, it is further assumed that the client is registered with H-AS (URI: `https://honest.as.example`, client ID: `7ZGZldHQ`) and with A-AS (URI: `https://attacker.example`, client ID: `666RVZJTA`). The client issues the redirection URI `https://client.com/9XpLmK2qR/cb` for H-AS and `https://client.com/4FvBn8TzY/cb` for A-AS. URLs shown in the following example are shortened for presentation to include only parameters relevant to the attack.
+
+Attack on the authorization code grant:
+
+1. The user selects to start the grant using A-AS (e.g., by clicking on a button on the client's website).
+2. The client stores in the user's session that the user selected "A-AS" and redirects the user to A-AS's authorization endpoint with a Location header containing the URL `https://attacker.example/authorize?response_type=code&client_id=666RVZJTA`
   `&redirect_uri=https%3A%2F%2Fclient.com%2F4FvBn8TzY%2Fcb`.
-* 3\. When the user's browser navigates to the attacker's authorization endpoint, the attacker immediately redirects the browser to the authorization endpoint of H-AS. In the authorization request, the attacker replaces the client ID of the client at A-AS with the client's ID at H-AS, and replaces the redirection URI of A-AS with the redirection URI of H-AS. Therefore, the browser receives a redirection (`303 See Other`) with a Location header pointing to `https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ`
+3. When the user's browser navigates to the attacker's authorization endpoint, the attacker immediately redirects the browser to the authorization endpoint of H-AS. In the authorization request, the attacker replaces the client ID of the client at A-AS with the client's ID at H-AS, and replaces the redirection URI of A-AS with the redirection URI of H-AS. Therefore, the browser receives a redirection (`303 See Other`) with a Location header pointing to `https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ`
   `&redirect_uri=https%3A%2F%2Fclient.com%2F9XpLmK2qR%2Fcb`.
+4. The user authorizes the client to access their resources at H-AS. (Note that a vigilant user might at this point detect that they intended to use A-AS instead of H-AS. The first attack variant listed does not have this limitation.) H-AS issues a code and sends it (via the browser) back to the client.
+5. Since the client still assumes that the code was issued by A-AS, it will try to redeem the code at A-AS's token endpoint.
+6. The attacker therefore obtains code and can either exchange the code for an access token (for public clients) or perform an authorization code injection attack as described in {{Section 4.5 of !RFC9700}}.
 
-{:style="symbols"}
-* Subvariant 2: If clients use different redirection URIs for different authorization servers, and clients do not store the selected authorization server in the user's session, attackers can mount an attack called "Naïve RP Session Integrity Attack". Note that unlike other mix-up variants, the goal of this attack is not to obtain an authorization code or access token, but to force the client to use an attacker's authorization code or access token for H-AS. See Section 3.4 of {{arXiv.1601.01229}} and Section 4.2.2 of {{research.cuhk}} for details.
-* Subvariant 3: If clients use different redirection URIs for different authorization servers, clients do not store the selected authorization server in the user's session, and authorization servers do not check the redirection URIs properly (see {{Section 4.1 of !RFC9700}}), attackers can mount an attack called "Cross Social-Network Request Forgery". These attacks have been observed in practice. Refer to {{research.jcs_14}} for details.
+
+Subvariant 2: Naïve RP Session Integrity Attack. If clients use different redirection URIs for different authorization servers, and clients do not store the selected authorization server in the user's session, attackers can mount an attack called "Naïve RP Session Integrity Attack". Note that unlike other mix-up variants, the goal of this attack is not to obtain an authorization code or access token, but to force the client to use an attacker's authorization code or access token for H-AS. See Section 3.4 of {{arXiv.1601.01229}} and Section 4.2.2 of {{research.cuhk}} for details.
 
 [^standalonesection]{: source="Kaixuan L."}
 
 [^standalonesection]: Currently I lump "Naïve RP Session Integrity Attack"/CORF under mix-up variants, rather than as a standalone (sub)section, since the general attack scenario and defense are the same as mix-up/COAT. That said, shall we expand its attack description to elaborate on the attack steps?
+
+
+Subvariant 3: Cross Social-Network Request Forgery. If clients use different redirection URIs for different authorization servers, clients do not store the selected authorization server in the user's session, and authorization servers do not check the redirection URIs properly (see {{Section 4.1 of !RFC9700}}), attackers can mount an attack called "Cross Social-Network Request Forgery". These attacks have been observed in practice. Refer to {{research.jcs_14}} for details.
 
 ### Clarifications on Countermeasures for Mix-Up Variants {#CountermeasureUpdate}
 
@@ -497,7 +513,7 @@ Furthermore, multiple client configurations may use the same authorization serve
 To manage such scenarios, the client should treat each client configuration independently, typically by keeping track of the client configuration chosen by the user during the OAuth flow. For example, the client may store a unique identifier for each client configuration (rather than for each authorization server) in the user's session, or assign a distinct redirection URI to each client configuration.
 This enables the client to distinguish between client configurations, retrieve the correct client registration information for access token requests, and access the intended protected resources.
 
-Attackers can exploit this setup to mount a mix-up attack, using a malicious authorization server from an attacker-controlled client configuration to target the honest authorization server from an honest client configuration. The attack steps are similar to the main mix-up attack variant described in the initial paragraphs of {{Section 4.4.1 of !RFC9700}}. For details on this attack vector, see "Cross-app OAuth Account Takeover" (COAT) and "Cross-app OAuth Request Forgery" (CORF) in Section 4.2 of {{research.cuhk}}.
+Attackers can exploit this setup to mount a mix-up attack, using a malicious authorization server from an attacker-controlled client configuration to target the honest authorization server from an honest client configuration. The attack steps are similar to the basic mix-up attack described in the initial paragraphs of {{Section 4.4.1 of !RFC9700}}. For details on this attack vector, see "Cross-app OAuth Account Takeover" (COAT) and "Cross-app OAuth Request Forgery" (CORF) in Section 4.2 of {{research.cuhk}}.
 
 
 #### Countermeasures {#ReloadedCountermeasure}
