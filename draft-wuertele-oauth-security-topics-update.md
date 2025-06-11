@@ -455,7 +455,7 @@ The means through which the client registers with an authorization server typica
 The client may access different resources from distinct resource servers, thereby requiring registration with multiple authorization servers.
 The choice of what resources to access (and thus which authorization and resource servers to integrate) is at the discretion of the client (or client developer).
 
-This document discusses OAuth in "open ecosystems", where the protected resources available to a client are configured beyond the discretion of the client or client developers. This can be the case, for example, if an end-user can specify arbitrary resource servers and associated authorization servers to interact with (e.g., in the Model Context Protocol {{MCP-Spec}}), or if the client offers an open marketplace or registry with such configurations published by external developers (e.g., in integration platforms {{research.cuhk}}).
+This document discusses OAuth in "open ecosystems", where the protected resources available to a client are configured beyond the discretion of the client or client developers. This can be the case, for example, if an end-user can specify arbitrary resource servers and associated authorization servers to interact with at runtime (e.g., in the Model Context Protocol {{MCP-Spec}}), or if the client offers an open marketplace or registry with such configurations published by external developers at development time (e.g., in integration platforms {{research.cuhk}}).
 
 This document defines a "client configuration" as a bundle of configuration elements that enable a client in open ecosystems to access an OAuth 2.0 protected resource. A client configuration typically includes:
 
@@ -478,7 +478,7 @@ However, in open ecosystems, such assumption no longer hold. Authorization serve
 
 This is because clients are legitimately allowed to integrate various functionalities that access different resources or process the same resources differently, while relying on the same authorization server. As a result, an attacker may integrate either an authorization server under their control ({{MixUpReloaded}}), or an honest authorization server -- including one that is already integrated under a different client configuration at the same client ({{ConfigConfusion}}).
 
-Note that this section limits the scope of attacks to the reuse of registered clients, and considers phishing threats involving the registration of new clients as out of scope (which can be mitigated by existing mechanisms such as vetting during manual registration, or via initial access tokens as defined in {{Section 1.2 of ?RFC7591}}).
+Note that this section limits the scope of attacks to the reuse of registered clients, and considers phishing threats involving the open registration of new clients as out of scope (which can be mitigated by existing mechanisms such as vetting during manual registration, or via initial access tokens as defined in {{Section 1.2 of ?RFC7591}}).
 
 ### Mix-Up Attacks Reloaded {#MixUpReloaded}
 
@@ -563,7 +563,7 @@ For the attack to work, A-Config and H-Config need to share the same client ID i
 
 When the client is designed to perform dynamic client registration once per client configuration, A-Config and H-Config could feasibly share the same client ID.
 Unlike the situation in {{AudienceInjection}}, since A-Config uses H-AS instead of A-AS, the attacker cannot directly control which client ID the authorization server assigns to A-Config.
-However, according to the description of client_id returned in Client Information Response ({{Section 3.2.1 of ?RFC7591}}):
+However, according to the description of client ID returned in Client Information Response ({{Section 3.2.1 of ?RFC7591}}):
 
 client_id
 : OAuth 2.0 client identifier string.  It SHOULD NOT be currently valid for any other registered client, though an authorization server MAY issue the same client identifier to multiple instances of a registered client at its discretion.
@@ -584,12 +584,16 @@ At its core, client configuration confusion attacks exploit the fact that, an at
 
 Clients in open ecosystems that interact with more than one client configuration and support authorization servers that either use signature-based client authentication methods or do not require client authentication MUST employ the following countermeasure, unless client configuration confusion attacks are mitigated by other means, such as using fresh key material for each authorization server employing signature-based client authentication and disallowing any authorization server that does not require client authentication.
 
-Clients MUST issue a distinct redirection URI for each client configuration they interact with, both for client registration and in OAuth flows. This ensures that the redirection URI for the attacker-controlled client configuration will fail the exact redirection URI match at the honest authorization server (as required by {{Section 4.1.3 of !RFC9700}}), thereby protecting against client configuration confusion attacks. This is because the redirection URI at the honest client configuration is the only redirection URI associated with the client identifier at the honest authorization server.
+Clients MUST issue a distinct redirection URI for each client configuration they interact with, both during client registration and in OAuth flows. This ensures that the redirection URI for the attacker-controlled client configuration will fail the exact redirection URI match (required by {{Section 4.1.3 of !RFC9700}}) at the honest authorization server, since the redirection URI at the honest client configuration is the only redirection URI registered for the client identifier at the honest authorization server.
 
-When dynamic client registration is supported, clients SHOULD also specify a different software identifier (software_id) in client registration requests for each client configuration. This ensures that the normal functioning of client registration requests would not be refused by the authorization server due to different redirection URIs being used, when the authorization server follows the excerpt of {{Section 5 of ?RFC7591}} below:
+When dynamic client registration is supported, clients SHOULD also specify a different software identifier (`software_id`) in client registration requests for each client configuration. This precents client registration requests from being rejected by the authorization server when different redirection URIs are used, if the authorization server follows the excerpt of {{Section 5 of ?RFC7591}} below:
 
 {:style="empty"}
-An authorization server could also refuse registration requests from a known software identifier that is requesting different redirection URIs or a different client URI.
+* An authorization server could also refuse registration requests from a known software identifier that is requesting different redirection URIs or a different client URI.
+
+[^fordiscussion]{: source="Kaixuan L."}
+
+[^fordiscussion]: This imposes a normative change to the use of `software_id` in RFC7591, where "the 'software_id' `SHOULD` remain the same for all instances of the client software." Here we are basically requiring a client software instance to have different software ids for different client configurations. Is there a better solution?
 
 This countermeasure can be considered an actionable approach to mitigating the "Counterfeit Resource Server" threat (see "Access Token Phishing by Counterfeit Resource Server" in {{Section 4.9.1 of !RFC9700}}) within the context of open ecosystems.
 
