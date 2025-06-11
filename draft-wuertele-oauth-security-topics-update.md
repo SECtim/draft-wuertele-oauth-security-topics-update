@@ -580,28 +580,18 @@ Therefore, a client interacting with A-Config and H-Config could feasibly obtain
 
 #### Countermeasures {#ConfigConfusionCounter}
 
-At the core of the defense against client configuration confusion is for the client to prevent an attacker-controlled client configuration from using the registered client at the honest authorization server under an honest client configuration.
+At its core, client configuration confusion attacks exploit the fact that, an attacker-controlled client configuration can reuse the registered client at the honest authorization server under an honest client configuration.
 
-Clients that interact with more than one client configuration and support authorization servers that either use signature-based client authentication methods or do not require client authentication MUST employ the following countermeasure, unless client configuration confusion attacks are mitigated by other means, such as using fresh key material for each authorization server employing signature-based client authentication and disallowing any authorization server that does not require client authentication.
+Clients in open ecosystems that interact with more than one client configuration and support authorization servers that either use signature-based client authentication methods or do not require client authentication MUST employ the following countermeasure, unless client configuration confusion attacks are mitigated by other means, such as using fresh key material for each authorization server employing signature-based client authentication and disallowing any authorization server that does not require client authentication.
 
-Clients MUST use a distinct redirection URI for each client configuration they interact with.
+Clients MUST issue a distinct redirection URI for each client configuration they interact with, both for client registration and in OAuth flows. This ensures that the redirection URI for the attacker-controlled client configuration will fail the exact redirection URI match at the honest authorization server (as required by {{Section 4.1.3 of !RFC9700}}), thereby protecting against client configuration confusion attacks. This is because the redirection URI at the honest client configuration is the only redirection URI associated with the client identifier at the honest authorization server.
 
-
-This countermeasure can be considered an actionable approach to mitigating the "Counterfeit Resource Server" threat (see "Access Token Phishing by Counterfeit Resource Server" in {{Section 4.9.1 of !RFC9700}}) within the context of open ecosystems.
-
-##### Relationship with Mix-up Defenses
-
-The mix-up defenses based on the issuer concept (as defined in {{Section 4.4.2 of !RFC9700}} and clarified in {{CountermeasureUpdate}}) do not mitigate client configuration confusion attacks, because both malicious and honest client configurations have the same issuer identifier of the honest authorization server.
-However, the alternative mix-up defense that distinguishes between issuer-sharing client configurations {{ReloadedCountermeasure}} does mitigate client configuration confusion attacks, beacause its requirements encompass the defense specified here.
-
-##### Notice on Sharing Redirection URIs
-
-When distinct redirection URIs are used, the redirection URI for the attacker-controlled client configuration will fail the exact redirection URI match at the honest authorization server (as required by {{Section 4.1.3 of !RFC9700}}), thereby protecting against client configuration confusion attacks. This is because the redirection URI at the honest client configuration is the only redirection URI associated with the client identifier at the honest authorization server.
-
-This statement holds in most cases. To ensure the defense is robust, when dynamic client registration is used, authorization servers SHOULD follow the security considerations in {{Section 5 of ?RFC7591}} to avoid allowing multiple sets of redirect_uris for a particular client_id in multiple client registration requests:
+When dynamic client registration is supported, clients SHOULD also specify a different software identifier (software_id) in client registration requests for each client configuration. This ensures that the normal functioning of client registration requests would not be refused by the authorization server due to different redirection URIs being used, when the authorization server follows the excerpt of {{Section 5 of ?RFC7591}} below:
 
 {:style="empty"}
-* Since a client identifier is a public value that can be used to impersonate a client at the authorization endpoint, an authorization server that decides to issue the same client identifier to multiple instances of a registered client needs to be very particular about the circumstances under which this occurs.  For instance, the authorization server can limit a given client identifier to clients using the same redirect-based flow and the same redirection URIs.
+An authorization server could also refuse registration requests from a known software identifier that is requesting different redirection URIs or a different client URI.
+
+This countermeasure can be considered an actionable approach to mitigating the "Counterfeit Resource Server" threat (see "Access Token Phishing by Counterfeit Resource Server" in {{Section 4.9.1 of !RFC9700}}) within the context of open ecosystems.
 
 # Security Considerations {#Security}
 
