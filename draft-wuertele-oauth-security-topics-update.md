@@ -446,7 +446,7 @@ Subvariant 3: Cross Social-Network Request Forgery. If clients use different red
 
 ### Clarifications on Countermeasures for Mix-Up Variants {#CountermeasureUpdate}
 
-According to the countermeasures specified in {{Section 4.4.2 of !RFC9700}} (referred to hereafter as "existing mix-up defenses"), both defenses require the client to store and compare the issuer of the authorization server. Specifically, the issuer is defined in the second paragraph of {{Section 4.4.2 of !RFC9700}} as follows:
+{{Section 4.4.2 of !RFC9700}} specifies two countermeasures, Mix-Up Defense via Issuer Identification and via Distinct Redirect URIs (referred to hereafter as "existing mix-up defenses"). Both defenses require the client to store and compare the issuer of the authorization server. Specifically, the issuer is defined in the second paragraph of {{Section 4.4.2 of !RFC9700}} as follows:
 
 {:style="empty"}
 * The issuer serves ... as an abstract identifier for the combination of the authorization endpoint and token endpoint that are to be used in the flow. If an issuer identifier is not available ..., a different unique identifier for this tuple or the tuple itself can be used instead.
