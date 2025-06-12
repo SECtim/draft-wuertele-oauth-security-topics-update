@@ -602,7 +602,7 @@ Clients in open ecosystems that interact with more than one client configuration
 
 Clients MUST issue a distinct redirection URI for each client configuration they interact with, both during client registration and in OAuth flows. This ensures that the redirection URI for the attacker-controlled client configuration will fail the exact redirection URI match (required by {{Section 4.1.3 of !RFC9700}}) at the honest authorization server, since the redirection URI at the honest client configuration is the only redirection URI registered for the client identifier at the honest authorization server.
 
-When dynamic client registration is supported, clients SHOULD also specify a different software identifier (`software_id`) in client registration requests for each client configuration. This precents client registration requests from being rejected by the authorization server when different redirection URIs are used, if the authorization server follows the excerpt of {{Section 5 of ?RFC7591}} below:
+When dynamic client registration is supported, clients SHOULD also specify a different software identifier (`software_id`) in client registration requests for each client configuration. This prevents client registration requests from being rejected by the authorization server when different redirection URIs are used, if the authorization server follows the excerpt of {{Section 5 of ?RFC7591}} below:
 
 {:style="empty"}
 * An authorization server could also refuse registration requests from a known software identifier that is requesting different redirection URIs or a different client URI.
