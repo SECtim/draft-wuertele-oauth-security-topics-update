@@ -471,7 +471,7 @@ The means through which the client registers with an authorization server typica
 The client may access different resources from distinct resource servers, thereby requiring registration with multiple authorization servers.
 The choice of what resources to access (and thus which authorization and resource servers to integrate) is at the discretion of the client (or client developer).
 
-This document discusses OAuth in "open ecosystems", where the protected resources available to a client are configured beyond the discretion of the client or client developers. This can be the case, for example, if the client offers an open marketplace or registry with such configurations published by external developers at development time (e.g., in integration platforms {{research.cuhk}}), or if an end-user can specify arbitrary resource servers and associated authorization servers to interact with at runtime (e.g., in the Model Context Protocol {{MCP-Spec}}).
+This document discusses OAuth in "open ecosystems", where the protected resources accessible to a client are configured beyond the discretion of the client or client developers. This can be the case, for example, if the client offers an open marketplace or registry that allows external developers to publish information about resource servers and associated authorization servers at development time (e.g., in integration platforms {{research.cuhk}}), or if an end-user can specify any such configurations to interact with at runtime (e.g., in the Model Context Protocol {{MCP-Spec}}).
 
 This document defines a "client configuration" as a bundle of configuration elements that enable a client in open ecosystems to access an OAuth 2.0 protected resource. A client configuration typically includes:
 
