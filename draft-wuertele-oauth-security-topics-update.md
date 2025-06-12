@@ -471,13 +471,13 @@ The means through which the client registers with an authorization server typica
 The client may access different resources from distinct resource servers, thereby requiring registration with multiple authorization servers.
 The choice of what resources to access (and thus which authorization and resource servers to integrate) is at the discretion of the client (or client developer).
 
-This document discusses OAuth in "open ecosystems", where the protected resources available to a client are configured beyond the discretion of the client or client developers. This can be the case, for example, if an end-user can specify arbitrary resource servers and associated authorization servers to interact with at runtime (e.g., in the Model Context Protocol {{MCP-Spec}}), or if the client offers an open marketplace or registry with such configurations published by external developers at development time (e.g., in integration platforms {{research.cuhk}}).
+This document discusses OAuth in "open ecosystems", where the protected resources available to a client are configured beyond the discretion of the client or client developers. This can be the case, for example, if the client offers an open marketplace or registry with such configurations published by external developers at development time (e.g., in integration platforms {{research.cuhk}}), or if an end-user can specify arbitrary resource servers and associated authorization servers to interact with at runtime (e.g., in the Model Context Protocol {{MCP-Spec}}).
 
 This document defines a "client configuration" as a bundle of configuration elements that enable a client in open ecosystems to access an OAuth 2.0 protected resource. A client configuration typically includes:
 
-* Authorization Server configuration. Clients may employ a manual approach, where end-users or external developers enter the necessary fields (i.e., endpoint URLs of the authorization server) at the client's website, or support fetching information about the authorization server via Authorization Server Metadata {{?RFC8414}}.
-* Client Registration configuration at the authorization server. Clients may employ a manual approach, where end-users or external developers enter the necessary fields (i.e., client identifier and client credentials) at the client's website, or support fetching information about the client registration via Dynamic Client Registration {{?RFC7591}}.
-* Protected Resource configuration. Clients may employ a manual approach, where end-users or external developers enter the necessary fields (i.e., endpoint URLs of the resource server) at the client's website, or support fetching information about the protected resource via Protected Resource Metadata {{?RFC9728}}. End-users or external developers may further specify when and how the protected resources shall be fetched and processed by the clients.
+* Authorization Server configuration. Clients may employ a manual approach, where external developers or end-users enter the necessary fields (i.e., endpoint URLs of the authorization server) at the client's website, or support fetching information about the authorization server via Authorization Server Metadata {{?RFC8414}}.
+* Client Registration configuration at the authorization server. Clients may employ a manual approach, where external developers or end-users enter the necessary fields (i.e., client identifier and client credentials) at the client's website, or support fetching information about the client registration via Dynamic Client Registration {{?RFC7591}}.
+* Protected Resource configuration. Clients may employ a manual approach, where external developers or end-users enter the necessary fields (i.e., endpoint URLs of the resource server) at the client's website, or support fetching information about the protected resource via Protected Resource Metadata {{?RFC9728}}. External developers or end-users may further specify when and how the protected resources shall be fetched and processed by the clients.
 
 The integration pattern in open ecosystems expands the use of OAuth in dynamic scenarios, creating new challenges with respect to functionality and security beyond the scope of {{!RFC9700}}.
 
@@ -485,7 +485,7 @@ The integration pattern in open ecosystems expands the use of OAuth in dynamic s
 
 With the new integration model, OAuth in open ecosystems introduces two notable implications:
 
-* Lower barrier for malicious infiltration: Since the responsibility of integrating client configurations is shifted to end-users or external developers, it becomes easier to introduce malicious client configurations, including attacker-controlled authorization servers or resource servers.
+* Lower barrier for malicious infiltration: Since the responsibility of integrating client configurations is shifted to external developers or end-users, it becomes easier to introduce malicious client configurations, including attacker-controlled authorization servers or resource servers.
 * New requirements for handling shared issuers: Clients must support potentially issuer-sharing client configurations to fulfill functional needs, which in turn introduces new security requirements (explained below).
 
 In traditional OAuth deployments, it is implicitly assumed that each authorization server has only one client configuration at a client. Under this assumption, the issuer serves as a unique identifier for the client. This has led to the common practice of clients tracking "the authorization server chosen by the user" during OAuth flows, as well as the adoption of existing mix-up defenses ({{Section 4.4.2 of !RFC9700}}), all of which are based on the issuer concept that uniquely identifies each authorization server.
@@ -507,7 +507,7 @@ This section provides a tailored attack description and alternative countermeasu
 {:style="empty"}
 * This can be the case, for example, if the attacker uses dynamic registration to register the client at their own authorization server, or if an authorization server becomes compromised.
 
-OAuth deployments in open ecosystems extend the above scenarios: an end-user or external developer can introduce an attacker-controlled authorization server by integrating a new client configuration at the client.
+OAuth deployments in open ecosystems extend the above scenarios: an external developer or end-user can introduce an attacker-controlled authorization server by integrating a new client configuration at the client.
 
 Furthermore, multiple client configurations may use the same authorization server (i.e., share the same issuer).
 To manage such scenarios, the client should treat each client configuration independently, typically by keeping track of the client configuration chosen by the user during the OAuth flow. For example, the client may store a unique identifier for each client configuration (rather than for each authorization server) in the user's session, or assign a distinct redirection URI to each client configuration.
@@ -575,7 +575,7 @@ In the implicit grant, H-AS issues an access token instead of the code in Step 3
 
 ##### Notice on Sharing Client IDs
 
-For the attack to work, A-Config and H-Config need to share the same client ID in client registration (precondition 3 in {{ConfigConfusionAttack}}). This can be the case, for example, if an end-user or external developer can control the client ID used in A-Config during manual registration, or if the client uses dynamic registration to get assigned the same client ID as in H-Config, as detailed below.
+For the attack to work, A-Config and H-Config need to share the same client ID in client registration (precondition 3 in {{ConfigConfusionAttack}}). This can be the case, for example, if an external developer or end-user can control the client ID used in A-Config during manual registration, or if the client uses dynamic registration to get assigned the same client ID as in H-Config, as detailed below.
 
 When the client is designed to perform dynamic client registration once per client configuration, A-Config and H-Config could feasibly share the same client ID.
 Unlike the situation in {{AudienceInjection}}, since A-Config uses H-AS instead of A-AS, the attacker cannot directly control which client ID the authorization server assigns to A-Config.
