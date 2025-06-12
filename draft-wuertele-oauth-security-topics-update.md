@@ -485,7 +485,7 @@ The integration pattern in open ecosystems expands the use of OAuth in dynamic s
 
 With the new integration model, OAuth in open ecosystems introduces two notable implications:
 
-* Lower barrier for malicious infiltration: Since the responsibility of integrating client configurations is shifted to external developers or end-users, it becomes easier to introduce malicious client configurations, including attacker-controlled authorization servers or resource servers.
+* Increased risk of malicious integration: Since the responsibility of integrating client configurations is shifted to external developers or end-users, there is an increased risk that malicious client configurations may be introduced, including attacker-controlled authorization servers or resource servers.
 * New requirements for handling shared issuers: Clients must support potentially issuer-sharing client configurations to fulfill functional needs, which in turn introduces new security requirements (explained below).
 
 In traditional OAuth deployments, it is implicitly assumed that each authorization server has only one client configuration at a client. Under this assumption, the issuer serves as a unique identifier for the client. This has led to the common practice of clients tracking "the authorization server chosen by the user" during OAuth flows, as well as the adoption of existing mix-up defenses ({{Section 4.4.2 of !RFC9700}}), all of which are based on the issuer concept that uniquely identifies each authorization server.
