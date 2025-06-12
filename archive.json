@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-29T01:50:07.113127+00:00",
+  "timestamp": "2025-06-12T01:51:34.949984+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -54,9 +54,17 @@
       ],
       "body": "So far, I've put \"OAuth 2.0 Security Best Current Practice\" as the title, but it might make sense to use a different title to at least indicate that this is an extension of an existing document of that name.",
       "createdAt": "2025-03-19T09:29:09Z",
-      "updatedAt": "2025-04-05T05:36:43Z",
+      "updatedAt": "2025-06-12T01:19:51Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "body": "Based on the published BCP \"suites\" in https://datatracker.ietf.org/doc/bcp, a straightforward title would probably be \"Updates to OAuth 2.0 Security Best Current Practice\".\n\nHowever, if we use the general title format \"Updates to xxx\", we should consider what yet another BCP document under [BCP 240](https://datatracker.ietf.org/doc/bcp240/) would be like. \"Second Round of Updates to OAuth 2.0 Security Best Current Practice\" sounds weird.",
+          "createdAt": "2025-06-12T01:19:03Z",
+          "updatedAt": "2025-06-12T01:19:51Z"
+        }
+      ]
     },
     {
       "number": 2,
@@ -745,13 +753,13 @@
       "labels": [],
       "body": "Resolves #3.\r\n\r\nPreview: https://kevinluo2000.github.io/TestIETF/draft-wuertele-oauth-security-topics-update.html\r\n\r\nCurrently, I separated the mix-up updates that are open ecosystem-agnostic (Section 2.2) from those that have to do with the open ecosystem/issuer-sharing setting (Section 2.3.1-2.3.3), and added a preliminary draft on the newly-developed RS mix-up idea (Section 2.3.4, now referred to as \u201cClient Configuration Confusion Attack\u201d).\r\n\r\nThe contents are based on:\r\n\r\n- Our original proposed updates to IETF [Dec 2024-Jan 2025]\r\n- Feedback from Aaron, Daniel, Guido, and others at OAuth Security Workshop [Feb 2025]\r\n    - Especially, clearly define what constitutes an integrated \u201capp\u201d, and use an alternative term to avoid the confusion with what an \u201capplication\u201c usually stands for in OAuth\r\n- Follow-up discussions (mainly with @SECtim) in the OAuth Security Workshop\u2019s \\#mix-up-attacks Slack channel [Mar-Apr 2025]\r\nas well as invaluable insights/feedback from one-on-one discussions/group meeting with @adon-at-work @SECtim @PedramHD , and my research group.\r\n\r\nNote that I still have some unresolved comments from @adon-at-work side, regarding the structure and writing style. I will post them as GitHub issues and start resolving them in the upcoming days.",
       "createdAt": "2025-04-18T06:06:35Z",
-      "updatedAt": "2025-05-28T07:55:45Z",
+      "updatedAt": "2025-06-12T01:04:49Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "30f3313b338b3482190f7eb21f2c40bd40180461",
       "headRepository": "KevinLuo2000/draft-wuertele-oauth-security-topics-update",
       "headRefName": "main",
-      "headRefOid": "74ab774e5a4e3ab861280f785552b31de0339b9a",
+      "headRefOid": "ba3ee5b71788a836398e67119433b94a4655cf09",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
