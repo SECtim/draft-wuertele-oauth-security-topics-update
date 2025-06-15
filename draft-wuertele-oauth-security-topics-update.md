@@ -547,10 +547,6 @@ Note that this countermeasure is not intended to redefine the concept of an issu
 
 ### Client Configuration Confusion Attack {#ConfigConfusion}
 
-[^alternativename]{: source="Kaixuan L."}
-
-[^alternativename]: Alternative Names: RS/AS-RS Mix-up/Confusion. Any better ideas?
-
 When client authentication is not required such as in the implicit grant or for a public client, or when signature-based client authentication methods such as `private_key_jwt` (as defined in {{OpenID.Core}}) or signed JWTs (as defined in {{!RFC7521}} and {{!RFC7523}}) are used, a malicious resource server may be able to obtain an access token issued by an honest authorization server.
 This is achieved by registering an honest authorization server at the client under a malicious client configuration, pairing it with an attacker-controlled resource server, thus tricking the client into sending its access tokens to the attacker instead of using them at the honest resource server.
 
