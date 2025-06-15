@@ -630,7 +630,7 @@ When dynamic client registration is supported, clients SHOULD also specify a dif
 
 [^fordiscussion]: This imposes a normative change to the use of `software_id` in RFC7591, where "the 'software_id' `SHOULD` remain the same for all instances of the client software." Here we are basically requiring a client software instance to have different software ids for different client configurations. Is there a better solution?
 
-This countermeasure can be considered an actionable approach to mitigating the "Counterfeit Resource Server" threat (see "Access Token Phishing by Counterfeit Resource Server" in {{Section 4.9.1 of !RFC9700}}) within the context of open ecosystems.
+This countermeasure can be considered an actionable approach to mitigating the "Counterfeit Resource Server" threat (see "Access Token Phishing by Counterfeit Resource Server" in {{Section 4.9.1 of !RFC9700}}) within the context of open ecosystems. It is complementary to general defenses for access token misuses, such as sender-constrained and audience-restricted access tokens as specified in {{Section 4.10 of !RFC9700}}.
 
 # Security Considerations {#Security}
 
