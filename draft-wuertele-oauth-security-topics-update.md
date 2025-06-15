@@ -412,7 +412,7 @@ If the client instead uses a distinct redirection URI for each authorization ser
 
 Per-AS Redirect URIs: There are three subvariants of mix-up attacks when the client uses distinct redirection URIs for each authorization server.
 
-Subvariant 1: Advanced Mix-up Attack. If the client uses different redirection URIs for different authorization servers but treats them as the same URI, a slight variant of the basic mix-up attack remains possible (see Footnote 7 of {{arXiv.1601.01229}} and Section 4.2.1 of {{research.cuhk}}). In this attack, the attacker not only replaces the client ID as in the basic mix-up attack, but also replaces the redirection URI when redirecting the browser to the authorization endpoint of the honest authorization server.
+Subvariant 1: Advanced Mix-up Attack. If the client uses different redirection URIs for different authorization servers but treats them as the same URI, a slight variant of the basic mix-up attack remains possible (see Footnote 7 of {{arXiv.1601.01229}}). In this attack, the attacker not only replaces the client ID as in the basic mix-up attack, but also replaces the redirection URI when redirecting the browser to the authorization endpoint of the honest authorization server.
 
 This advanced mix-up attack is described in detail below, with the Preconditions as well as Step 2 and Step 3 updated compared to the basic mix-up attack.
 
@@ -436,7 +436,7 @@ Attack on the authorization code grant:
 6. The attacker therefore obtains code and can either exchange the code for an access token (for public clients) or perform an authorization code injection attack as described in {{Section 4.5 of !RFC9700}}.
 
 
-Subvariant 2: Naïve RP Session Integrity Attack. If clients use different redirection URIs for different authorization servers, and clients do not store the selected authorization server in the user's session, attackers can mount an attack called "Naïve RP Session Integrity Attack". Note that unlike other mix-up variants, the goal of this attack is not to obtain an authorization code or access token, but to force the client to use an attacker's authorization code or access token for H-AS. See Section 3.4 of {{arXiv.1601.01229}} and Section 4.2.2 of {{research.cuhk}} for details.
+Subvariant 2: Naïve RP Session Integrity Attack. If clients use different redirection URIs for different authorization servers, and clients do not store the selected authorization server in the user's session, attackers can mount an attack called "Naïve RP Session Integrity Attack". Note that unlike other mix-up variants, the goal of this attack is not to obtain an authorization code or access token, but to force the client to use an attacker's authorization code or access token for H-AS. See Section 3.4 of {{arXiv.1601.01229}} for details.
 
 
 Subvariant 3: Cross Social-Network Request Forgery. If clients use different redirection URIs for different authorization servers, clients do not store the selected authorization server in the user's session, and authorization servers do not check the redirection URIs properly (see {{Section 4.1 of !RFC9700}}), attackers can mount an attack called "Cross Social-Network Request Forgery". These attacks have been observed in practice. Refer to {{research.jcs_14}} for details.
