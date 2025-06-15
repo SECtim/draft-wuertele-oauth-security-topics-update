@@ -438,10 +438,6 @@ Attack on the authorization code grant:
 
 Subvariant 2: Naïve RP Session Integrity Attack. If clients use different redirection URIs for different authorization servers, and clients do not store the selected authorization server in the user's session, attackers can mount an attack called "Naïve RP Session Integrity Attack". Note that unlike other mix-up variants, the goal of this attack is not to obtain an authorization code or access token, but to force the client to use an attacker's authorization code or access token for H-AS. See Section 3.4 of {{arXiv.1601.01229}} and Section 4.2.2 of {{research.cuhk}} for details.
 
-[^standalonesection]{: source="Kaixuan L."}
-
-[^standalonesection]: Currently I lump "Naïve RP Session Integrity Attack"/CORF under mix-up variants, rather than as a standalone (sub)section, since the general attack scenario and defense are the same as mix-up/COAT. That said, shall we expand its attack description to elaborate on the attack steps?
-
 
 Subvariant 3: Cross Social-Network Request Forgery. If clients use different redirection URIs for different authorization servers, clients do not store the selected authorization server in the user's session, and authorization servers do not check the redirection URIs properly (see {{Section 4.1 of !RFC9700}}), attackers can mount an attack called "Cross Social-Network Request Forgery". These attacks have been observed in practice. Refer to {{research.jcs_14}} for details.
 
@@ -613,7 +609,7 @@ Specifically, when the client initiates dynamic registration at H-AS based on H-
 
 Therefore, a client interacting with H-Config and A-Config could feasibly share the same client ID when dynamic client registration is used.
 
-#### Countermeasures {#ConfigConfusionCounter}
+#### Countermeasures {#ConfigConfusionCountermeasures}
 
 At its core, client configuration confusion attacks exploit the fact that, an attacker-controlled client configuration can reuse the registered client at the honest authorization server under an honest client configuration.
 
