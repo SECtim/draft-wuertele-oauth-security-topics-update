@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-12T01:51:34.949984+00:00",
+  "timestamp": "2025-06-15T02:02:25.848227+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -54,7 +54,7 @@
       ],
       "body": "So far, I've put \"OAuth 2.0 Security Best Current Practice\" as the title, but it might make sense to use a different title to at least indicate that this is an extension of an existing document of that name.",
       "createdAt": "2025-03-19T09:29:09Z",
-      "updatedAt": "2025-06-12T01:19:51Z",
+      "updatedAt": "2025-06-12T07:55:03Z",
       "closedAt": null,
       "comments": [
         {
@@ -63,6 +63,20 @@
           "body": "Based on the published BCP \"suites\" in https://datatracker.ietf.org/doc/bcp, a straightforward title would probably be \"Updates to OAuth 2.0 Security Best Current Practice\".\n\nHowever, if we use the general title format \"Updates to xxx\", we should consider what yet another BCP document under [BCP 240](https://datatracker.ietf.org/doc/bcp240/) would be like. \"Second Round of Updates to OAuth 2.0 Security Best Current Practice\" sounds weird.",
           "createdAt": "2025-06-12T01:19:03Z",
           "updatedAt": "2025-06-12T01:19:51Z"
+        },
+        {
+          "author": "SECtim",
+          "authorAssociation": "OWNER",
+          "body": "I also thought about the \"Update to...\" title option, but came to the same conclusion - I think it's best we leave as-is for now and explicitly ask the WG for their opinion once we put out the first individual draft.",
+          "createdAt": "2025-06-12T06:56:03Z",
+          "updatedAt": "2025-06-12T06:56:03Z"
+        },
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "body": "Yes, I agree that we should ask WG for their opinion.\n\nWhat about changing the title to \"Updates to ...\" for now? I was just thinking that having the same title as the published RFC9700 might cause confusion, making people think that it's the same document, or that we are proposing to obsolete the original RFC or going to repeat the unchanged sections.",
+          "createdAt": "2025-06-12T07:55:03Z",
+          "updatedAt": "2025-06-12T07:55:03Z"
         }
       ]
     },
@@ -299,16 +313,24 @@
       "id": "I_kwDOOKn4ys6zhnK0",
       "title": "Make \"Updates to Mix-Up Attacks\" subsection more self-contained",
       "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/18",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "KevinLuo2000",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "(This is part of the feedback by @adon-at-work on #17, to be resolved by @KevinLuo2000)\n\n> My first impression after reading the first few sections in 2.2 is like it\u2019s written more like attacking RFC9700 4.4 line by line or as if presenting a diff for D Fett\u2019s considerations of updating his spec than targeting someone who has no knowledge about mix-up. The fact that I need to open two specs side-by-side will fail to gain any tractions from engineers IMO. The spec should be much more self-contained, and the requirements to click on a link is optional. It is extremely hard to follow, even for me. \n>\n> This new RFC draft implies that we\u2019re no more in the mentality of filing an errata to RFC9700 nor making last minute modification suggestions before RFC9700 was published. Your section 2.3 seems to be starting fresh with a new attack (even claiming a huge scope, as huge as \u201cAttacks in open ecosystems\u201d), which is good.",
       "createdAt": "2025-04-22T19:26:26Z",
-      "updatedAt": "2025-04-22T20:06:31Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2025-06-12T03:06:22Z",
+      "closedAt": "2025-06-12T02:47:01Z",
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "body": "I kept the section title in 2.2 as \"Updates to Mix-Up Attacks\", but changed the first subvariant of the Per-AS Redirect URIs mix-up (\u201cAdvanced Mix-up Attacks\u201d) from a diff to RFC9700 4.4 to a self-contained description.\n\nAlso explicitly mentioned the names of two existing defenses to improve readability.\n\nSee commit https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/17/commits/fce5556d69f31ee8a00c6c100499d8e4cb4b0b27 and https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/17/commits/c01aa2d173edc62229a8fc1abb8d076240b507e4.",
+          "createdAt": "2025-06-12T02:43:11Z",
+          "updatedAt": "2025-06-12T03:06:22Z"
+        }
+      ]
     },
     {
       "number": 19,
@@ -322,9 +344,17 @@
       "labels": [],
       "body": "(This is part of the feedback by @adon-at-work on https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/17, to be resolved by @KevinLuo2000)\n\n**Condense Section 2.3.1 \"OAuth in Open Ecosystems\" and Section 2.3.2 \"Attack Scenario\":**\n\n> More generally, quite many content isn\u2019t written like a spec, but more like a blog/paper/story, and it will surprise those who come for a very cold BCP or a spec. Whether it\u2019s traditional/new, less barrier, and how open is irrelevant from spec perspective, they\u2019re more like market trends or just considerations for evaluating security risk/impact only. A link to perhaps a blog for such content (or a presentation talking about reversal) could be good, but they shouldn\u2019t be the main text of the spec. Those information, if absolutely relevant, should be compressed no more than 1 paragraph. I\u2019m afraid the more content you have, the harder it is to get consensus with a broad community. My point is less is better when drafting up the spec.\n\n**Clarify the scope of \"Open Ecosystems\":**\n\n> I have to also admit that I have a different opinion on DCR. May be I should not accuse it with \u201cno body using it\u201d or \u201cimpractical\u201d, when I lately figured the open-banking standard backed by UK gov has DCR standardized (99% similar to OAuth2 DCR as I briefly overviewed). Think about there\u2019s a universal banking app that works across all different (UK) banks. I assume a user can just go to such a universal banking app, choose let\u2019s say HSBC (which under the hood hits HSBC\u2019s DCR) or even directly specify any URL that conforms to the UK open-banking standard. Then the client negotiates some client credential for oauth client authentication, and subsequently launches auth code grant to authenticate the user too. \n> \n> I don\u2019t know whether we should classify it as open-ecosystem, where the app will then speak the same standardized banking protocols regardless of what bank resource servers are. May be they can support bank/issuer-sharing oauth scenarios since even a single user can have multiple bank accounts with a single bank. But it does have certain openness where a user can dynamically feed a new OAuth \u201cclient-configuration\u201d at will, and can face COAT attacks. \n> \n> I don\u2019t know how widely adopted that thing is, may be there\u2019s just some part of the world in EU we don\u2019t know enough. Let\u2019s just assume this existed, or may hypothetically exist in the future as a properly valid use case. Hence, I want AS-sharing to be described just as a characteristic by itself, instead of tiring it to and put it under a section of open-ecosystem. \n> \n> One line on AS-sharing, I think, is good and succinct enough to bring up the problem:\n> > AS-sharing. a client can use a (honest) AS, with multiple sets of different client credentials (e.g.., client id), for legitimate purposes.\n> \n",
       "createdAt": "2025-04-22T19:46:12Z",
-      "updatedAt": "2025-04-22T19:46:12Z",
+      "updatedAt": "2025-06-12T05:29:19Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "body": "I have kept the \u201copen ecosystem\u201d terminology and structure, as I do think it better motivates the issuer-sharing mix-up setup and the client configuration confusion attack. With all the recent developments in MCP and reflection on integration platforms, I feel the open ecosystem concept needs a special call-out.\n \nTo that end, I also generalized the \u201copen ecosystem\u201d definition to make it less specific to Integration Platforms.\nSee https://kevinluo2000.github.io/TestIETF/draft-wuertele-oauth-security-topics-update.html#name-oauth-in-open-ecosystems.\n ",
+          "createdAt": "2025-06-12T03:10:20Z",
+          "updatedAt": "2025-06-12T05:29:19Z"
+        }
+      ]
     },
     {
       "number": 20,
@@ -338,9 +368,17 @@
       "labels": [],
       "body": "(This is part of the feedback by @adon-at-work on #17, to be resolved by @KevinLuo2000)\n\n> I don\u2019t have a good idea how 2.3.4 should be structured, but I\u2019m very afraid that may stir up more debate as one may argue it shouldn\u2019t be as an OAuth protocol issue. For argument sake, it\u2019s more a resource server issue, or more like an issue of \u201copen-ecosystem\u201d where access token is given to a resource endpoint controlled by attacker. I want it in, as 2.3, like a section of its own, as I think it\u2019s valuable to the community, but hesitate that people might not be very receptive, and it may take a lot more battles to fight that section in.\n",
       "createdAt": "2025-04-22T19:51:03Z",
-      "updatedAt": "2025-04-22T19:51:03Z",
+      "updatedAt": "2025-06-12T13:41:49Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "body": "> For argument sake, it\u2019s ... more like an issue of \u201copen-ecosystem\u201d where access token is given to a resource endpoint controlled by attacker.\n\nExactly. That's why I'd rather fit the section under the umbrella of \"Attacks in Open Ecosystems\".\n\nFurthermore, when the resource server URL can be specified at runtime, the threat is called out in RFC9700 Section 4.9.1 ([Access Token Phishing by Counterfeit Resource Server](https://datatracker.ietf.org/doc/html/rfc9700#name-access-token-phishing-by-co)), with defenses mentioned by Section 4.9.3 ([Countermeasures](https://datatracker.ietf.org/doc/html/rfc9700#name-countermeasures-8)) such as making access tokens sender-constrained and audience-restricted.\n\n> it\u2019s more a resource server issue\n\nI would say although our \"Client Configuration Confusion\" is Resource Server-related, it is complementary to the aforementioned threat and defense.\n* Threat-wise, we focus on reusing registered clients of an honest AS to exfiltrate access tokens, when the client has no intention of leaking the registered client's tokens to an attacker-controlled resource server.\n* Defense-wise, sender-constrained and audience-restricted tokens are sort of like defense-in-depth, while the defense for client configuration confusion is a specific security measure to resolve issues in open ecosystems.",
+          "createdAt": "2025-06-12T03:23:28Z",
+          "updatedAt": "2025-06-12T13:41:49Z"
+        }
+      ]
     },
     {
       "number": 21,
@@ -354,9 +392,31 @@
       "labels": [],
       "body": "(This is part of the feedback by @adon-at-work on #17, to be resolved by @KevinLuo2000)\n\n> With due respect, I recommend the following structure, with contents from 2.3.3 absorbed in appropriate sections.\n> \n> I suppose we should write it as a new attack, either we call it Advanced Mix-up Attacks (if you want to honor D Fett) or COAT and CORF Attacks, or even COAT and CORF (aka. Advanced mix-up). As you introduce it, may be we should just say this section 2.2 supersedes mix-up as defined in RFC9700 and/or we should frame there\u2019re n variants, and certain variants is covered by RFC9700.\n> \n> **2.2.1 Attack Description**\n> \u201cThe description here follows RFC9700 section 4.4 (kinda give credit to them), with new variants of the attack outlined below.\u201d\n> \n> Preconditions:\n> * copy presumptions that are still valid, probably we will use only the first one in 4.4\n> * **AS-sharing. a client can use a (honest) AS, with multiple sets of different client credentials (e.g.., client id), for legitimate purposes.** (RFC9700 implicitly assumed/implied otherwise. Just in case a client can guarantee uniqueness of AS, RFC9700 4.4 suffices\u2026 I assume this is true. If not, we may point to a discussion section.)\n> A final paragraph like \u201cHence this advanced mix-up requires less assumptions than the mixup in RFC9700.\u201d\n> And so we split the discussion into 2 subsections\n> \n> **2.2.1.1 Same redirect_uri**\n> Same as 4.4.1 + redirect_uri in the attack steps\n> Variants:\n> * Mix-Up with Interception. (same as 4.4.4.1) still copy their text\n> * Implicit Grant(same as 4.4.4.1) still copy their text\n> * OpenID Connect(same as 4.4.4.1) still copy their text\n> * Na\u00efve\u2026 or CORF (new)\n> * Whatever other new variant\n> \n> **2.2.1.2 Distinct redirect_uri**\n> Open this paragraph with why it can still fail, as opposed to understanding in RFC9700.\n> Same as 4.4.1 with distinct redirect_uri adjusted accordingly in attack steps\n> \n> Variants:\n> * Mix-Up with Interception. refer to 2.2.2.1\n> * Implicit Grant. refer to 2.2.2.1\n> * OpenID Connect. refer to 2.2.2.1\n> * Inherit other in 2.2.2.1\n> * Add any new, if any\n> \n> (new and old) Variants corresponding and unique to distinct redirect_uri.\n> \n> **2.2.2 Countermeasures.**\n> 2.2.2.1\n> When precondition 2 does not hold, or when client has enforced that the AS-sharing condition will NOT exist. One may refer to 4.4.2, except with the following cavets/updates\u2026\u2026 this is basically your draft. But please make those suggested defenses split also in bullet form that kinda correspond to Variant list (better if you can come up with a name for them instead of Variant 1,2,3).\n> \n> 2.2.2.2\n> Given precondition 2, 2.2.1.1 needs to change to use distinct redirect_uri, right?",
       "createdAt": "2025-04-22T19:56:57Z",
-      "updatedAt": "2025-05-09T02:23:55Z",
+      "updatedAt": "2025-06-13T01:15:30Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "body": "> AS-sharing. a client can use a (honest) AS, with multiple sets of different client credentials (e.g.., client id), for legitimate purposes. (RFC9700 implicitly assumed/implied otherwise. Just in case a client can guarantee uniqueness of AS, RFC9700 4.4 suffices\u2026 I assume this is true. If not, we may point to a discussion section.)\n\nI agree, but there maybe some misunderstandings here. Let me clarify:\n\n**On AS-sharing:**\n* If a client can guarantee uniqueness of AS, as you said, RFC9700 4.4 suffices, which is true.\n* If a client cannot guarantee uniqueness of AS, my claim is, RFC9700 4.4 still suffices (though there is an alternative) in defense (4.4.2), but needs clarifications on the attack descriptions (4.4.1). \n\n----\nFor **attack descriptions** (4.4.1), there are some ambiguities in the texts:\n> Preconditions: For this variant of the attack to work, it is assumed that\n> ...\n> * **the client stores the authorization server chosen by the user** in a session bound to the user's browser and uses the same redirection URI for each authorization server.\n\n> Attack on the authorization code grant:\n> ...\n> 2. **The client stores in the user's session that the user selected \"A-AS\"** and ...\n\nImplementers may argue that, \"storing the _authorization server_ chosen by the user\" will break the functional requirement of tracking issuer-sharing client configurations (e.g., sending the correct client credentials to the token endpoint). In other words, for a client to distinguish issuer-sharing client configurations, it cannot (just) store the \"authorization server\" chosen by the user, but should (also) store the \"client configuration\". Thus, the attacks in scenarios with shared issuers are simply out of scope of RFC9700 4.4.1, since the preconditions do not hold.\n\nThis is the confusing part with the attack description. I tried to clarify it in https://kevinluo2000.github.io/TestIETF/draft-wuertele-oauth-security-topics-update.html#name-attack-description-2.\n\n\n----\nWhen it comes to **countermeasures** (4.4.2), however, I would argue that 4.4 is sufficient.\nThe defenses in 4.4.2 requires the client to track each issuer (in a session), and compare with the returned issuer. The defenses do work for issuer-sharing client configurations, because the issuer bind authorization and token endpoints, leaving no room for the infiltration of a malicious endpoint. A client supporting issuer-sharing client configurations can, store the client configuration chosen by the user (for functional needs), and, at the same time, store and compare the returned issuer (for mix-up defense).\n\nTherefore, I suggested the \"distinct redirect_uri per client configuration\" defense as an _alternative_ to issuer-based defenses. See https://kevinluo2000.github.io/TestIETF/draft-wuertele-oauth-security-topics-update.html#name-countermeasures-2.\n",
+          "createdAt": "2025-06-13T01:08:44Z",
+          "updatedAt": "2025-06-13T01:15:30Z"
+        },
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "body": "**Structure:**\n> 2.2.1 Attack Description\n> 2.2.1.1 Same redirect_uri\n> 2.2.1.2 Distinct redirect_uri\n\nWhile same/distinct redirect_uri do relate to the attack preconditions, IMHO it is not a decisive factor in mix-up, thus I'd rather not treat it as a top-level separation in the attack description. Also, the \"distinct\" term alone can be unspecified since there are distinct per _issuer_ and distinct per _client configuration_. \n\n\n> 2.2.2 Countermeasures.\n> 2.2.2.1\n> When precondition 2 (AS-sharing) does not hold\n> 2.2.2.2\n> Given precondition 2 (AS-sharing), ...\n\nI agree with the separation here. I think AS/issuer-sharing should be the decisive factor in defense, and also the attack description. \n- Old World - No issuer-sharing: RFC9700 Section 4.4 + https://kevinluo2000.github.io/TestIETF/draft-wuertele-oauth-security-topics-update.html#section-2.2 .\n- New World - With issuer-sharing (Commonly seen in Open Ecosystems): https://kevinluo2000.github.io/TestIETF/draft-wuertele-oauth-security-topics-update.html#section-2.3.3.",
+          "createdAt": "2025-06-13T01:08:52Z",
+          "updatedAt": "2025-06-13T01:08:52Z"
+        },
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "body": "**Clarification:**\n> 2.2.2.2\n> Given precondition 2, 2.2.1.1 (Attack Description - Same redirect_uri) needs to change to use distinct redirect_uri, right?\n\nNot really. With same redirect_uri, a client could:\n* store each client configuration in a session (to fulfill functional requirement), AND\n* store each issuer in a session (maybe associated with stored client configuration thus no need of extra storage in session), AND\n* match with returned issuer identifier following RFC9207 (to fulfill security requirement a.k.a. mix-up defense).\n\nThis can be done without changing to use distinct redirect_uri.",
+          "createdAt": "2025-06-13T01:08:58Z",
+          "updatedAt": "2025-06-13T01:12:14Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -753,19 +813,281 @@
       "labels": [],
       "body": "Resolves #3.\r\n\r\nPreview: https://kevinluo2000.github.io/TestIETF/draft-wuertele-oauth-security-topics-update.html\r\n\r\nCurrently, I separated the mix-up updates that are open ecosystem-agnostic (Section 2.2) from those that have to do with the open ecosystem/issuer-sharing setting (Section 2.3.1-2.3.3), and added a preliminary draft on the newly-developed RS mix-up idea (Section 2.3.4, now referred to as \u201cClient Configuration Confusion Attack\u201d).\r\n\r\nThe contents are based on:\r\n\r\n- Our original proposed updates to IETF [Dec 2024-Jan 2025]\r\n- Feedback from Aaron, Daniel, Guido, and others at OAuth Security Workshop [Feb 2025]\r\n    - Especially, clearly define what constitutes an integrated \u201capp\u201d, and use an alternative term to avoid the confusion with what an \u201capplication\u201c usually stands for in OAuth\r\n- Follow-up discussions (mainly with @SECtim) in the OAuth Security Workshop\u2019s \\#mix-up-attacks Slack channel [Mar-Apr 2025]\r\nas well as invaluable insights/feedback from one-on-one discussions/group meeting with @adon-at-work @SECtim @PedramHD , and my research group.\r\n\r\nNote that I still have some unresolved comments from @adon-at-work side, regarding the structure and writing style. I will post them as GitHub issues and start resolving them in the upcoming days.",
       "createdAt": "2025-04-18T06:06:35Z",
-      "updatedAt": "2025-06-12T01:04:49Z",
+      "updatedAt": "2025-06-13T19:37:57Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "30f3313b338b3482190f7eb21f2c40bd40180461",
       "headRepository": "KevinLuo2000/draft-wuertele-oauth-security-topics-update",
       "headRefName": "main",
-      "headRefOid": "ba3ee5b71788a836398e67119433b94a4655cf09",
+      "headRefOid": "46d439622941f2f713d83c61a0066fa0cd29a72c",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "body": "Thank you for your prompt review! Let me resolve the important comments and I'll then merge the commits.",
+          "createdAt": "2025-06-13T09:48:42Z",
+          "updatedAt": "2025-06-13T09:48:42Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOKn4ys6uHtR-",
+          "commit": {
+            "abbreviatedOid": "163f9e4"
+          },
+          "author": "SECtim",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "Thanks for this extensive PR! I like the writing style and (most of the) structure. \r\nPlease interpret my comments as suggestions (of varying importance) - if there's need for discussion on some (or all) of them, we can just move them to issues and merge this PR nonetheless, so we can get a first individual I-D out soon.\r\n\r\nHence my approval despite the many comments :smile: ",
+          "createdAt": "2025-06-12T13:48:33Z",
+          "updatedAt": "2025-06-12T14:50:02Z",
+          "comments": [
+            {
+              "originalPosition": 10,
+              "body": "With all due respect, it does not look to me like Adonis provided substantial text to this draft (but please correct me if I am wrong about this!). Reviewing a draft is commonplace in the IETF, reviewers are then usually listed in the acknowledgments section.",
+              "createdAt": "2025-06-12T13:48:33Z",
+              "updatedAt": "2025-06-12T14:50:02Z"
+            },
+            {
+              "originalPosition": 71,
+              "body": "This gets rendered as `Authors, M. C. P. S.` in the reference section. Can we just supply an `ins` element with the full `Model Context Protocol Specification Authors` again?\r\nI did not really check the MCP spec for different authorship information, but maybe we can instead list an organization or smth. similar here?",
+              "createdAt": "2025-06-12T13:51:57Z",
+              "updatedAt": "2025-06-12T14:50:03Z"
+            },
+            {
+              "originalPosition": 174,
+              "body": "> it is implicitly assumed that each authorization server has only one client configuration at a client\r\n\r\nI know what you mean by that and with the above definition of \"client configuration\", all the information is there to understand this statement - but I think this might confuse readers not already familiar with the topic, because in the traditional setting, a client \"has a configuration\" at an AS, not the other way round. Maybe it is possible to express this in terms of the traditional OAuth model, e.g.,\r\n\r\n> In traditional OAuth deployments, it is implicitly assumed that there is exactly one client configuration for each client-authorization server pair.",
+              "createdAt": "2025-06-12T14:01:43Z",
+              "updatedAt": "2025-06-12T14:50:03Z"
+            },
+            {
+              "originalPosition": 157,
+              "body": "A more tangible example might help readers to get on the right (mental) track, e.g.,\r\n\r\n> ... associated authorization servers at development time (e.g., in integration platforms, where external services register themselves as authorization and resource servers with a platform that acts as a client, see {{research.cuhk}})\r\n\r\n... maybe even more concrete?",
+              "createdAt": "2025-06-12T14:05:12Z",
+              "updatedAt": "2025-06-12T14:50:03Z"
+            },
+            {
+              "originalPosition": 157,
+              "body": "It might be helpful for readers to explicitly say something along the lines of \"in what we refer to as open ecosystems, the registration roles are reversed: ...\" at the beginning of that paragraph.\r\n\r\nThinking about it, I am not sure I agree with defining \"open ecosystems\" as\r\n\r\n> protected resources accessible to a client are configured beyond the discretion of the client or client developers\r\n\r\n... because deciding what is accessible to a client is up to the AS/RS/RO in the traditional OAuth model as well. Or am I missing something here? Is there a good reason to not define \"open ecosystems\" via the \"reversed registration\" characteristic?",
+              "createdAt": "2025-06-12T14:15:06Z",
+              "updatedAt": "2025-06-12T14:50:03Z"
+            },
+            {
+              "originalPosition": 172,
+              "body": "At this point, readers do not yet know what \"issuer sharing\" is, I guess that's the reason for the \"(explained below)\". I suggest putting \"(explained below)\" or \"(see below)\" right after \"issuer-sharing\", so readers don't get hung up on this term.",
+              "createdAt": "2025-06-12T14:18:55Z",
+              "updatedAt": "2025-06-12T14:50:03Z"
+            },
+            {
+              "originalPosition": 174,
+              "body": "> Under this assumption, the issuer serves as a unique identifier for the client.\r\n\r\nI think we should be very explicit about what we mean by \"the issuer\" in this context (because that's exactly where the problem is).\r\n\r\n```suggestion\r\nIn traditional OAuth deployments, it is implicitly assumed that each authorization server has only one client configuration at a client. Under this assumption, the issuer (as defined in {{Section 4.4.2 of !RFC9700}}) serves as a unique identifier for the client. This has led to the common practice of clients tracking \"the authorization server chosen by the user\" during OAuth flows, as well as the adoption of existing mix-up defenses ({{Section 4.4.2 of !RFC9700}}), all of which are based on the issuer concept that uniquely identifies each authorization server.\r\n```",
+              "createdAt": "2025-06-12T14:23:13Z",
+              "updatedAt": "2025-06-12T14:50:03Z"
+            },
+            {
+              "originalPosition": 174,
+              "body": "> all of which are based on the issuer concept that uniquely identifies each authorization server.\r\n\r\nI suggest adding (at the end):\r\n\r\n> all of which are based on the issuer concept that uniquely identifies each authorization server from the client's point of view. However, crucially, the issuer does not uniquely identify a client configuration as defined above.",
+              "createdAt": "2025-06-12T14:25:20Z",
+              "updatedAt": "2025-06-12T14:50:03Z"
+            },
+            {
+              "originalPosition": 187,
+              "body": "This section is labeled \"Attack Description\", but I don't think anyone not already familiar with the topic will have a good understanding of the attack after reading this section.\r\nIt feels like the stage is set by explaining that open ecosystems extend the RFC 9700 scenario, but the remaining paragraphs don't really explain the actual attack.",
+              "createdAt": "2025-06-12T14:33:18Z",
+              "updatedAt": "2025-06-12T14:50:03Z"
+            },
+            {
+              "originalPosition": 212,
+              "body": "I think the current state makes sense.",
+              "createdAt": "2025-06-12T14:34:35Z",
+              "updatedAt": "2025-06-12T14:50:03Z"
+            },
+            {
+              "originalPosition": 254,
+              "body": "```suggestion\r\n4. The client redeems the code issued by H-AS at H-AS's token endpoint. To authenticate with H-AS, the client creates a client assertion signed by itself. Recall that both A-Config and H-Config registered the client with H-AS under the same client ID, and that the client uses the same key pair for authentication at H-AS. Hence, this client assertion, if required, would be a valid authentication credential for the client at H-AS. Generating client assertions in this step is of course only relevant for confidential clients.\r\n```\r\n\r\nPublic clients cannot authenticate (by definition, see Sec. 2 of RFC 6749).",
+              "createdAt": "2025-06-12T14:41:23Z",
+              "updatedAt": "2025-06-12T14:50:03Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys6uJHxd",
+          "commit": {
+            "abbreviatedOid": "163f9e4"
+          },
+          "author": "PedramHD",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-06-12T15:11:09Z",
+          "updatedAt": "2025-06-12T15:11:09Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOKn4ys6uS8oi",
+          "commit": {
+            "abbreviatedOid": "163f9e4"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-13T10:12:10Z",
+          "updatedAt": "2025-06-13T10:12:10Z",
+          "comments": [
+            {
+              "originalPosition": 10,
+              "body": "Thanks for the question!\r\nWhile the commits were pushed by me, I worked closely with Adonis when producing the texts (we work as a team and communicate via email and weekly meetings), so his contribution went beyond a reviewer role. \r\nAfter we publish the first version of I-D, he may also directly edit the spec through PRs, which I'm sure will make our sections more engineer-friendly.",
+              "createdAt": "2025-06-13T10:12:10Z",
+              "updatedAt": "2025-06-13T10:12:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys6uTd4C",
+          "commit": {
+            "abbreviatedOid": "163f9e4"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-13T11:01:19Z",
+          "updatedAt": "2025-06-13T11:01:19Z",
+          "comments": [
+            {
+              "originalPosition": 71,
+              "body": "Good catch!\r\n\r\n\"Model Context Protocol is an open source project run by [Anthropic, PBC.](https://anthropic.com/) and open to contributions from the entire community.\"\r\n\r\nMCP an open protocol first introduced by Anthropic but contributed by the broader community. I'll use Anthropic as author in the reference for now and update it if needed later.",
+              "createdAt": "2025-06-13T11:01:19Z",
+              "updatedAt": "2025-06-13T11:01:19Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys6uT4r7",
+          "commit": {
+            "abbreviatedOid": "163f9e4"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-13T11:22:37Z",
+          "updatedAt": "2025-06-13T11:22:37Z",
+          "comments": [
+            {
+              "originalPosition": 212,
+              "body": "Sure, marked as resolved.",
+              "createdAt": "2025-06-13T11:22:37Z",
+              "updatedAt": "2025-06-13T11:22:37Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys6uU3pZ",
+          "commit": {
+            "abbreviatedOid": "163f9e4"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-13T12:53:27Z",
+          "updatedAt": "2025-06-13T12:53:27Z",
+          "comments": [
+            {
+              "originalPosition": 174,
+              "body": "> However, crucially, the issuer does not uniquely identify a client configuration as defined above.\r\n\r\nI'm not sure if we should at it under this \"traditional OAuth deployments\" paragraph. \r\n\r\nIn traditional OAuth deployments, there is exactly one client configuration for each client-authorization server pair. So if we are only talking about uniqueness/unique identifier, from the client's point of view, issuer==client configuration==authorization server.",
+              "createdAt": "2025-06-13T12:53:27Z",
+              "updatedAt": "2025-06-13T12:54:26Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys6uWC3m",
+          "commit": {
+            "abbreviatedOid": "163f9e4"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-13T14:21:06Z",
+          "updatedAt": "2025-06-13T14:21:06Z",
+          "comments": [
+            {
+              "originalPosition": 254,
+              "body": "When I wrote this paragraph, I was referring to section 2.3 of RFC6749, where there is a MAY for public clients:\r\n> The authorization server MAY establish a client authentication method with public clients.  However, the authorization server MUST NOT rely on public client authentication for the purpose of identifying the client.\r\n\r\nThat said, I've updated as what you suggested.",
+              "createdAt": "2025-06-13T14:21:06Z",
+              "updatedAt": "2025-06-13T14:21:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys6uZf7L",
+          "commit": {
+            "abbreviatedOid": "163f9e4"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-13T18:29:44Z",
+          "updatedAt": "2025-06-13T18:29:44Z",
+          "comments": [
+            {
+              "originalPosition": 187,
+              "body": "Agree. The \"Attack Description\" did not really explain how an attack can be mounted.\r\n\r\nI've now included the full description of a mix-up attack variant in such open ecosystem setting. ",
+              "createdAt": "2025-06-13T18:29:44Z",
+              "updatedAt": "2025-06-13T18:29:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys6uZhTq",
+          "commit": {
+            "abbreviatedOid": "163f9e4"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-13T18:30:47Z",
+          "updatedAt": "2025-06-13T18:30:47Z",
+          "comments": [
+            {
+              "originalPosition": 172,
+              "body": "Nice suggestion.",
+              "createdAt": "2025-06-13T18:30:47Z",
+              "updatedAt": "2025-06-13T18:30:47Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys6uaWp-",
+          "commit": {
+            "abbreviatedOid": "163f9e4"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-13T19:37:57Z",
+          "updatedAt": "2025-06-13T19:37:57Z",
+          "comments": [
+            {
+              "originalPosition": 157,
+              "body": "This is a good point and I do have some special considerations in the wording.\r\nWill come back to this later.",
+              "createdAt": "2025-06-13T19:37:57Z",
+              "updatedAt": "2025-06-13T19:37:58Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
