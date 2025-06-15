@@ -589,11 +589,11 @@ Attack on the authorization code grant:
 Variant in Implicit Grant:
 In the implicit grant, H-AS issues an access token instead of the code in Step 3. Step 4 is omitted. The rest of the attack proceeds as above.
 
-##### Notice on Sharing Client IDs
+##### Discussion: on Sharing Client IDs
 
-The scope of client configuration confusion attack is limited to the reuse of registered clients, and considers phishing threats involving the open registration of new clients as out of scope (which can be mitigated by existing mechanisms such as vetting during manual registration, or via initial access tokens as defined in {{Section 1.2 of ?RFC7591}}).
+The scope of client configuration confusion attack is limited to the reuse of registered clients, and considers phishing threats involving the open registration of new clients as out of scope, because such threats can be mitigated by existing mechanisms such as vetting during manual registration, or via initial access tokens as defined in {{Section 1.2 of ?RFC7591}}.
 
-For the attack to work, A-Config and H-Config need to share the same client ID in client registration (precondition 3 in {{ConfigConfusionAttack}}). This can be the case, for example, if an external developer or end-user can control the client ID used in A-Config during manual registration, or if the client uses dynamic registration to get assigned the same client ID as in H-Config, as detailed below.
+For the attack to work, A-Config and H-Config need to share the same client ID in client registration (precondition 3 in {{ConfigConfusionAttack}}). This can be the case, for example, if an external developer or end-user can control the client ID used in A-Config during manual registration, or if the client uses dynamic registration to get assigned the same client ID for A-Config as in H-Config, as detailed below.
 
 When the client is designed to perform dynamic client registration once per client configuration, A-Config and H-Config could feasibly share the same client ID.
 Unlike the situation in {{AudienceInjection}}, since A-Config uses H-AS instead of A-AS, the attacker cannot directly control which client ID the authorization server assigns to A-Config.
@@ -602,15 +602,16 @@ However, according to the description of client ID returned in Client Informatio
 client_id
 : OAuth 2.0 client identifier string.  It SHOULD NOT be currently valid for any other registered client, though an authorization server MAY issue the same client identifier to multiple instances of a registered client at its discretion.
 
-The second half of the last sentence explicitly allows a client to obtain a client ID of the same value across multiple client registrations, as long as the client is not considered to be unrelated registered clients by the authorization server, but instances of the same registered client.
+The second half of the last sentence explicitly allows a client to obtain a client ID of the same value across multiple client registrations, as long as the client is considered to be instances of the same registered client by the authorization server.
 
 This behavior is intended for registering different "client instances", i.e., different deployed instances of the same piece of client software (see {{Section 1.2 of ?RFC7591}}). However, the authorization server cannot distinguish between this case and a client registering multiple times for different client configurations.
 
-Therefore, a client interacting with A-Config and H-Config could feasibly obtain the same client ID, when the client, based on A-Config, initiates dynamic registration at H-AS. The authorization server, recognizing the two client registration requests as originating from the same client (e.g., indicated by the identical software identifier or software statement provided by the client), is likely to return the same client ID according to {{Section A.4.2 of ?RFC7591}}:
+Specifically, when the client initiates dynamic registration at H-AS based on H-Config and A-Config respectively, the authorization server, recognizing the two client registration requests as originating from the same client (e.g., indicated by the identical software identifier or software statement provided by the client, see {{Section 2 of ?RFC7591}} for their definitions), is likely to return the same client ID according to {{Section A.4.2 of ?RFC7591}}:
 
 {:style="empty"}
 * Particular authorization servers might choose, for instance, to maintain a mapping between software statement values and client identifier values, and return the same client identifier value for all registration requests for a particular piece of software.
 
+Therefore, a client interacting with H-Config and A-Config could feasibly share the same client ID when dynamic client registration is used.
 
 #### Countermeasures {#ConfigConfusionCounter}
 
