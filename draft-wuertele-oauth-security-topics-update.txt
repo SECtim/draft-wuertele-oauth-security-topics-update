@@ -12,7 +12,7 @@ Expires: 18 December 2025                                        A. Fung
                                                             16 June 2025
 
 
-                OAuth 2.0 Security Best Current Practice
+          Updates to OAuth 2.0 Security Best Current Practice
            draft-wuertele-oauth-security-topics-update-latest
 
 Abstract
@@ -95,6 +95,7 @@ Table of Contents
      5.1.  Normative References
      5.2.  Informative References
    Acknowledgments
+   Document History
    Authors' Addresses
 
 1.  Introduction
@@ -110,7 +111,10 @@ Table of Contents
 
 1.1.  Structure
 
-   TODO explain the document structure and how it "fits" with [RFC9700]
+   The remainder of this document is organized as follows: Section 2 is
+   a detailed analysis of the threats and implementation issues that can
+   be found in the wild (at the time of writing) along with a discussion
+   of potential countermeasures.
 
 1.2.  Conventions and Terminology
 
@@ -134,8 +138,12 @@ Table of Contents
 
 2.  Attacks and Mitigations
 
-   TODO section intro, mention that we do not repeat [RFC9700] stuff
-   here
+   This section gives a detailed description of new attacks on OAuth
+   implementations, along with potential countermeasures.  Attacks and
+   mitigations already covered in [RFC9700] are not listed here, except
+   where clarifications or new recommendations are made.  Generally, the
+   attacks in this section assume a scenario where a client can interact
+   with multiple authorization servers.
 
 2.1.  Audience Injection Attacks
 
@@ -1075,16 +1083,31 @@ Table of Contents
 
 Acknowledgments
 
-   We would like to thank Adonis Fung, Kaixuan Luo,
+   We would like to thank
    // TODO add names, sort by last name.
    //
    // -- Tim W.  Daniel Fett, Wing Cheong Lau, Julien Lecomte, Aaron
-   Parecki, Guido Schmitz, Xianbo Wang,
-   // Added by Kaixuan.
-   //
-   // -- Kaixuan L.
+   Parecki, Guido Schmitz, and Xianbo Wang
 
    for their valuable feedback and contributions to this document.
+
+Document History
+
+   [[ To be removed from the final specification ]]
+
+   -01
+
+   *  Updated temporary title
+
+   *  Added introductory paragraphs, replaced placeholders
+
+   *  Clarified issuer does not uniquely identify client config
+
+   *  Cleaned up acknowledgement list
+
+   -00
+
+   *  Initial version
 
 Authors' Addresses
 

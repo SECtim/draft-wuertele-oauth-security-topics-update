@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>OAuth 2.0 Security Best Current Practice</title>
+<title>Updates to OAuth 2.0 Security Best Current Practice</title>
 <meta content="Tim Würtele" name="author">
 <meta content="Pedram Hosseyni" name="author">
 <meta content="Kaixuan Luo" name="author">
@@ -1051,7 +1051,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">OAuth 2.0 Security BCP</td>
+<td class="center">Updates to OAuth 2.0 Security BCP</td>
 <td class="right">June 2025</td>
 </tr></thead>
 <tfoot><tr>
@@ -1101,7 +1101,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </dd>
 </dl>
 </div>
-<h1 id="title">OAuth 2.0 Security Best Current Practice</h1>
+<h1 id="title">Updates to OAuth 2.0 Security Best Current Practice</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This document updates the set of best current security practices for
@@ -1249,7 +1249,10 @@ since the former documents have been published.<a href="#section-abstract-1" cla
             <p id="section-toc.1-1.6.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-document-history" class="internal xref">Document History</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1272,7 +1275,7 @@ implementations and ecosystems as soon as feasible.<a href="#section-1-2" class=
         <h3 id="name-structure">
 <a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-structure" class="section-name selfRef">Structure</a>
         </h3>
-<p id="section-1.1-1">TODO explain the document structure and how it "fits" with <span>[<a href="#RFC9700" class="cite xref">RFC9700</a>]</span><a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-1">The remainder of this document is organized as follows: Section 2 is a detailed analysis of the threats and implementation issues that can be found in the wild (at the time of writing) along with a discussion of potential countermeasures.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-terminology">
@@ -1300,8 +1303,8 @@ technical sections below are completed.<span class="crefSource">Tim W.</span></s
       <h2 id="name-attacks-and-mitigations">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-attacks-and-mitigations" class="section-name selfRef">Attacks and Mitigations</a>
       </h2>
-<p id="section-2-1">TODO section intro, mention that we do not repeat <span>[<a href="#RFC9700" class="cite xref">RFC9700</a>]</span> stuff
-here<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-1">This section gives a detailed description of new attacks on OAuth implementations, along with potential countermeasures. Attacks and mitigations already covered in <span>[<a href="#RFC9700" class="cite xref">RFC9700</a>]</span> are not listed here, except where clarifications or new recommendations are made.
+Generally, the attacks in this section assume a scenario where a client can interact with multiple authorization servers.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <div id="AudienceInjection">
 <section id="section-2.1">
         <h3 id="name-audience-injection-attacks">
@@ -1988,21 +1991,47 @@ However, according to the description of client ID returned in Client Informatio
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
 <p id="appendix-A-1">We would like to thank
-Adonis Fung,
-Kaixuan Luo,
 <span class="cref" id="acksAddNames">TODO add names, sort by last name.<span class="crefSource">Tim W.</span></span>
 Daniel Fett,
 Wing Cheong Lau,
 Julien Lecomte,
 Aaron Parecki,
-Guido Schmitz,
-Xianbo Wang,
-<span class="cref" id="acksAddNamesLuo">Added by Kaixuan.<span class="crefSource">Kaixuan L.</span></span><a href="#appendix-A-1" class="pilcrow">¶</a></p>
+Guido Schmitz, and
+Xianbo Wang<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <p id="appendix-A-2">for their valuable feedback and contributions to this document.<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="authors-addresses">
+<div id="document-history">
 <section id="appendix-B">
+      <h2 id="name-document-history">
+<a href="#name-document-history" class="section-name selfRef">Document History</a>
+      </h2>
+<p id="appendix-B-1">[[ To be removed from the final specification ]]<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-2">-01<a href="#appendix-B-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-B-3.1">
+          <p id="appendix-B-3.1.1">Updated temporary title<a href="#appendix-B-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-3.2">
+          <p id="appendix-B-3.2.1">Added introductory paragraphs, replaced placeholders<a href="#appendix-B-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-3.3">
+          <p id="appendix-B-3.3.1">Clarified issuer does not uniquely identify client config<a href="#appendix-B-3.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-3.4">
+          <p id="appendix-B-3.4.1">Cleaned up acknowledgement list<a href="#appendix-B-3.4.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-B-4">-00<a href="#appendix-B-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-B-5.1">
+          <p id="appendix-B-5.1.1">Initial version<a href="#appendix-B-5.1.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-C">
       <h2 id="name-authors-addresses">
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
