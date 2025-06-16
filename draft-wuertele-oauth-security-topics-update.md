@@ -648,3 +648,19 @@ Xianbo Wang
 
 [^acksAddNames]: TODO add names, sort by last name.
 for their valuable feedback and contributions to this document.
+
+# Document History
+{:numbered="false"}
+
+[[ To be removed from the final specification ]]
+
+-01
+
+* Updated temporary title
+* Added introductory paragraphs, replaced placeholders
+* Clarified issuer does not uniquely identify client config
+* Cleaned up acknowledgement list
+
+-00
+
+* Initial version
