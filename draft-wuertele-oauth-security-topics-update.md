@@ -1,6 +1,6 @@
 ---
-title: "OAuth 2.0 Security Best Current Practice"
-abbrev: "OAuth 2.0 Security BCP"
+title: "Updates to OAuth 2.0 Security Best Current Practice"
+abbrev: "Updates to OAuth 2.0 Security BCP"
 category: bcp
 seriesno: 240
 docname: draft-wuertele-oauth-security-topics-update-latest
