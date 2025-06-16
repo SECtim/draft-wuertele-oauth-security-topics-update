@@ -638,19 +638,13 @@ This document has no IANA actions.
 {:numbered="false"}
 
 We would like to thank
-Adonis Fung,
-Kaixuan Luo,
 [^acksAddNames]{: source="Tim W."}
 Daniel Fett,
 Wing Cheong Lau,
 Julien Lecomte,
 Aaron Parecki,
-Guido Schmitz,
-Xianbo Wang,
-[^acksAddNamesLuo]{: source="Kaixuan L."}
+Guido Schmitz, and
+Xianbo Wang
 
 [^acksAddNames]: TODO add names, sort by last name.
-
-[^acksAddNamesLuo]: Added by Kaixuan.
-
 for their valuable feedback and contributions to this document.
