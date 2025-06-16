@@ -7,6 +7,8 @@
 <title>OAuth 2.0 Security Best Current Practice</title>
 <meta content="Tim Würtele" name="author">
 <meta content="Pedram Hosseyni" name="author">
+<meta content="Kaixuan Luo" name="author">
+<meta content="Adonis Fung" name="author">
 <meta content="
        This document updates the set of best current security practices for
 OAuth 2.0 by extending the security advice given in RFC 6749, RFC
@@ -20,17 +22,17 @@ since the former documents have been published.
 <meta content="draft-wuertele-oauth-security-topics-update-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.28.1
-    Python 3.12.10
+    Python 3.12.11
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.6
-    lxml 5.3.0
-    platformdirs 4.3.7
+    lxml 5.3.1
+    platformdirs 4.3.8
     pycountry 24.6.1
     PyYAML 6.0.2
-    requests 2.32.3
-    setuptools 70.3.0
+    requests 2.32.4
+    setuptools 80.9.0
     wcwidth 0.2.13
 -->
 <link href="draft-wuertele-oauth-security-topics-update.xml" rel="alternate" type="application/rfc+xml">
@@ -1050,11 +1052,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">OAuth 2.0 Security BCP</td>
-<td class="right">April 2025</td>
+<td class="right">June 2025</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Würtele &amp; Hosseyni</td>
-<td class="center">Expires 30 October 2025</td>
+<td class="left">Würtele, et al.</td>
+<td class="center">Expires 18 December 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1072,12 +1074,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc6749" class="eref">6749</a>, <a href="https://www.rfc-editor.org/rfc/rfc6750" class="eref">6750</a>, <a href="https://www.rfc-editor.org/rfc/rfc7521" class="eref">7521</a>, <a href="https://www.rfc-editor.org/rfc/rfc7522" class="eref">7522</a>, <a href="https://www.rfc-editor.org/rfc/rfc7523" class="eref">7523</a>, <a href="https://www.rfc-editor.org/rfc/rfc9700" class="eref">9700</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-04-28" class="published">28 April 2025</time>
+<time datetime="2025-06-16" class="published">16 June 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Best Current Practice</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-10-30">30 October 2025</time></dd>
+<dd class="expires"><time datetime="2025-12-18">18 December 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1087,6 +1089,14 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <div class="author">
       <div class="author-name">P. Hosseyni</div>
 <div class="org">University of Stuttgart</div>
+</div>
+<div class="author">
+      <div class="author-name">K. Luo</div>
+<div class="org">The Chinese University of Hong Kong</div>
+</div>
+<div class="author">
+      <div class="author-name">A. Fung</div>
+<div class="org">Samsung Research America</div>
 </div>
 </dd>
 </dl>
@@ -1134,7 +1144,7 @@ since the former documents have been published.<a href="#section-abstract-1" cla
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 30 October 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 18 December 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1189,7 +1199,32 @@ since the former documents have been published.<a href="#section-abstract-1" cla
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
-                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-todo-title-mix-up-reloaded-" class="internal xref">TODO Title - "Mix-up reloaded" content</a></p>
+                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-updates-to-mix-up-attacks" class="internal xref">Updates to Mix-Up Attacks</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.1">
+                    <p id="section-toc.1-1.2.2.2.2.1.1"><a href="#section-2.2.1" class="auto internal xref">2.2.1</a>.  <a href="#name-updates-to-per-as-redirect-" class="internal xref">Updates to "Per-AS Redirect URIs" Mix-Up Variant</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.2">
+                    <p id="section-toc.1-1.2.2.2.2.2.1"><a href="#section-2.2.2" class="auto internal xref">2.2.2</a>.  <a href="#name-clarifications-on-counterme" class="internal xref">Clarifications on Countermeasures for Mix-Up Variants</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
+                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-attacks-in-open-ecosystems" class="internal xref">Attacks in Open Ecosystems</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3.2.1">
+                    <p id="section-toc.1-1.2.2.3.2.1.1"><a href="#section-2.3.1" class="auto internal xref">2.3.1</a>.  <a href="#name-oauth-in-open-ecosystems" class="internal xref">OAuth in Open Ecosystems</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3.2.2">
+                    <p id="section-toc.1-1.2.2.3.2.2.1"><a href="#section-2.3.2" class="auto internal xref">2.3.2</a>.  <a href="#name-attack-scenario" class="internal xref">Attack Scenario</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3.2.3">
+                    <p id="section-toc.1-1.2.2.3.2.3.1"><a href="#section-2.3.3" class="auto internal xref">2.3.3</a>.  <a href="#name-mix-up-attacks-reloaded" class="internal xref">Mix-Up Attacks Reloaded</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3.2.4">
+                    <p id="section-toc.1-1.2.2.3.2.4.1"><a href="#section-2.3.4" class="auto internal xref">2.3.4</a>.  <a href="#name-client-configuration-confus" class="internal xref">Client Configuration Confusion Attack</a></p>
+</li>
+                </ul>
 </li>
             </ul>
 </li>
@@ -1485,12 +1520,327 @@ use authorization server metadata <span>[<a href="#RFC8414" class="cite xref">RF
 </div>
 </section>
 </div>
-<div id="todo-title-mix-up-reloaded-content">
+<div id="MixUpUpdate">
 <section id="section-2.2">
-        <h3 id="name-todo-title-mix-up-reloaded-">
-<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-todo-title-mix-up-reloaded-" class="section-name selfRef">TODO Title - "Mix-up reloaded" content</a>
+        <h3 id="name-updates-to-mix-up-attacks">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-updates-to-mix-up-attacks" class="section-name selfRef">Updates to Mix-Up Attacks</a>
         </h3>
-<p id="section-2.2-1">TODO<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2-1">Mix-up attacks can occur in scenarios where an OAuth client interacts with two or more authorization servers and at least one authorization server is under the control of the attacker.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2-2">This section extends the mix-up attack analysis in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>. It introduces additional attack variants that can occur when clients use distinct redirection URIs for each authorization server and clarifies the applicability of countermeasures to certain attack variants.<a href="#section-2.2-2" class="pilcrow">¶</a></p>
+<div id="PerASUpdate">
+<section id="section-2.2.1">
+          <h4 id="name-updates-to-per-as-redirect-">
+<a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-updates-to-per-as-redirect-" class="section-name selfRef">Updates to "Per-AS Redirect URIs" Mix-Up Variant</a>
+          </h4>
+<p id="section-2.2.1-1">The basic mix-up attack described in the initial paragraphs of <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4.1" class="relref">Section 4.4.1</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span> specifies, as one of its preconditions, that "the client stores the authorization server chosen by the user in a session bound to the user's browser and uses the same redirection URI for each authorization server".<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-2">If the client instead uses a distinct redirection URI for each authorization server (i.e., Per-AS Redirect URIs), three subvariants of mix-up attacks are still possible. This section updates the description of the "Per-AS Redirect URIs" mix-up variant in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4.1" class="relref">Section 4.4.1</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>, with subvariants 1 and 2 newly introduced in this document:<a href="#section-2.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-3">Per-AS Redirect URIs: There are three subvariants of mix-up attacks when the client uses distinct redirection URIs for each authorization server.<a href="#section-2.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-4">Subvariant 1: Advanced Mix-up Attack. If the client uses different redirection URIs for different authorization servers but treats them as the same URI, a slight variant of the basic mix-up attack remains possible (see Footnote 7 of <span>[<a href="#arXiv.1601.01229" class="cite xref">arXiv.1601.01229</a>]</span>). In this attack, the attacker not only replaces the client ID as in the basic mix-up attack, but also replaces the redirection URI when redirecting the browser to the authorization endpoint of the honest authorization server.<a href="#section-2.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-5">This advanced mix-up attack is described in detail below, with the Preconditions as well as Step 2 and Step 3 updated compared to the basic mix-up attack.<a href="#section-2.2.1-5" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-6">Preconditions: For this variant of the attack to work, it is assumed that<a href="#section-2.2.1-6" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.1-7.1">
+              <p id="section-2.2.1-7.1.1">the implicit or authorization code grant is used with multiple authorization servers of which one is considered "honest" (H-AS) and one is operated by the attacker (A-AS), and<a href="#section-2.2.1-7.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.1-7.2">
+              <p id="section-2.2.1-7.2.1">the client stores the authorization server chosen by the user in a session bound to the user's browser and uses distinct redirection URIs for different authorization servers, but treats them as the same URI (i.e., it does not use the redirection URI to differentiate authorization servers at the redirection endpoint).<a href="#section-2.2.1-7.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-2.2.1-8">In the following, it is further assumed that the client is registered with H-AS (URI: <code>https://honest.as.example</code>, client ID: <code>7ZGZldHQ</code>) and with A-AS (URI: <code>https://attacker.example</code>, client ID: <code>666RVZJTA</code>). Assume that the client issues the redirection URI <code>https://client.com/9XpLmK2qR/cb</code> for H-AS and <code>https://client.com/4FvBn8TzY/cb</code> for A-AS. URLs shown in the following example are shortened for presentation to include only parameters relevant to the attack.<a href="#section-2.2.1-8" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-9">Attack on the authorization code grant:<a href="#section-2.2.1-9" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.2.1-10">
+<li id="section-2.2.1-10.1">
+              <p id="section-2.2.1-10.1.1">The user selects to start the grant using A-AS (e.g., by clicking on a button on the client's website).<a href="#section-2.2.1-10.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.2.1-10.2">
+              <p id="section-2.2.1-10.2.1">The client stores in the user's session that the user selected "A-AS" and redirects the user to A-AS's authorization endpoint with a Location header containing the URL <code>https://attacker.example/authorize?response_type=code&amp;client_id=666RVZJTA</code>
+                <code>&amp;redirect_uri=https%3A%2F%2Fclient.com%2F4FvBn8TzY%2Fcb</code>.<a href="#section-2.2.1-10.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.2.1-10.3">
+              <p id="section-2.2.1-10.3.1">When the user's browser navigates to the attacker's authorization endpoint, the attacker immediately redirects the browser to the authorization endpoint of H-AS. In the authorization request, the attacker replaces the client ID of the client at A-AS with the client's ID at H-AS, and replaces the redirection URI of A-AS with the redirection URI of H-AS. Therefore, the browser receives a redirection (<code>303 See Other</code>) with a Location header pointing to <code>https://honest.as.example/authorize?response_type=code&amp;client_id=7ZGZldHQ</code>
+                <code>&amp;redirect_uri=https%3A%2F%2Fclient.com%2F9XpLmK2qR%2Fcb</code>.<a href="#section-2.2.1-10.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.2.1-10.4">
+              <p id="section-2.2.1-10.4.1">The user authorizes the client to access their resources at H-AS. H-AS issues a code and sends it (via the browser) back to the client.<a href="#section-2.2.1-10.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.2.1-10.5">
+              <p id="section-2.2.1-10.5.1">Since the client still assumes that the code was issued by A-AS, it will try to redeem the code at A-AS's token endpoint.<a href="#section-2.2.1-10.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.2.1-10.6">
+              <p id="section-2.2.1-10.6.1">The attacker therefore obtains code and can either exchange the code for an access token (for public clients) or perform an authorization code injection attack as described in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.5" class="relref">Section 4.5</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>.<a href="#section-2.2.1-10.6.1" class="pilcrow">¶</a></p>
+</li>
+          </ol>
+<p id="section-2.2.1-11">Subvariant 2: Naïve RP Session Integrity Attack. If clients use different redirection URIs for different authorization servers, and clients do not store the selected authorization server in the user's session, attackers can mount an attack called "Naïve RP Session Integrity Attack". Note that unlike other mix-up variants, the goal of this attack is not to obtain an authorization code or access token, but to force the client to use an attacker's authorization code or access token for H-AS. See Section 3.4 of <span>[<a href="#arXiv.1601.01229" class="cite xref">arXiv.1601.01229</a>]</span> for details.<a href="#section-2.2.1-11" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-12">Subvariant 3: Cross Social-Network Request Forgery. If clients use different redirection URIs for different authorization servers, clients do not store the selected authorization server in the user's session, and authorization servers do not check the redirection URIs properly (see <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>), attackers can mount an attack called "Cross Social-Network Request Forgery". These attacks have been observed in practice. Refer to <span>[<a href="#research.jcs_14" class="cite xref">research.jcs_14</a>]</span> for details.<a href="#section-2.2.1-12" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="CountermeasureUpdate">
+<section id="section-2.2.2">
+          <h4 id="name-clarifications-on-counterme">
+<a href="#section-2.2.2" class="section-number selfRef">2.2.2. </a><a href="#name-clarifications-on-counterme" class="section-name selfRef">Clarifications on Countermeasures for Mix-Up Variants</a>
+          </h4>
+<p id="section-2.2.2-1"><span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4.2" class="relref">Section 4.4.2</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span> specifies two countermeasures, Mix-Up Defense via Issuer Identification and via Distinct Redirect URIs (referred to hereafter as "existing mix-up defenses"). Both defenses require the client to store and compare the issuer of the authorization server. Specifically, the issuer is defined in the second paragraph of <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4.2" class="relref">Section 4.4.2</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span> as follows:<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.2.2-2.1">
+              <p id="section-2.2.2-2.1.1">The issuer serves ... as an abstract identifier for the combination of the authorization endpoint and token endpoint that are to be used in the flow. If an issuer identifier is not available ..., a different unique identifier for this tuple or the tuple itself can be used instead.<a href="#section-2.2.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-2.2.2-3">Existing mix-up defenses are sufficient to protect against most attack variants, with a few specific cases requiring clarification:<a href="#section-2.2.2-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.2-4.1">
+              <p id="section-2.2.2-4.1.1">For the mix-up attack variant in "Implicit Grant", since the flow does not involve a token endpoint, a unique identifier for the authorization endpoint URL <span class="bcp14">MAY</span> be used as the equivalent of issuer if an issuer identifier is not available. Then, clients <span class="bcp14">MUST</span> apply existing mix-up defenses.<a href="#section-2.2.2-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.2-4.2">
+              <p id="section-2.2.2-4.2.1">For all three subvariants of the "Per-AS Redirect URIs" attack variant (<a href="#PerASUpdate" class="auto internal xref">Section 2.2.1</a>), clients <span class="bcp14">MUST</span> follow existing mix-up defenses to defend against mix-up attacks. Clients <span class="bcp14">MAY</span> choose to reuse the per-AS redirection URI already configured in their deployments to satisfy the "distinct redirection URI for each issuer" requirement when implementing the "Mix-Up Defense via Distinct Redirect URIs" defense (<span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4.2.2" class="relref">Section 4.4.2.2</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>). For subvariant 3 ("Cross Social-Network Request Forgery"), the existing mix-up defenses alone are not sufficient. In addition, authorization servers <span class="bcp14">MUST</span> enforce exact redirection URI matching, as specified in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.1.3" class="relref">Section 4.1.3</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>.<a href="#section-2.2.2-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-2.2.2-5">Note that when the issuer is not unique to a client (i.e., when a client can interact with multiple configurations of the same authorization server), the security considerations go beyond the scope of mix-up attacks and are discussed further in <a href="#OpenEcosystem" class="auto internal xref">Section 2.3</a>.<a href="#section-2.2.2-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="OpenEcosystem">
+<section id="section-2.3">
+        <h3 id="name-attacks-in-open-ecosystems">
+<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-attacks-in-open-ecosystems" class="section-name selfRef">Attacks in Open Ecosystems</a>
+        </h3>
+<p id="section-2.3-1">This section describes the OAuth use case and associated attacks in open ecosystems, along with practical countermeasures tailored to such environments.<a href="#section-2.3-1" class="pilcrow">¶</a></p>
+<div id="ApplicationScenario">
+<section id="section-2.3.1">
+          <h4 id="name-oauth-in-open-ecosystems">
+<a href="#section-2.3.1" class="section-number selfRef">2.3.1. </a><a href="#name-oauth-in-open-ecosystems" class="section-name selfRef">OAuth in Open Ecosystems</a>
+          </h4>
+<p id="section-2.3.1-1">In traditional OAuth deployments, a client registers with an authorization server to access protected resources hosted by a resource server.
+The means through which the client registers with an authorization server typically involve the client developer manually registering the client at the authorization server's website, or by using Dynamic Client Registration <span>[<a href="#RFC7591" class="cite xref">RFC7591</a>]</span>.
+The client may access different resources from distinct resource servers, thereby requiring registration with multiple authorization servers.
+The choice of what resources to access (and thus which authorization and resource servers to integrate) is at the discretion of the client (or client developer).<a href="#section-2.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.3.1-2">This section discusses OAuth in "open ecosystems", where the protected resources accessible to a client are configured beyond the discretion of the client or client developers.
+This can be the case, for example, if the client offers an open marketplace or registry where external developers can publish information about resource servers and associated authorization servers at development time (e.g., in integration platforms, where external services register themselves as authorization and resource servers with a platform that acts as a client, see <span>[<a href="#research.cuhk" class="cite xref">research.cuhk</a>]</span>), or if an end-user can specify any compliant configurations to interact with at runtime (e.g., in the Model Context Protocol <span>[<a href="#MCP-Spec" class="cite xref">MCP-Spec</a>]</span>).<a href="#section-2.3.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.3.1-3">This document defines a "client configuration" as a set of configuration elements that enable a client to access an OAuth 2.0 protected resource, including details about the authorization server, client registration, and the resource server.
+In open ecosystems, these configuration elements are typically managed as follows:<a href="#section-2.3.1-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.3.1-4.1">
+              <p id="section-2.3.1-4.1.1">Authorization Server configuration: Clients may employ a manual approach, where external developers or end-users enter the necessary fields (i.e., endpoint URLs of the authorization server) at the client's website, or support fetching information about the authorization server via Authorization Server Metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span>.<a href="#section-2.3.1-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.3.1-4.2">
+              <p id="section-2.3.1-4.2.1">Client Registration configuration at the authorization server: Clients may employ a manual approach, where external developers or end-users enter the necessary fields (i.e., client identifier and client credentials) at the client's website, or support fetching information about the client registration via Dynamic Client Registration <span>[<a href="#RFC7591" class="cite xref">RFC7591</a>]</span>.<a href="#section-2.3.1-4.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.3.1-4.3">
+              <p id="section-2.3.1-4.3.1">Protected Resource configuration: Clients may employ a manual approach, where external developers or end-users enter the necessary fields (i.e., endpoint URLs of the resource server) at the client's website, or support fetching information about the protected resource via Protected Resource Metadata <span>[<a href="#RFC9728" class="cite xref">RFC9728</a>]</span>. External developers or end-users may further specify when and how the protected resources shall be fetched and processed by the clients.<a href="#section-2.3.1-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-2.3.1-5">The integration pattern in open ecosystems expands the use of OAuth in dynamic scenarios, creating new challenges with respect to functionality and security beyond the scope of <span>[<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>.<a href="#section-2.3.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="AttackScenario">
+<section id="section-2.3.2">
+          <h4 id="name-attack-scenario">
+<a href="#section-2.3.2" class="section-number selfRef">2.3.2. </a><a href="#name-attack-scenario" class="section-name selfRef">Attack Scenario</a>
+          </h4>
+<p id="section-2.3.2-1">With the new integration model, OAuth in open ecosystems introduces two notable implications:<a href="#section-2.3.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.3.2-2.1">
+              <p id="section-2.3.2-2.1.1">Increased risk of malicious integration: Since the responsibility of integrating client configurations is shifted to external developers or end-users, there is an increased risk that malicious client configurations may be introduced, including attacker-controlled authorization servers or resource servers.<a href="#section-2.3.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.3.2-2.2">
+              <p id="section-2.3.2-2.2.1">New requirements for handling shared issuers: Clients shall support client configurations with potentially shared issuers (explained below) to fulfill functional needs, which in turn introduces new security gaps.<a href="#section-2.3.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-2.3.2-3">In traditional OAuth deployments, it is implicitly assumed that there is exactly one client configuration for each client-authorization server pair. Under this assumption, the issuer (as defined in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4.2" class="relref">Section 4.4.2</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>) serves as a unique identifier for the client. This has led to the common practice of clients tracking "the authorization server chosen by the user" during OAuth flows, as well as the adoption of existing mix-up defenses (<span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4.2" class="relref">Section 4.4.2</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>), all of which are based on the issuer concept that uniquely identifies each authorization server from the client's point of view.<a href="#section-2.3.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.3.2-4">In open ecosystems, however, the new integration pattern does not, and fundamentally cannot, restrict the use of the same authorization server across multiple client configurations. For instance, clients may legitimately integrate various functionalities that access different resources or process the same resources differently, while relying on the same authorization server (i.e., having shared issuers).
+As a result, the client may integrate with an authorization server under the attacker's control (<a href="#MixUpReloaded" class="auto internal xref">Section 2.3.3</a>), or an attacker-controlled resource server paired with an honest authorization server -- even if the authorization server is already integrated at the client under a different client configuration (<a href="#ConfigConfusion" class="auto internal xref">Section 2.3.4</a>).<a href="#section-2.3.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="MixUpReloaded">
+<section id="section-2.3.3">
+          <h4 id="name-mix-up-attacks-reloaded">
+<a href="#section-2.3.3" class="section-number selfRef">2.3.3. </a><a href="#name-mix-up-attacks-reloaded" class="section-name selfRef">Mix-Up Attacks Reloaded</a>
+          </h4>
+<p id="section-2.3.3-1">This section provides a tailored attack description and alternative countermeasure for mix-up attacks in open ecosystems. The descriptions here follow <span>[<a href="#research.cuhk" class="cite xref">research.cuhk</a>]</span>, where additional details are laid out.<a href="#section-2.3.3-1" class="pilcrow">¶</a></p>
+<div id="ReloadedDescription">
+<section id="section-2.3.3.1">
+            <h5 id="name-attack-description-2">
+<a href="#section-2.3.3.1" class="section-number selfRef">2.3.3.1. </a><a href="#name-attack-description-2" class="section-name selfRef">Attack Description</a>
+            </h5>
+<p id="section-2.3.3.1-1"><span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span> exemplifies scenarios in which an attacker-controlled authorization server may be introduced:<a href="#section-2.3.3.1-1" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.3.3.1-2.1">
+                <p id="section-2.3.3.1-2.1.1">This can be the case, for example, if the attacker uses dynamic registration to register the client at their own authorization server, or if an authorization server becomes compromised.<a href="#section-2.3.3.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+<p id="section-2.3.3.1-3">OAuth deployments in open ecosystems extend the above scenarios: an external developer or end-user can introduce an attacker-controlled authorization server by integrating a new client configuration at the client.<a href="#section-2.3.3.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.3.3.1-4">Furthermore, multiple client configurations may use the same authorization server (i.e., share the same issuer).
+To manage such scenarios, the client should treat each client configuration independently, typically by keeping track of the client configuration chosen by the user during the OAuth flow. For example, the client may store a unique identifier for each client configuration (rather than for each authorization server) in the user's session, or assign a distinct redirection URI to each client configuration.
+This enables the client to distinguish between client configurations, retrieve the correct client registration information for access token requests, and access the intended protected resources.<a href="#section-2.3.3.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.3.3.1-5">Attackers can exploit this setup to mount mix-up attacks, using a malicious authorization server from an attacker-controlled client configuration to target the honest authorization server from an honest client configuration. For details on this attack vector, see "Cross-app OAuth Account Takeover" (COAT) and "Cross-app OAuth Request Forgery" (CORF) in Section 4.2 of <span>[<a href="#research.cuhk" class="cite xref">research.cuhk</a>]</span>.<a href="#section-2.3.3.1-5" class="pilcrow">¶</a></p>
+<p id="section-2.3.3.1-6">As an example, the attack analogous to the Advanced Mix-up Attack described in <a href="#PerASUpdate" class="auto internal xref">Section 2.2.1</a> is outlined below.<a href="#section-2.3.3.1-6" class="pilcrow">¶</a></p>
+<p id="section-2.3.3.1-7">Preconditions: For this variant of the attack to work, it is assumed that<a href="#section-2.3.3.1-7" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.3.3.1-8.1">
+                <p id="section-2.3.3.1-8.1.1">the implicit or authorization code grant is used with multiple client configurations of which one is considered "honest" (H-Config) and one is operated by the attacker (A-Config), and<a href="#section-2.3.3.1-8.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.3.3.1-8.2">
+                <p id="section-2.3.3.1-8.2.1">the client stores the client configuration chosen by the user in a session bound to the user's browser and uses distinct redirection URIs for different client configurations, but treats them as the same URI (i.e., it does not use the redirection URI to differentiate client configurations at the redirection endpoint).<a href="#section-2.3.3.1-8.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+<p id="section-2.3.3.1-9">In the following, it is further assumed that the client is registered with an honest authorization server H-AS (URI: <code>https://honest.as.example</code>, client ID: <code>7ZGZldHQ</code>) under H-Config and with an attacker-controlled authorization server A-AS (URI: <code>https://attacker.example</code>, client ID: <code>666RVZJTA</code>) under A-Config. Assume that the client issues the redirection URI <code>https://client.com/9XpLmK2qR/cb</code> for H-Config and <code>https://client.com/4FvBn8TzY/cb</code> for A-Config. URLs shown in the following example are shortened for presentation to include only parameters relevant to the attack.<a href="#section-2.3.3.1-9" class="pilcrow">¶</a></p>
+<p id="section-2.3.3.1-10">Attack on the authorization code grant:<a href="#section-2.3.3.1-10" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.3.3.1-11">
+<li id="section-2.3.3.1-11.1">
+                <p id="section-2.3.3.1-11.1.1">The user selects to start the grant using A-Config (e.g., by clicking on a button on the client's website).<a href="#section-2.3.3.1-11.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li id="section-2.3.3.1-11.2">
+                <p id="section-2.3.3.1-11.2.1">The client stores in the user's session that the user selected "A-Config" and redirects the user to A-AS's authorization endpoint with a Location header containing the URL <code>https://attacker.example/authorize?response_type=code&amp;client_id=666RVZJTA</code>
+                  <code>&amp;redirect_uri=https%3A%2F%2Fclient.com%2F4FvBn8TzY%2Fcb</code>.<a href="#section-2.3.3.1-11.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li id="section-2.3.3.1-11.3">
+                <p id="section-2.3.3.1-11.3.1">When the user's browser navigates to the attacker's authorization endpoint, the attacker immediately redirects the browser to the authorization endpoint of H-AS. In the authorization request, the attacker replaces the client ID of the client at A-Config with the client's ID at H-Config, and replaces the redirection URI of A-Config with the redirection URI of H-Config. Therefore, the browser receives a redirection (<code>303 See Other</code>) with a Location header pointing to <code>https://honest.as.example/authorize?response_type=code&amp;client_id=7ZGZldHQ</code>
+                  <code>&amp;redirect_uri=https%3A%2F%2Fclient.com%2F9XpLmK2qR%2Fcb</code>.<a href="#section-2.3.3.1-11.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li id="section-2.3.3.1-11.4">
+                <p id="section-2.3.3.1-11.4.1">The user authorizes the client to access their resources at H-AS. H-AS issues a code and sends it (via the browser) back to the client.<a href="#section-2.3.3.1-11.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li id="section-2.3.3.1-11.5">
+                <p id="section-2.3.3.1-11.5.1">Since the client assumes that the code was issued in the interaction with A-Config, it will try to redeem the code at A-AS's token endpoint.<a href="#section-2.3.3.1-11.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li id="section-2.3.3.1-11.6">
+                <p id="section-2.3.3.1-11.6.1">The attacker therefore obtains code and can either exchange the code for an access token (for public clients) or perform an authorization code injection attack as described in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.5" class="relref">Section 4.5</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>.<a href="#section-2.3.3.1-11.6.1" class="pilcrow">¶</a></p>
+</li>
+            </ol>
+</section>
+</div>
+<div id="ReloadedCountermeasure">
+<section id="section-2.3.3.2">
+            <h5 id="name-countermeasures-2">
+<a href="#section-2.3.3.2" class="section-number selfRef">2.3.3.2. </a><a href="#name-countermeasures-2" class="section-name selfRef">Countermeasures</a>
+            </h5>
+<p id="section-2.3.3.2-1">At its core, a client in open ecosystems may integrate multiple configurations of the same authorization server, and therefore the issuer may not be unique to the client. While the existing mix-up defenses in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4.2" class="relref">Section 4.4.2</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span> are sufficient, a variant of the "Mix-Up Defense via Distinct Redirect URIs" defense described in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4.2.2" class="relref">Section 4.4.2.2</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span> <span class="bcp14">MAY</span> be deployed instead for practical reasons:<a href="#section-2.3.3.2-1" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.3.3.2-2.1">
+                <p id="section-2.3.3.2-2.1.1">To apply this defense, clients <span class="bcp14">MUST</span> use a distinct redirection URI for each client configuration they interact with. Clients <span class="bcp14">MUST</span> check that the authorization response was received from the correct client configuration by comparing the distinct redirection URI for the client configuration to the URI where the authorization response was received on. If there is a mismatch, the client <span class="bcp14">MUST</span> abort the flow.<a href="#section-2.3.3.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+<p id="section-2.3.3.2-3">To maximize compatibility, this countermeasure imposes no new requirements on authorization servers compliant with the original OAuth 2.0 specification <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>. This is essential for securing open ecosystems where clients may be integrated with numerous client configurations, and many authorization servers may not support the "Mix-Up Defense via Issuer Identification" defense described in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4.2.1" class="relref">Section 4.4.2.1</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span> (e.g., returning the issuer identifier via an <code>iss</code> parameter in the authorization response <span>[<a href="#RFC9207" class="cite xref">RFC9207</a>]</span>).<a href="#section-2.3.3.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.3.3.2-4">To ease the development burden, compared to the "Mix-Up Defense via Distinct Redirect URIs" defense outlined in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4.2.2" class="relref">Section 4.4.2.2</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>, this countermeasure does not require clients to manage issuers exclusively for mix-up defense. Instead, it relies on existing isolation boundaries that already serve the functional need of differentiating client configurations.<a href="#section-2.3.3.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.3.3.2-5">Note that this countermeasure is not intended to redefine the concept of an issuer (or issuer identifier) from an authorization server-specific identifier to one tied to client configurations. Nor does it invalidate the existing countermeasures described in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4.2" class="relref">Section 4.4.2</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span> and clarified in <a href="#CountermeasureUpdate" class="auto internal xref">Section 2.2.2</a>, which remain sufficient to mitigate mix-up attacks in open ecosystems. Rather, this countermeasure <span class="bcp14">MAY</span> serve as an alternative defense.<a href="#section-2.3.3.2-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="ConfigConfusion">
+<section id="section-2.3.4">
+          <h4 id="name-client-configuration-confus">
+<a href="#section-2.3.4" class="section-number selfRef">2.3.4. </a><a href="#name-client-configuration-confus" class="section-name selfRef">Client Configuration Confusion Attack</a>
+          </h4>
+<p id="section-2.3.4-1">When client authentication is not required such as in the implicit grant or for a public client, or when signature-based client authentication methods such as <code>private_key_jwt</code> (as defined in <span>[<a href="#OpenID.Core" class="cite xref">OpenID.Core</a>]</span>) or signed JWTs (as defined in <span>[<a href="#RFC7521" class="cite xref">RFC7521</a>]</span> and <span>[<a href="#RFC7523" class="cite xref">RFC7523</a>]</span>) are used, a malicious resource server may be able to obtain an access token issued by an honest authorization server.
+This is achieved by registering an honest authorization server at the client under a malicious client configuration, pairing it with an attacker-controlled resource server, thus tricking the client into sending its access tokens to the attacker instead of using them at the honest resource server.<a href="#section-2.3.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.3.4-2">Unlike mix-up attacks or audience injection attacks, client configuration confusion attacks do not involve a malicious authorization server, but rather an honest one used in a malicious client configuration.<a href="#section-2.3.4-2" class="pilcrow">¶</a></p>
+<div id="ConfigConfusionAttack">
+<section id="section-2.3.4.1">
+            <h5 id="name-attack-description-3">
+<a href="#section-2.3.4.1" class="section-number selfRef">2.3.4.1. </a><a href="#name-attack-description-3" class="section-name selfRef">Attack Description</a>
+            </h5>
+<p id="section-2.3.4.1-1">Client configuration confusion attacks are feasible if a client satisfies the following preconditions:<a href="#section-2.3.4.1-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.3.4.1-2">
+<li id="section-2.3.4.1-2.1">
+                <p id="section-2.3.4.1-2.1.1">The client has at least two client configurations, one of which is configured by an attacker. The client allows for the two configurations to use the same authorization server (i.e., issuer-sharing client configurations) but different resource servers.<a href="#section-2.3.4.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li id="section-2.3.4.1-2.2">
+                <p id="section-2.3.4.1-2.2.1">The client stores the client configuration chosen by the user in a session bound to the user's browser and assigns the same redirection URI for at least the issuer-sharing, if not all, client configurations.<a href="#section-2.3.4.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li id="section-2.3.4.1-2.3">
+                <p id="section-2.3.4.1-2.3.1">The client uses the same client ID across the issuer-sharing client configurations.<a href="#section-2.3.4.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li id="section-2.3.4.1-2.4">
+                <p id="section-2.3.4.1-2.4.1">Regarding client authentication, one of the following applies:<a href="#section-2.3.4.1-2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ol>
+<ul class="normal">
+<li class="normal" id="section-2.3.4.1-3.1">
+                <p id="section-2.3.4.1-3.1.1">The client authenticates to the authorization server in both client configurations with a signature-based authentication method (e.g., the <code>jwt-bearer</code> client authentication from <span>[<a href="#RFC7523" class="cite xref">RFC7523</a>]</span>) using the same key pair.<a href="#section-2.3.4.1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.3.4.1-3.2">
+                <p id="section-2.3.4.1-3.2.1">The client interacts with the authorization server in both client configurations without requiring client authentication (i.e., using the implicit grant, or as a public client).<a href="#section-2.3.4.1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+<p id="section-2.3.4.1-4">For brevity of presentation, in the following, let H-AS, H-RS, and H-Config denote an honest authorization server, resource server, and client configuration, respectively. Let A-AS, A-RS, and A-Config denote an attacker-controlled authorization server, resource server, and client configuration, respectively.<a href="#section-2.3.4.1-4" class="pilcrow">¶</a></p>
+<div id="ConfusionCoreSteps">
+<section id="section-2.3.4.1.1">
+              <h6 id="name-core-attack-steps-2">
+<a href="#section-2.3.4.1.1" class="section-number selfRef">2.3.4.1.1. </a><a href="#name-core-attack-steps-2" class="section-name selfRef">Core Attack Steps</a>
+              </h6>
+<p id="section-2.3.4.1.1-1">In the following, it is further assumed that the client is registered with H-AS for both client configurations. The client is configured to use A-RS for A-Config and H-RS for H-Config.<a href="#section-2.3.4.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.3.4.1.1-2">Attack on the authorization code grant:<a href="#section-2.3.4.1.1-2" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.3.4.1.1-3">
+<li id="section-2.3.4.1.1-3.1">
+                  <p id="section-2.3.4.1.1-3.1.1">The user selects to start the grant using A-Config (e.g., by clicking on a button on the client's website).<a href="#section-2.3.4.1.1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+                <li id="section-2.3.4.1.1-3.2">
+                  <p id="section-2.3.4.1.1-3.2.1">The client stores in the user's session that the user selected "A-Config" and redirects the user to H-AS's authorization endpoint.<a href="#section-2.3.4.1.1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+                <li id="section-2.3.4.1.1-3.3">
+                  <p id="section-2.3.4.1.1-3.3.1">The user authorizes the client to access their resources at H-AS. Having validated that the client ID and redirection URI match the ones assigned for H-Config, H-AS issues a code and sends it (via the browser) back to the client.<a href="#section-2.3.4.1.1-3.3.1" class="pilcrow">¶</a></p>
+</li>
+                <li id="section-2.3.4.1.1-3.4">
+                  <p id="section-2.3.4.1.1-3.4.1">The client redeems the code issued by H-AS at H-AS's token endpoint. To authenticate with H-AS, the client creates a client assertion signed by itself. Recall that both A-Config and H-Config registered the client with H-AS under the same client ID, and that the client uses the same key pair for authentication at H-AS. Hence, this client assertion, if required, would be a valid authentication credential for the client at H-AS. Note that generating and validating client assertions in this step is irrelevant for public clients.<a href="#section-2.3.4.1.1-3.4.1" class="pilcrow">¶</a></p>
+</li>
+                <li id="section-2.3.4.1.1-3.5">
+                  <p id="section-2.3.4.1.1-3.5.1">Since the client stores "A-Config" in the user's session, it sends the access token to A-RS. The attacker therefore obtains the user's access token issued by H-AS.<a href="#section-2.3.4.1.1-3.5.1" class="pilcrow">¶</a></p>
+</li>
+              </ol>
+<p id="section-2.3.4.1.1-4">Variant in Implicit Grant:
+In the implicit grant, H-AS issues an access token instead of the code in Step 3. Step 4 is omitted. The rest of the attack proceeds as above.<a href="#section-2.3.4.1.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="discussion-on-sharing-client-ids">
+<section id="section-2.3.4.1.2">
+              <h6 id="name-discussion-on-sharing-clien">
+<a href="#section-2.3.4.1.2" class="section-number selfRef">2.3.4.1.2. </a><a href="#name-discussion-on-sharing-clien" class="section-name selfRef">Discussion: on Sharing Client IDs</a>
+              </h6>
+<p id="section-2.3.4.1.2-1">The scope of client configuration confusion attack is limited to the reuse of registered clients, and considers phishing threats involving the open registration of new clients as out of scope, because such threats can be mitigated by existing mechanisms such as vetting during manual registration, or via initial access tokens as defined in <span><a href="https://rfc-editor.org/rfc/rfc7591#section-1.2" class="relref">Section 1.2</a> of [<a href="#RFC7591" class="cite xref">RFC7591</a>]</span>.<a href="#section-2.3.4.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.3.4.1.2-2">For the attack to work, A-Config and H-Config need to share the same client ID in client registration (precondition 3 in <a href="#ConfigConfusionAttack" class="auto internal xref">Section 2.3.4.1</a>). This can be the case, for example, if an external developer or end-user can control the client ID used in A-Config during manual registration, or if the client uses dynamic registration to get assigned the same client ID for A-Config as in H-Config, as detailed below.<a href="#section-2.3.4.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.3.4.1.2-3">When the client is designed to perform dynamic client registration once per client configuration, A-Config and H-Config could feasibly share the same client ID.
+Unlike the situation in <a href="#AudienceInjection" class="auto internal xref">Section 2.1</a>, since A-Config uses H-AS instead of A-AS, the attacker cannot directly control which client ID the authorization server assigns to A-Config.
+However, according to the description of client ID returned in Client Information Response (<span><a href="https://rfc-editor.org/rfc/rfc7591#section-3.2.1" class="relref">Section 3.2.1</a> of [<a href="#RFC7591" class="cite xref">RFC7591</a>]</span>):<a href="#section-2.3.4.1.2-3" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-2.3.4.1.2-4">
+                <dt id="section-2.3.4.1.2-4.1">client_id</dt>
+                <dd style="margin-left: 1.5em" id="section-2.3.4.1.2-4.2">
+                  <p id="section-2.3.4.1.2-4.2.1">OAuth 2.0 client identifier string.  It <span class="bcp14">SHOULD NOT</span> be currently valid for any other registered client, though an authorization server <span class="bcp14">MAY</span> issue the same client identifier to multiple instances of a registered client at its discretion.<a href="#section-2.3.4.1.2-4.2.1" class="pilcrow">¶</a></p>
+</dd>
+              <dd class="break"></dd>
+</dl>
+<p id="section-2.3.4.1.2-5">The second half of the last sentence explicitly allows a client to obtain a client ID of the same value across multiple client registrations, as long as the client is considered to be instances of the same registered client by the authorization server.<a href="#section-2.3.4.1.2-5" class="pilcrow">¶</a></p>
+<p id="section-2.3.4.1.2-6">This behavior is intended for registering different "client instances", i.e., different deployed instances of the same piece of client software (see <span><a href="https://rfc-editor.org/rfc/rfc7591#section-1.2" class="relref">Section 1.2</a> of [<a href="#RFC7591" class="cite xref">RFC7591</a>]</span>). However, the authorization server cannot distinguish between this case and a client registering multiple times for different client configurations.<a href="#section-2.3.4.1.2-6" class="pilcrow">¶</a></p>
+<p id="section-2.3.4.1.2-7">Specifically, when the client initiates dynamic registration at H-AS based on H-Config and A-Config respectively, the authorization server, recognizing the two client registration requests as originating from the same client (e.g., indicated by the identical software identifier or software statement provided by the client, see <span><a href="https://rfc-editor.org/rfc/rfc7591#section-2" class="relref">Section 2</a> of [<a href="#RFC7591" class="cite xref">RFC7591</a>]</span> for their definitions), is likely to return the same client ID according to <span><a href="https://rfc-editor.org/rfc/rfc7591#appendix-A.4.2" class="relref">Appendix A.4.2</a> of [<a href="#RFC7591" class="cite xref">RFC7591</a>]</span>:<a href="#section-2.3.4.1.2-7" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.3.4.1.2-8.1">
+                  <p id="section-2.3.4.1.2-8.1.1">Particular authorization servers might choose, for instance, to maintain a mapping between software statement values and client identifier values, and return the same client identifier value for all registration requests for a particular piece of software.<a href="#section-2.3.4.1.2-8.1.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+<p id="section-2.3.4.1.2-9">Therefore, a client interacting with H-Config and A-Config could feasibly share the same client ID when dynamic client registration is used.<a href="#section-2.3.4.1.2-9" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="ConfigConfusionCountermeasures">
+<section id="section-2.3.4.2">
+            <h5 id="name-countermeasures-3">
+<a href="#section-2.3.4.2" class="section-number selfRef">2.3.4.2. </a><a href="#name-countermeasures-3" class="section-name selfRef">Countermeasures</a>
+            </h5>
+<p id="section-2.3.4.2-1">At its core, client configuration confusion attacks exploit the fact that, an attacker-controlled client configuration can reuse the registered client at the honest authorization server under an honest client configuration.<a href="#section-2.3.4.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.3.4.2-2">Clients in open ecosystems that interact with more than one client configuration and support authorization servers that either use signature-based client authentication methods or do not require client authentication <span class="bcp14">MUST</span> employ the following countermeasure, unless client configuration confusion attacks are mitigated by other means, such as using fresh key material for each authorization server employing signature-based client authentication and disallowing any authorization server that does not require client authentication.<a href="#section-2.3.4.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.3.4.2-3">Clients <span class="bcp14">MUST</span> issue a distinct redirection URI for each client configuration they interact with, both during client registration and in OAuth flows. This ensures that the redirection URI for the attacker-controlled client configuration will fail the exact redirection URI match (required by <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.1.3" class="relref">Section 4.1.3</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>) at the honest authorization server, since the redirection URI at the honest client configuration is the only redirection URI registered for the client identifier at the honest authorization server.<a href="#section-2.3.4.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.3.4.2-4">When dynamic client registration is supported, clients <span class="bcp14">SHOULD</span> also specify a different software identifier (<code>software_id</code>) in client registration requests for each client configuration. This prevents client registration requests from being rejected by the authorization server when different redirection URIs are used, if the authorization server follows the excerpt from <span><a href="https://rfc-editor.org/rfc/rfc7591#section-5" class="relref">Section 5</a> of [<a href="#RFC7591" class="cite xref">RFC7591</a>]</span> below:<a href="#section-2.3.4.2-4" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-2.3.4.2-5.1">
+                <p id="section-2.3.4.2-5.1.1">An authorization server could also refuse registration requests from a known software identifier that is requesting different redirection URIs or a different client URI.<a href="#section-2.3.4.2-5.1.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+<p id="section-2.3.4.2-6">This countermeasure can be considered an actionable approach to mitigating the "Counterfeit Resource Server" threat (see "Access Token Phishing by Counterfeit Resource Server" in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.9.1" class="relref">Section 4.9.1</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>) within the context of open ecosystems. It is complementary to general defenses for access token misuses, such as sender-constrained and audience-restricted access tokens as specified in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.10" class="relref">Section 4.10</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>.<a href="#section-2.3.4.2-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
 </section>
 </div>
 </section>
@@ -1559,6 +1909,14 @@ use authorization server metadata <span>[<a href="#RFC8414" class="cite xref">RF
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="arXiv.1601.01229">[arXiv.1601.01229]</dt>
+        <dd>
+<span class="refAuthor">Fett, D.</span>, <span class="refAuthor">Küsters, R.</span>, and <span class="refAuthor">G. Schmitz</span>, <span class="refTitle">"A Comprehensive Formal Security Analysis of OAuth 2.0"</span>, <span class="refContent">arXiv:1601.01229</span>, <time datetime="2016-01" class="refDate">January 2016</time>, <span>&lt;<a href="https://arxiv.org/abs/1601.01229/">https://arxiv.org/abs/1601.01229/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="MCP-Spec">[MCP-Spec]</dt>
+        <dd>
+<span class="refAuthor">Anthropic</span>, <span class="refTitle">"Model Context Protocol (MCP) Specification"</span>, <time datetime="2025-03" class="refDate">March 2025</time>, <span>&lt;<a href="https://modelcontextprotocol.io/specification/2025-03-26">https://modelcontextprotocol.io/specification/2025-03-26</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="OAUTH-7523bis">[OAUTH-7523bis]</dt>
         <dd>
 <span class="refAuthor">Jones, M. B.</span>, <span class="refAuthor">Campbell, B.</span>, and <span class="refAuthor">C. Mortimore</span>, <span class="refTitle">"JSON Web Token (JWT) Profile for OAuth 2.0 Client Authentication and Authorization Grants"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-oauth-rfc7523bis-00</span>, <time datetime="2025-02-21" class="refDate">21 February 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rfc7523bis-00">https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rfc7523bis-00</a>&gt;</span>. </dd>
@@ -1574,6 +1932,14 @@ use authorization server metadata <span>[<a href="#RFC8414" class="cite xref">RF
 <dt id="OpenID.Discovery">[OpenID.Discovery]</dt>
         <dd>
 <span class="refAuthor">Sakimura, N.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Jones, M.</span>, and <span class="refAuthor">E. Jay</span>, <span class="refTitle">"OpenID Connect Discovery 1.0 incorporating errata set 2"</span>, <time datetime="2023-12" class="refDate">December 2023</time>, <span>&lt;<a href="https://openid.net/specs/openid-connect-discovery-1_0.html">https://openid.net/specs/openid-connect-discovery-1_0.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="research.cuhk">[research.cuhk]</dt>
+        <dd>
+<span class="refAuthor">Luo, K.</span>, <span class="refAuthor">Wang, X.</span>, <span class="refAuthor">Fung, P. H. A.</span>, <span class="refAuthor">Lau, W. C.</span>, and <span class="refAuthor">J. Lecomte</span>, <span class="refTitle">"Universal Cross-app Attacks: Exploiting and Securing OAuth 2.0 in Integration Platforms"</span>, <span class="refContent">34th USENIX Security Symposium (USENIX Security 25)</span>, <time datetime="2025-08" class="refDate">August 2025</time>, <span>&lt;<a href="https://www.usenix.org/system/files/conference/usenixsecurity25/sec24winter-prepub-332-luo.pdf">https://www.usenix.org/system/files/conference/usenixsecurity25/sec24winter-prepub-332-luo.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="research.jcs_14">[research.jcs_14]</dt>
+        <dd>
+<span class="refAuthor">Bansal, C.</span>, <span class="refAuthor">Bhargavan, K.</span>, <span class="refAuthor">Delignat-Lavaud, A.</span>, and <span class="refAuthor">S. Maffeis</span>, <span class="refTitle">"Discovering concrete attacks on website authorization by formal analysis"</span>, <span class="refContent">Journal of Computer Security, vol. 22, no. 4, pp. 601-657</span>, <time datetime="2014-04" class="refDate">April 2014</time>, <span>&lt;<a href="https://www.doc.ic.ac.uk/~maffeis/papers/jcs14.pdf">https://www.doc.ic.ac.uk/~maffeis/papers/jcs14.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="research.ust">[research.ust]</dt>
         <dd>
@@ -1591,13 +1957,25 @@ use authorization server metadata <span>[<a href="#RFC8414" class="cite xref">RF
         <dd>
 <span class="refAuthor">Campbell, B.</span>, <span class="refAuthor">Mortimore, C.</span>, and <span class="refAuthor">M. Jones</span>, <span class="refTitle">"Security Assertion Markup Language (SAML) 2.0 Profile for OAuth 2.0 Client Authentication and Authorization Grants"</span>, <span class="seriesInfo">RFC 7522</span>, <span class="seriesInfo">DOI 10.17487/RFC7522</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7522">https://www.rfc-editor.org/rfc/rfc7522</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC7591">[RFC7591]</dt>
+        <dd>
+<span class="refAuthor">Richer, J., Ed.</span>, <span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Machulak, M.</span>, and <span class="refAuthor">P. Hunt</span>, <span class="refTitle">"OAuth 2.0 Dynamic Client Registration Protocol"</span>, <span class="seriesInfo">RFC 7591</span>, <span class="seriesInfo">DOI 10.17487/RFC7591</span>, <time datetime="2015-07" class="refDate">July 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7591">https://www.rfc-editor.org/rfc/rfc7591</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8628">[RFC8628]</dt>
         <dd>
 <span class="refAuthor">Denniss, W.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Jones, M.</span>, and <span class="refAuthor">H. Tschofenig</span>, <span class="refTitle">"OAuth 2.0 Device Authorization Grant"</span>, <span class="seriesInfo">RFC 8628</span>, <span class="seriesInfo">DOI 10.17487/RFC8628</span>, <time datetime="2019-08" class="refDate">August 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8628">https://www.rfc-editor.org/rfc/rfc8628</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9126">[RFC9126]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Lodderstedt, T.</span>, <span class="refAuthor">Campbell, B.</span>, <span class="refAuthor">Sakimura, N.</span>, <span class="refAuthor">Tonge, D.</span>, and <span class="refAuthor">F. Skokan</span>, <span class="refTitle">"OAuth 2.0 Pushed Authorization Requests"</span>, <span class="seriesInfo">RFC 9126</span>, <span class="seriesInfo">DOI 10.17487/RFC9126</span>, <time datetime="2021-09" class="refDate">September 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9126">https://www.rfc-editor.org/rfc/rfc9126</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9207">[RFC9207]</dt>
+        <dd>
+<span class="refAuthor">Meyer zu Selhausen, K.</span> and <span class="refAuthor">D. Fett</span>, <span class="refTitle">"OAuth 2.0 Authorization Server Issuer Identification"</span>, <span class="seriesInfo">RFC 9207</span>, <span class="seriesInfo">DOI 10.17487/RFC9207</span>, <time datetime="2022-03" class="refDate">March 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9207">https://www.rfc-editor.org/rfc/rfc9207</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9728">[RFC9728]</dt>
+      <dd>
+<span class="refAuthor">Jones, M.B.</span>, <span class="refAuthor">Hunt, P.</span>, and <span class="refAuthor">A. Parecki</span>, <span class="refTitle">"OAuth 2.0 Protected Resource Metadata"</span>, <span class="seriesInfo">RFC 9728</span>, <span class="seriesInfo">DOI 10.17487/RFC9728</span>, <time datetime="2025-04" class="refDate">April 2025</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9728">https://www.rfc-editor.org/rfc/rfc9728</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1612,7 +1990,14 @@ use authorization server metadata <span>[<a href="#RFC8414" class="cite xref">RF
 <p id="appendix-A-1">We would like to thank
 Adonis Fung,
 Kaixuan Luo,
-<span class="cref" id="acksAddNames">TODO add names, sort by last name.<span class="crefSource">Tim W.</span></span><a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<span class="cref" id="acksAddNames">TODO add names, sort by last name.<span class="crefSource">Tim W.</span></span>
+Daniel Fett,
+Wing Cheong Lau,
+Julien Lecomte,
+Aaron Parecki,
+Guido Schmitz,
+Xianbo Wang,
+<span class="cref" id="acksAddNamesLuo">Added by Kaixuan.<span class="crefSource">Kaixuan L.</span></span><a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <p id="appendix-A-2">for their valuable feedback and contributions to this document.<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1637,6 +2022,24 @@ Kaixuan Luo,
 <div class="email">
 <span>Email:</span>
 <a href="mailto:pedram.hosseyni@sec.uni-stuttgart.de" class="email">pedram.hosseyni@sec.uni-stuttgart.de</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Kaixuan Luo</span></div>
+<div dir="auto" class="left"><span class="org">The Chinese University of Hong Kong</span></div>
+<div dir="auto" class="left"><span class="country-name">Hong Kong</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:kaixuan@ie.cuhk.edu.hk" class="email">kaixuan@ie.cuhk.edu.hk</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Adonis Fung</span></div>
+<div dir="auto" class="left"><span class="org">Samsung Research America</span></div>
+<div dir="auto" class="left"><span class="country-name">United States of America</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:adonis.fung@samsung.com" class="email">adonis.fung@samsung.com</a>
 </div>
 </address>
 </section>
