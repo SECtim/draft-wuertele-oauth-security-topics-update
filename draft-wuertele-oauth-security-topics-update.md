@@ -185,7 +185,7 @@ implementations and ecosystems as soon as feasible.
 
 ## Structure
 
-TODO explain the document structure and how it "fits" with {{!RFC9700}}
+The remainder of this document is organized as follows: Section 2 is a detailed analysis of the threats and implementation issues that can be found in the wild (at the time of writing) along with a discussion of potential countermeasures.
 
 
 ## Conventions and Terminology
@@ -205,8 +205,8 @@ defined by OAuth 2.0 {{!RFC6749}}.
 
 # Attacks and Mitigations {#AttacksMitigations}
 
-TODO section intro, mention that we do not repeat {{!RFC9700}} stuff
-here
+This section gives a detailed description of new attacks on OAuth implementations, along with potential countermeasures. Attacks and mitigations already covered in {{!RFC9700}} are not listed here, except where clarifications or new recommendations are made.
+Generally, the attacks in this section assume a scenario where a client can interact with multiple authorization servers.
 
 ## Audience Injection Attacks {#AudienceInjection}
 
