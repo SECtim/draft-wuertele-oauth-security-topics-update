@@ -489,7 +489,8 @@ With the new integration model, OAuth in open ecosystems introduces two notable 
 
 In traditional OAuth deployments, it is implicitly assumed that there is exactly one client configuration for each client-authorization server pair. Under this assumption, the issuer (as defined in {{Section 4.4.2 of !RFC9700}}) serves as a unique identifier for the client. This has led to the common practice of clients tracking "the authorization server chosen by the user" during OAuth flows, as well as the adoption of existing mix-up defenses ({{Section 4.4.2 of !RFC9700}}), all of which are based on the issuer concept that uniquely identifies each authorization server from the client's point of view.
 
-In open ecosystems, however, the new integration pattern does not, and fundamentally cannot, restrict the use of the same authorization server across multiple client configurations. For instance, clients may legitimately integrate various functionalities that access different resources or process the same resources differently, while relying on the same authorization server (i.e., having shared issuers).
+In open ecosystems, however, the new integration pattern does not, and fundamentally cannot, restrict the use of the same authorization server across multiple client configurations. For instance, clients may legitimately integrate various functionalities that access different resources or process the same resources differently, while relying on the same authorization server (i.e., having shared issuers, which implies that the issuer no longer uniquely identifies a client configuration).
+
 As a result, the client may integrate with an authorization server under the attacker's control ({{MixUpReloaded}}), or an attacker-controlled resource server paired with an honest authorization server -- even if the authorization server is already integrated at the client under a different client configuration ({{ConfigConfusion}}).
 
 
