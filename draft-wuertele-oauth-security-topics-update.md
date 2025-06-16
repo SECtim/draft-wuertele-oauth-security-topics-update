@@ -471,7 +471,7 @@ The choice of what resources to access (and thus which authorization and resourc
 This section discusses OAuth in "open ecosystems", where the protected resources accessible to a client are configured beyond the discretion of the client or client developers.
 This can be the case, for example, if the client offers an open marketplace or registry where external developers can publish information about resource servers and associated authorization servers at development time (e.g., in integration platforms, where external services register themselves as authorization and resource servers with a platform that acts as a client, see {{research.cuhk}}), or if an end-user can specify any compliant configurations to interact with at runtime (e.g., in the Model Context Protocol {{MCP-Spec}}).
 
-This document defines a "client configuration" as a bundle of configuration elements that enable a client to access an OAuth 2.0 protected resource, including details about the authorization server, client registration, and the resource server.
+This document defines a "client configuration" as a set of configuration elements that enable a client to access an OAuth 2.0 protected resource, including details about the authorization server, client registration, and the resource server.
 In open ecosystems, these configuration elements are typically managed as follows:
 
 * Authorization Server configuration: Clients may employ a manual approach, where external developers or end-users enter the necessary fields (i.e., endpoint URLs of the authorization server) at the client's website, or support fetching information about the authorization server via Authorization Server Metadata {{?RFC8414}}.
