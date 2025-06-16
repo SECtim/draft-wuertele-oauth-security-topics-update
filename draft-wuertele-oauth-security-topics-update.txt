@@ -580,12 +580,14 @@ Table of Contents
    may legitimately integrate various functionalities that access
    different resources or process the same resources differently, while
    relying on the same authorization server (i.e., having shared
-   issuers).  As a result, the client may integrate with an
-   authorization server under the attacker's control (Section 2.3.3), or
-   an attacker-controlled resource server paired with an honest
-   authorization server -- even if the authorization server is already
-   integrated at the client under a different client configuration
-   (Section 2.3.4).
+   issuers, which implies that the issuer no longer uniquely identifies
+   a client configuration).
+
+   As a result, the client may integrate with an authorization server
+   under the attacker's control (Section 2.3.3), or an attacker-
+   controlled resource server paired with an honest authorization server
+   -- even if the authorization server is already integrated at the
+   client under a different client configuration (Section 2.3.4).
 
 2.3.3.  Mix-Up Attacks Reloaded
 
