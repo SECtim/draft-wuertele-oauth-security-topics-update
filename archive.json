@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-17T01:53:19.468211+00:00",
+  "timestamp": "2025-06-22T02:01:37.803014+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -558,6 +558,30 @@
           "body": "Oops, duplicate of #30 - closing this.",
           "createdAt": "2025-06-16T16:42:18Z",
           "updatedAt": "2025-06-16T16:42:18Z"
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "id": "I_kwDOOKn4ys68RPqP",
+      "title": "Phishing/audience mix-up mitigation",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/32",
+      "state": "OPEN",
+      "author": "aaronpk",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "This is somewhat related to the \"open systems\" section. See the full description on this issue on OAuth 2.1:\n\nhttps://github.com/oauth-wg/oauth-v2-1/issues/215",
+      "createdAt": "2025-06-19T01:56:28Z",
+      "updatedAt": "2025-06-19T11:07:31Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Hi @aaronpk ,\nThanks for reading our individual draft and pointing to the discussion in OAuth 2.1 issues!\n\n> This is somewhat related to the \"open systems\" section.\n\nYes, the attack described in the [OAuth 2.1 issue](https://github.com/oauth-wg/oauth-v2-1/issues/215) is related to the \"Client Configuration Confusion Attack\" specified in [Section 2.3.4 of our I-D](https://datatracker.ietf.org/doc/html/draft-wuertele-oauth-security-topics-update-01#section-2.3.4). Both involve an OAuth client in open ecosystem being tricked into sending an honest AS's access token to a malicious RS. (p.s. we followed your suggestion at OSW to define the [\"Client Configuration\" concept](https://datatracker.ietf.org/doc/html/draft-wuertele-oauth-security-topics-update-01#section-2.3.1-3), to better capture the context of this attack and the [mix-up variants](https://datatracker.ietf.org/doc/html/draft-wuertele-oauth-security-topics-update-01#section-2.3.3).)\n\n\nTheir differences lie in the attacker model and the defense:\n**Attacker Model.**\n- The attack in the OAuth 2.1 issue is a phishing attack that assumes a strong(er) attacker who can register the client at the honest AS, potentially due to open registration of DCR (i.e., no initial access tokens required). The attacker then uses the newly registered client at honest AS to pair it with a malicious RS.\n\n- The \"Client Configuration Confusion Attack\" in our I-D assumes a weaker attacker who cannot/finds it hard to register a new client, but is able to reuse the client registration of an honest client configuration. This could occur, for example, if a malicious MCP Server [is able to use the same `client_id`](https://datatracker.ietf.org/doc/html/draft-wuertele-oauth-security-topics-update-01#section-2.3.4.1.2) of an official Dropbox MCP Server that is plugged into the same MCP Client.\n\n**Defense.**\n- To defend against the threat described in OAuth 2.1 issue, I'd expect sender-constrained/audience-restricted tokens or alternative defenses discussed in the issue, which resolve the general threat of [access token misuse](https://www.rfc-editor.org/rfc/rfc9700#section-4.10). These defenses make perfect sense but require stringent Client/AS/RS cooperation to be compliant.\n\n- The defense for \"Client Configuration Confusion Attack\", however, is a specific security measure for the threat of reusing registered client in the weaker attacker model. And therefore, we wrote the following in the [defense section](https://datatracker.ietf.org/doc/html/draft-wuertele-oauth-security-topics-update-01#section-2.3.4.2-6):\n\n> This countermeasure can be considered an actionable approach to mitigating the \"Counterfeit Resource Server\" threat (see \"Access Token Phishing by Counterfeit Resource Server\" in [Section 4.9.1](https://rfc-editor.org/rfc/rfc9700#section-4.9.1) of [[RFC9700](https://www.rfc-editor.org/rfc/rfc9700)]) within the context of open ecosystems. **It is complementary to general defenses for access token misuses, such as sender-constrained and audience-restricted access tokens as specified in [Section 4.10](https://rfc-editor.org/rfc/rfc9700#section-4.10) of [[RFC9700](https://www.rfc-editor.org/rfc/rfc9700)]**.\n\nWe are open to further discussions on related threats.",
+          "createdAt": "2025-06-19T11:07:30Z",
+          "updatedAt": "2025-06-19T11:07:30Z"
         }
       ]
     }
