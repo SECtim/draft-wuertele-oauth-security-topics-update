@@ -432,126 +432,64 @@ use authorization server metadata {{!RFC8414}} or OpenID Discovery
 {{OpenID.Discovery}}.
 
 
-## Cross-tool OAuth Account Takeovers and Request Forgeries {#COAT}
+## Cross-tool OAuth Account Takeovers {#COAT}
 
-It is increasingly common that a single OAuth client supports multiple tools. Each tool is mapped to an OAuth provider configuration (includes at least the authorization server (AS) endpoints and client credentials). A successful OAuth connection is established when the OAuth client obtains an access token for a tool based on its corresponding OAuth provider configuration. The tool can finally use the access token to access the user's resource at resource server (RS).
+It is increasingly common that a single OAuth client supports multiple tools, and each of which is mapped to an OAuth provider configuration (which includes at least the authorization server (AS) endpoints and client credentials). A successful OAuth connection is established when the OAuth client obtains an access token for the tool based on its corresponding OAuth provider configuration. The tool can then use the access token to access the user's resource at an API or resource server (RS).
 
-These multiple OAuth connections are linked to some form of identity depending on the following common deployment scenarios:
-- Platform Integrations: The OAuth connections made with different tools are linked to a platform's user account or session (i.e., as respectively represented by a user identifier or a short-lived anonymous session). This is common where a user authorizes a platform to orchestrate multiple tools, of which some of them together with their OAuth providers can be contributed by the public.
-- Multi-tenant OAuth-as-a-Service: In cases where the OAuth client is managed by a multi-tenant OAuth-as-a-service provider, an OAuth connection will be established with a tenant identifier and a user identifier specific to that tenant. This is a generalization of the last deployment, except that multiple tenants are in play. A tenant can usually choose some off-the-shelf tools and add their own with custom OAuth providers to support the tenant's platform.
+Multiple OAuth connections can be linked to some form of user's identity based on common deployment scenarios:
+- Platform Integrations: The OAuth connections made with different tools are linked to a platform's user account or session (e.g., represented by a platform's user identifier or a short-lived anonymous session). This is common where a user authorizes a platform (e.g., agentic AI service) to orchestrate multiple tools, of which some of them together with their OAuth providers can be contributed by the public.
+- Multi-tenant OAuth-as-a-Service: In cases when the OAuth client is managed by a multi-tenant OAuth-as-a-service provider, a successful OAuth connection are linked to a tenant's user identifier and in addition to the tenant identifier. This is a generalization of the last deployment scenario, where a platform using this OAuth-as-a-service is becoming a tenant. A tenant can usually choose some off-the-shelf tools and add their own with custom OAuth providers to support the tenant's service.
 
-When controlled by an attacker, the open configurations of OAuth providers have posed a new threat to this centralized OAuth client design. If the client fails to properly identify, track, and isolate which proper OAuth connection (including the OAuth provider, tool, and tenant) is in use during an authorization flow, an attacker can exploit this to mount two attacks {{research.cuhk}}:
-- Cross-tool OAuth Account Takeover (COAT): an attacker uses a malicious tool to hijack a victim’s authorization code issued by a legitimate OAuth provider of a legitimate tool. With the stolen authorization code, the attacker launches an authorization code injection (as defined in {{Section 4.5 of !RFC9700}}) against the legitimate tool. The resulting impact is equivalent to an account takeover: the attacker can operate the legitimate tool using the victim’s tool account.
-- Cross-tool OAuth request forgery (CORF): an attacker forces a victim to connect with a tool with the attacker’s tool account. The resulting impact is similar to login CSRF (as described in {{Section 4.4.1.8 of !RFC6819}}): the victim unintentionally interacts with a legitimate tool that uses the attacker’s tool account, potentially leading to privacy leakage.
+When controlled by an attacker, the open configurations of OAuth providers have posed a new threat to this centralized OAuth client design. If the client fails to properly identify, track, and isolate which proper OAuth connection context (representing a combination of OAuth provider, tool, and tenant) is in use during an authorization flow, an attacker can exploit this to mount two attacks {{research.cuhk}}:
+- Cross-tool OAuth Account Takeover (COAT): an attacker uses a malicious tool to steal a victim's authorization code issued by a honest OAuth provider of a honest tool, and apply the authorization code injection attack (as defined in {{Section 4.5 of !RFC9700}}) using the attacker's identity. This results in a compromised OAuth connection between the attacker's platform identity and the victim's tool account. The impact is equivalent to an account takeover: the attacker can operate the honest tool using the victim's tool account (hijacked either under the same platform, or even cross-tenant that shares a vulnerable OAuth-as-a-service).
+- Cross-tool OAuth request forgery (CORF): an attacker forces a victim to connect with a tool with the attacker's tool account. This results in a compromised OAuth connection between the victim's platform identity and the attacker's tool account. The resulting impact is similar to login CSRF (as described in {{Section 4.4.1.8 of !RFC6819}}): the victim unintentionally interacts with a honest tool on behalf of the attacker, whose traces can be monitored by the attacker using his own account.
 
-### Attack Description of COAT
+Preconditions: It is assumed that
 
-Preconditions: For this variant of the attack to work, it is assumed that
-* the implicit or authorization code grant is used with multiple authorization servers of which one is considered "honest" (H-AS) and one is operated by the attacker (A-AS), and
-* the client stores the authorization server chosen by the user in a session bound to the user's browser and uses the same redirection URI for each authorization server.
+* the implicit or authorization code grant is used with multiple OAuth connection contexts, of which one combination is considered "honest" (H-Tool using H-AS) and one is operated by the attacker (A-Tool using A-AS), and
+* the client stores the tool and authorization server chosen by the user in a session bound to the user's browser, and
+* the client issues redirection URIs which do not depend on all variables in the OAuth connection contexts (AS, tool, tenant).
 
-In the following, it is further assumed that the client is registered with H-AS (URI: https://honest.as.example, client ID: 7ZGZldHQ) and with A-AS (URI: https://attacker.example, client ID: 666RVZJTA). URLs shown in the following example are shortened for presentation to include only parameters relevant to the attack.Attack on the authorization code grant:
-
-1. Based on the tool selection, the user starts the grant using A-AS (e.g., by clicking on a button on the client's website).
-2. The client stores in the user's session that the user triggered "A-AS" and redirects the user to A-AS's authorization endpoint with a Location header containing the URL https://attacker.example/authorize?response_type=code&client_id=666RVZJTA.
-3. When the user's browser navigates to the attacker's authorization endpoint, the attacker immediately redirects the browser to the authorization endpoint of H-AS. In the authorization request, the attacker replaces the client ID of the client at A-AS with the client's ID at H-AS. Therefore, the browser receives a redirection with a Location header pointing to https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ
-4. Given a prior or implicit user's approval at H-AS for the client, as idenified by the client ID 7ZGZldHQ and redirect_uri https://client.com/cb, H-AS does not ask for re-consent but issues a code and sends it back to the client's redirection endpoint.
-5. Since the client still assumes that the code was issued by A-AS, it will try to redeem the code at A-AS's token endpoint.
-6. The attacker therefore obtains code and can either exchange the code for an access token (for public clients) or perform an authorization code injection attack as described in {{Section 4.5 of !RFC9700}} against the honest tool.
-
-### Attack Description of COAT (distinct redirect_uri)
-
-### Attack Description of CORF (distinct redirect_uri)
-
-
-### Countermeasures {#ReloadedCountermeasure}
-
-At its core, a client in open ecosystems may integrate multiple configurations of the same authorization server, and therefore the issuer may not be unique to the client. While the existing mix-up defenses in {{Section 4.4.2 of !RFC9700}} are sufficient, a variant of the "Mix-Up Defense via Distinct Redirect URIs" defense described in {{Section 4.4.2.2 of !RFC9700}} MAY be deployed instead for practical reasons:
-
-{:style="empty"}
-* To apply this defense, clients MUST use a distinct redirection URI for each client configuration they interact with. Clients MUST check that the authorization response was received from the correct client configuration by comparing the distinct redirection URI for the client configuration to the URI where the authorization response was received on. If there is a mismatch, the client MUST abort the flow.
-
-To maximize compatibility, this countermeasure imposes no new requirements on authorization servers compliant with the original OAuth 2.0 specification {{!RFC6749}}. This is essential for securing open ecosystems where clients may be integrated with numerous client configurations, and many authorization servers may not support the "Mix-Up Defense via Issuer Identification" defense described in {{Section 4.4.2.1 of !RFC9700}} (e.g., returning the issuer identifier via an `iss` parameter in the authorization response {{?RFC9207}}).
-
-To ease the development burden, compared to the "Mix-Up Defense via Distinct Redirect URIs" defense outlined in {{Section 4.4.2.2 of !RFC9700}}, this countermeasure does not require clients to manage issuers exclusively for mix-up defense. Instead, it relies on existing isolation boundaries that already serve the functional need of differentiating client configurations.
-
-Note that this countermeasure is not intended to redefine the concept of an issuer (or issuer identifier) from an authorization server-specific identifier to one tied to client configurations. Nor does it invalidate the existing countermeasures described in {{Section 4.4.2 of !RFC9700}} and clarified in {{CountermeasureUpdate}}, which remain sufficient to mitigate mix-up attacks in open ecosystems. Rather, this countermeasure MAY serve as an alternative defense.
-
-## Client Configuration Confusion Attack {#ConfigConfusion}
-
-When client authentication is not required such as in the implicit grant or for a public client, or when signature-based client authentication methods such as `private_key_jwt` (as defined in {{OpenID.Core}}) or signed JWTs (as defined in {{!RFC7521}} and {{!RFC7523}}) are used, a malicious resource server may be able to obtain an access token issued by an honest authorization server.
-This is achieved by registering an honest authorization server at the client under a malicious client configuration, pairing it with an attacker-controlled resource server, thus tricking the client into sending its access tokens to the attacker instead of using them at the honest resource server.
-
-Unlike mix-up attacks or audience injection attacks, client configuration confusion attacks do not involve a malicious authorization server, but rather an honest one used in a malicious client configuration.
-
-### Attack Description {#ConfigConfusionAttack}
-
-Client configuration confusion attacks are feasible if a client satisfies the following preconditions:
-
-1. The client has at least two client configurations, one of which is configured by an attacker. The client allows for the two configurations to use the same authorization server (i.e., issuer-sharing client configurations) but different resource servers.
-2. The client stores the client configuration chosen by the user in a session bound to the user's browser and assigns the same redirection URI for at least the issuer-sharing, if not all, client configurations.
-3. The client uses the same client ID across the issuer-sharing client configurations.
-4. Regarding client authentication, one of the following applies:
-
-* The client authenticates to the authorization server in both client configurations with a signature-based authentication method (e.g., the `jwt-bearer` client authentication from {{!RFC7523}}) using the same key pair.
-* The client interacts with the authorization server in both client configurations without requiring client authentication (i.e., using the implicit grant, or as a public client).
-
-For brevity of presentation, in the following, let H-AS, H-RS, and H-Config denote an honest authorization server, resource server, and client configuration, respectively. Let A-AS, A-RS, and A-Config denote an attacker-controlled authorization server, resource server, and client configuration, respectively.
-
-#### Core Attack Steps {#ConfusionCoreSteps}
-
-In the following, it is further assumed that the client is registered with H-AS for both client configurations. The client is configured to use A-RS for A-Config and H-RS for H-Config.
+In the following, it is further assumed that the client is registered with H-AS (URI: `https://honest.as.example`, client ID: `7ZGZldHQ`) and with A-AS (URI: `https://attacker.example`, client ID: `666RVZJTA`). Assume that the client issues the redirection URI `https://client.com/honest-cb` for H-AS and `https://client.com/attack-cb` for A-AS. URLs shown in the following example are shortened for presentation to include only parameters relevant to the attack.
 
 Attack on the authorization code grant:
 
-1. The user selects to start the grant using A-Config (e.g., by clicking on a button on the client's website).
-2. The client stores in the user's session that the user selected "A-Config" and redirects the user to H-AS's authorization endpoint.
-3. The user authorizes the client to access their resources at H-AS. Having validated that the client ID and redirection URI match the ones assigned for H-Config, H-AS issues a code and sends it (via the browser) back to the client.
-4. The client redeems the code issued by H-AS at H-AS's token endpoint. To authenticate with H-AS, the client creates a client assertion signed by itself. Recall that both A-Config and H-Config registered the client with H-AS under the same client ID, and that the client uses the same key pair for authentication at H-AS. Hence, this client assertion, if required, would be a valid authentication credential for the client at H-AS. Note that generating and validating client assertions in this step is irrelevant for public clients.
-5. Since the client stores "A-Config" in the user's session, it sends the access token to A-RS. The attacker therefore obtains the user's access token issued by H-AS.
+1. A victim user selects to start the grant using A-AS of A-Tool (e.g., by initiating a tool use on an agentic AI service).
+2. The client stores in the user's session that the user has selected such OAuth connection context and redirects the user to A-AS's authorization endpoint with a Location header containing the URL `https://attacker.example/authorize?response_type=code&client_id=666RVZJTA&state=[state]`
+  `&redirect_uri=https%3A%2F%2Fclient.com%2Fattack-cb`.
+3. When the user's browser navigates to the A-AS, the attacker immediately redirects the browser to the authorization endpoint of H-AS. In the authorization request, the attacker uses the honest authorization URL and replaces the state with the one freshly received. Therefore, the browser receives a redirection (`303 See Other`) with a Location header pointing to `https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ&state=[state]`
+  `&redirect_uri=https%3A%2F%2Fclient.com%2Fhonest-cb`.
+4. Due to implicit or prior approvals, the user might not be prompted for a re-authorization (re-consent). H-AS issues a code and sends it (via the browser) back to the client.
+5. Since the client still assumes that the code was issued by A-Tool, as stored in the user's session, it will try to redeem the code at A-AS's token endpoint.
+6. The attacker therefore obtains code and can either exchange the code for an access token (for public clients) or perform an authorization code injection attack as described in {{Section 4.5 of !RFC9700}}.
 
-Variant in Implicit Grant:
-In the implicit grant, H-AS issues an access token instead of the code in Step 3. Step 4 is omitted. The rest of the attack proceeds as above.
+This is the Cross-tool OAuth Account Takeover (COAT) attack, which is a generalization of the mix-up attack as defined in {{Section 4.5 of !RFC9700}}). COAT exploits confusion between the OAuth connection context (which is a combination of OAuth provider, tool, tenant) of a centralized client rather than limited to confusion between two distinct authorization servers.
 
-#### Discussion: on Sharing Client IDs
+Variants:
+   *  Implicit Grant: In the implicit grant, the attacker receives an
+      access token instead of the code in Step 4.  The attacker's
+      authorization server receives the access token when the client
+      makes either a request to the A-AS userinfo endpoint (defined in
+      [OpenID.Core]) or a request to the attacker's resource server
+      (since the client believes it has completed the flow with A-AS).
+   *  Cross-tool OAuth Request Forgery (CORF): If clients do not store the selected OAuth connection context in the user's session, attackers can mount an attack called Cross-tool OAuth request forgery (CORF). Note that unlike other variants, the goal of this attack is not to obtain an authorization code or access token, but to force the client to use an attacker's authorization code or access token for H-AS. This was referred to as Naïve RP Session Integrity Attack when the OAuth connection context is limited to AS, and is detailed in Section 3.4 of {{arXiv.1601.01229}}.
+   *  Cross Social-Network Request Forgery. If clients use different redirection URIs for different authorization servers, clients do not store the selected authorization server in the user's session, and authorization servers do not check the redirection URIs properly (see {{Section 4.1 of !RFC9700}}), attackers can mount an attack called "Cross Social-Network Request Forgery". These attacks have been observed in practice. Refer to {{research.jcs_14}} for details.
+   *  OpenID Connect: Some variants can be used to attack OpenID
+      Connect.  In these attacks, the attacker misuses features of the
+      OpenID Connect Discovery [OpenID.Discovery] mechanism or replays
+      access tokens or ID Tokens to conduct a mix-up attack.  The
+      attacks are described in detail in Appendix A of
+      [arXiv.1704.08539] and Section 6 of [arXiv.1508.04324v2]
+      ("Malicious Endpoints Attacks").
 
-The scope of client configuration confusion attack is limited to the reuse of registered clients, and considers phishing threats involving the open registration of new clients as out of scope, because such threats can be mitigated by existing mechanisms such as vetting during manual registration, or via initial access tokens as defined in {{Section 1.2 of ?RFC7591}}.
+### Countermeasures {#COATCountermeasure}
 
-For the attack to work, A-Config and H-Config need to share the same client ID in client registration (precondition 3 in {{ConfigConfusionAttack}}). This can be the case, for example, if an external developer or end-user can control the client ID used in A-Config during manual registration, or if the client uses dynamic registration to get assigned the same client ID for A-Config as in H-Config, as detailed below.
+Unlike what expected in {{Section 4.4 of !RFC9700}}, an authorization server (or issuer) is no longer unique to a client. In modern deployment scenarios, the OAuth client interacts with multiple combinations of OAuth providers, tools and tenants. The client MUST use all variables in their OAuth connection context to form a unique connection context identifier. For instances,
+- a platform's client allowing one OAuth provider configuration per tool, while multiple tools can relying on same AS, SHOULD include the tool identifier.
+- in addition to the above, a platform's client allowing multiple OAuth providers for a tool SHOULD include identifiers that represent the tool and the OAuth provider.
+- in addition to the above, an OAuth-as-a-service managed client MUST include identifiers that represent the tenant, tool and OAuth provider.
 
-When the client is designed to perform dynamic client registration once per client configuration, A-Config and H-Config could feasibly share the same client ID.
-Unlike the situation in {{AudienceInjection}}, since A-Config uses H-AS instead of A-AS, the attacker cannot directly control which client ID the authorization server assigns to A-Config.
-However, according to the description of client ID returned in Client Information Response ({{Section 3.2.1 of ?RFC7591}}):
-
-client_id
-: OAuth 2.0 client identifier string.  It SHOULD NOT be currently valid for any other registered client, though an authorization server MAY issue the same client identifier to multiple instances of a registered client at its discretion.
-
-The second half of the last sentence explicitly allows a client to obtain a client ID of the same value across multiple client registrations, as long as the client is considered to be instances of the same registered client by the authorization server.
-
-This behavior is intended for registering different "client instances", i.e., different deployed instances of the same piece of client software (see {{Section 1.2 of ?RFC7591}}). However, the authorization server cannot distinguish between this case and a client registering multiple times for different client configurations.
-
-Specifically, when the client initiates dynamic registration at H-AS based on H-Config and A-Config respectively, the authorization server, recognizing the two client registration requests as originating from the same client (e.g., indicated by the identical software identifier or software statement provided by the client, see {{Section 2 of ?RFC7591}} for their definitions), is likely to return the same client ID according to {{Section A.4.2 of ?RFC7591}}:
-
-{:style="empty"}
-* Particular authorization servers might choose, for instance, to maintain a mapping between software statement values and client identifier values, and return the same client identifier value for all registration requests for a particular piece of software.
-
-Therefore, a client interacting with H-Config and A-Config could feasibly share the same client ID when dynamic client registration is used.
-
-### Countermeasures {#ConfigConfusionCountermeasures}
-
-At its core, client configuration confusion attacks exploit the fact that, an attacker-controlled client configuration can reuse the registered client at the honest authorization server under an honest client configuration.
-
-Clients in open ecosystems that interact with more than one client configuration and support authorization servers that either use signature-based client authentication methods or do not require client authentication MUST employ the following countermeasure, unless client configuration confusion attacks are mitigated by other means, such as using fresh key material for each authorization server employing signature-based client authentication and disallowing any authorization server that does not require client authentication.
-
-Clients MUST issue a distinct redirection URI for each client configuration they interact with, both during client registration and in OAuth flows. This ensures that the redirection URI for the attacker-controlled client configuration will fail the exact redirection URI match (required by {{Section 4.1.3 of !RFC9700}}) at the honest authorization server, since the redirection URI at the honest client configuration is the only redirection URI registered for the client identifier at the honest authorization server.
-
-When dynamic client registration is supported, clients SHOULD also specify a different software identifier (`software_id`) in client registration requests for each client configuration. This prevents client registration requests from being rejected by the authorization server when different redirection URIs are used, if the authorization server follows the excerpt from {{Section 5 of ?RFC7591}} below:
-
-{:style="empty"}
-* An authorization server could also refuse registration requests from a known software identifier that is requesting different redirection URIs or a different client URI.
-
-This countermeasure can be considered an actionable approach to mitigating the "Counterfeit Resource Server" threat (see "Access Token Phishing by Counterfeit Resource Server" in {{Section 4.9.1 of !RFC9700}}) within the context of open ecosystems. It is complementary to general defenses for access token misuses, such as sender-constrained and audience-restricted access tokens as specified in {{Section 4.10 of !RFC9700}}.
-
+The client MUST issues redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client MUST store this identifier in the user's session. When an authorization response was received on the redirection URI endpoint, Clients MUST also check that a context identifier matches with the one in the distinct redirection URI. If there is a mismatch, the client MUST abort the flow.
 
 ## Session Fixation {#SessionFixation}
 Session fixation attacks can occur when the client relies on an authorization session fixated through a URL, instead of the existing user-agent session, to identify the user at the redirection endpoint.
