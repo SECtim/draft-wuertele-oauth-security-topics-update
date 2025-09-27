@@ -511,18 +511,18 @@ Preconditions: For this variant to work, it is assumed that the client uses `sta
 Variant:
 
 A variant of the attack can occur when the client employs other means to indicate the authorization session. For example, when a user chooses to start OAuth at the client, the client may first generate a request URL that includes a session ID parameter pointing to the client's website, before redirecting to the authorization endpoint.
-The following non-normative example shows such a request, where the `auth_session_id` is derived from the user-agent session:
+The following non-normative example shows such a request, where the `auth_session_id` value is derived from the user-agent session:
 
     GET /oauth?auth_session_id=6064f11c-f73e-425b-b9b9-4a36088cdb2b HTTP/1.1
-    Host: client.somesite.example
+    Host: client.com
 
 
 The following non-normative example shows the response, which redirects the browser to the authorization request while setting the authorization session in the browser:
 
     HTTP/1.1 303 See Other
-    Location: https://server.somesite.example/authorize?
+    Location: https://as.example/authorize?
               response_type=code&client_id=K9dTpWzqL7&state=b1d8f043
-              &redirect_uri=https%3A%2F%2Fclient.somesite.example%2Fcb
+              &redirect_uri=https%3A%2F%2Fclient.com%2Fcb
     Set-Cookie: auth_session_id=6064f11c-f73e-425b-b9b9-4a36088cdb2b
 
 
@@ -552,7 +552,7 @@ At its core, defending against session fixation requires ensuring that an OAuth 
 
 Note that PKCE {{?RFC7636}} does not mitigate the attack, because both the authorization request and the access token request are completed within the same OAuth flow by the same user (the victim).
 
-The following countermeasure address the root cause:
+The following countermeasure addresses the root cause:
 
 The clients MUST validate the binding of authorization session (whether conveyed via `state` or session cookies) to the existing user-agent session, before proceeding with authorization code exchange.
 
