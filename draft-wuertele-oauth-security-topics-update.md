@@ -489,7 +489,7 @@ Unlike what expected in {{Section 4.4 of !RFC9700}}, an authorization server (or
 - in addition to the above, a platform's client allowing multiple OAuth providers for a tool SHOULD include identifiers that represent the tool and the OAuth provider.
 - in addition to the above, an OAuth-as-a-service managed client MUST include identifiers that represent the tenant, tool and OAuth provider.
 
-The client MUST issues redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client MUST store this identifier in the user's session. When an authorization response was received on the redirection URI endpoint, Clients MUST also check that a context identifier matches with the one in the distinct redirection URI. If there is a mismatch, the client MUST abort the flow.
+The client MUST issue distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client MUST store this identifier in the user's session. When an authorization response was received on the redirection URI endpoint, Clients MUST also check that a context identifier matches with the one in the distinct redirection URI. If there is a mismatch, the client MUST abort the flow.
 
 ## Session Fixation {#SessionFixation}
 Session fixation attacks can occur when the client relies on an authorization session fixated through a URL, instead of the existing user-agent session, to identify the user at the redirection endpoint.
