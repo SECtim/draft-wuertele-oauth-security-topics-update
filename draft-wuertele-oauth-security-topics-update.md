@@ -52,8 +52,8 @@ normative:
 
 informative:
   OAUTH-7523bis: I-D.draft-ietf-oauth-rfc7523bis-00
+  RFC6265bis: I-D.draft-ietf-httpbis-rfc6265bis-21
   CDFS: I-D.draft-ietf-oauth-cross-device-security-12
-  JWT-ENCODED-STATE: I-D.draft-bradley-oauth-jwt-encoded-state-09
   OpenID.Core:
     author:
     - ins: N. Sakimura
@@ -432,65 +432,58 @@ use authorization server metadata {{!RFC8414}} or OpenID Discovery
 {{OpenID.Discovery}}.
 
 
-## Cross-tool OAuth Account Takeovers {#COAT}
+## Cross-tool OAuth Account Takeover {#COAT}
 
-It is increasingly common that a single OAuth client supports multiple tools, and each of which is mapped to an OAuth provider configuration (which includes at least the authorization server (AS) endpoints and client credentials). A successful OAuth connection is established when the OAuth client obtains an access token for the tool based on its corresponding OAuth provider configuration. The tool can then use the access token to access the user's resource at an API or resource server (RS).
+It is increasingly common that a single OAuth client supports multiple tools, and each of which is mapped to an OAuth provider configuration (which includes at least the authorization server (AS) endpoints and client registration). A successful OAuth connection is established when the OAuth client obtains an access token for a tool based on its corresponding OAuth provider configuration. The tool can then use the access token to access the user's resource at a resource server (RS).
 
-Multiple OAuth connections can be linked to some form of user's identity based on common deployment scenarios:
+Multiple OAuth connections can be linked to some form of user's identity based on these common deployment scenarios:
+
 - Platform Integrations: The OAuth connections made with different tools are linked to a platform's user account or session (e.g., represented by a platform's user identifier or a short-lived anonymous session). This is common where a user authorizes a platform (e.g., agentic AI service) to orchestrate multiple tools, of which some of them together with their OAuth providers can be contributed by the public.
-- Multi-tenant OAuth-as-a-Service: In cases when the OAuth client is managed by a multi-tenant OAuth-as-a-service provider, a successful OAuth connection are linked to a tenant's user identifier and in addition to the tenant identifier. This is a generalization of the last deployment scenario, where a platform using this OAuth-as-a-service is becoming a tenant. A tenant can usually choose some off-the-shelf tools and add their own with custom OAuth providers to support the tenant's service.
+- Multi-tenant OAuth-as-a-Service: In cases when the OAuth client is managed by a multi-tenant OAuth-as-a-Service provider, a successful OAuth connection are linked to a tenant's user identifier in addition to the tenant identifier. This is a generalization of the last deployment scenario, where a platform using this OAuth-as-a-Service is becoming a tenant. A tenant can usually choose some off-the-shelf tools and add their own with custom OAuth providers to support the tenant's service.
 
-When controlled by an attacker, the open configurations of OAuth providers have posed a new threat to this centralized OAuth client design. If the client fails to properly identify, track, and isolate which proper OAuth connection context (representing a combination of OAuth provider, tool, and tenant) is in use during an authorization flow, an attacker can exploit this to mount two attacks {{research.cuhk}}:
-- Cross-tool OAuth Account Takeover (COAT): an attacker uses a malicious tool to steal a victim's authorization code issued by a honest OAuth provider of a honest tool, and apply the authorization code injection (as defined in {{Section 4.5 of !RFC9700}}) against a new OAuth connection with the attacker's identity. This results in a compromised OAuth connection between the attacker's platform identity and the victim's tool account. The impact is equivalent to an account takeover: the attacker can operate the honest tool using the victim's tool account (hijacked either under the same platform, or even cross-tenant that shares a vulnerable OAuth-as-a-service).
+When controlled by an attacker, the open configurations of OAuth providers have posed a new threat to this centralized OAuth client design. If the client fails to properly identify, track, and isolate which proper OAuth connection context (representing a combination of OAuth provider, tool, and tenant) is in use during an authorization flow, an attacker can exploit this to mount two categories of attacks {{research.cuhk}}{{research.cuhk3}}.
+
+- Cross-tool OAuth Account Takeover (COAT): an attacker uses a malicious tool to steal a victim's authorization code issued by an honest OAuth provider of an honest tool, and apply the authorization code injection (as defined in {{Section 4.5 of !RFC9700}}) against a new OAuth connection with the attacker's identity. This results in a compromised OAuth connection between the attacker's platform identity and the victim's tool account. The impact is equivalent to an account takeover: the attacker can operate the honest tool using the victim's tool account (hijacked either under the same platform, or even cross-tenant that shares a vulnerable OAuth-as-a-service).
 - Cross-tool OAuth request forgery (CORF): an attacker forces a victim to connect with a tool with the attacker's tool account. This results in a compromised OAuth connection between the victim's platform identity and the attacker's tool account. The resulting impact is similar to login CSRF as described in {{Section 4.4.1.8 of !RFC6819}}: the victim's client unintentionally interacts with a honest tool to access resources under the attacker's control.
 
+### Attack Description {#COATDescription}
 Preconditions: It is assumed that
 
-* the implicit or authorization code grant is used with multiple OAuth connection contexts, of which one combination is considered "honest" (H-Tool using H-AS) and one is operated by the attacker (A-Tool using A-AS), and
-* the client stores the tool and authorization server chosen by the user in a session bound to the user's browser, and
-* the client issues redirection URIs which do not depend on all variables in the OAuth connection contexts (AS, tool, tenant).
+* the implicit or authorization code grant is used with multiple OAuth connection contexts, of which one combination is considered "honest" (H-Tool using H-AuthProvider with H-AS) and one is operated by the attacker (A-Tool using A-AuthProvider with A-AS), and
+* the client stores the connection context chosen by the user in a session bound to the user's browser, and
+* the client issues redirection URIs which do not depend on all variables in the connection context (e.g., auth provider, tool, tenant).
 
-In the following, it is further assumed that the client is registered with H-AS (URI: `https://honest.as.example`, client ID: `7ZGZldHQ`) and with A-AS (URI: `https://attacker.example`, client ID: `666RVZJTA`). Assume that the client issues the redirection URI `https://client.com/honest-cb` for H-AS and `https://client.com/attack-cb` for A-AS. URLs shown in the following example are shortened for presentation to include only parameters relevant to the attack.
+In the following, it is further assumed that the client is registered with H-AS (URI: `https://honest.as.example`, client ID: `7ZGZldHQ`) and with A-AS (URI: `https://attacker.example`, client ID: `666RVZJTA`). Assume that the client issues the redirection URI `https://client.com/honest-cb` for the honest tool and `https://client.com/attack-cb` for the attacker's. URLs shown in the following example are shortened for presentation to include only parameters relevant to the attack.
 
 Attack on the authorization code grant:
 
 1. A victim user selects to start the grant using A-AS of A-Tool (e.g., by initiating a tool use on an agentic AI service).
 2. The client stores in the user's session that the user has selected such OAuth connection context and redirects the user to A-AS's authorization endpoint with a Location header containing the URL `https://attacker.example/authorize?response_type=code&client_id=666RVZJTA&state=[state]`
   `&redirect_uri=https%3A%2F%2Fclient.com%2Fattack-cb`.
-3. When the user's browser navigates to the A-AS, the attacker immediately redirects the browser to the authorization endpoint of H-AS. In the authorization request, the attacker uses the honest authorization URL and replaces the state with the one freshly received. Therefore, the browser receives a redirection (`303 See Other`) with a Location header pointing to `https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ&state=[state]`
+3. When the user's browser navigates to the A-AS, the attacker immediately redirects the browser to the authorization endpoint of H-AS. In the authorization request, the attacker uses the honest authorization URL and replaces the state with the one freshly received. Therefore, the browser receives a redirection with a Location header pointing to `https://honest.as.example/authorize?response_type=code&client_id=7ZGZldHQ&state=[state]`
   `&redirect_uri=https%3A%2F%2Fclient.com%2Fhonest-cb`.
-4. Due to implicit or prior approvals, the user might not be prompted for a re-authorization (re-consent). H-AS issues a code and sends it (via the browser) back to the client.
-5. Since the client still assumes that the code was issued by A-Tool, as stored in the user's session, it will try to redeem the code at A-AS's token endpoint.
+4. Due to implicit or prior approvals, the user might not be prompted for a re-authorization (re-consent). H-AS issues a code and sends it (via the browser) back with the state to the client.
+5. Since the client still assumes that the code was issued by A-Tool, as stored in the user's session (with state verified), it will try to redeem the code at A-AS's token endpoint.
 6. The attacker therefore obtains code and can either exchange the code for an access token (for public clients) or perform an authorization code injection attack as described in {{Section 4.5 of !RFC9700}}.
 
-This is the Cross-tool OAuth Account Takeover (COAT) attack, which is a generalization of the mix-up attack as defined in {{Section 4.5 of !RFC9700}}). COAT exploits confusion between the OAuth connection context (which is a combination of OAuth provider, tool, tenant) of a centralized client rather than limited to confusion between two distinct authorization servers.
+This Cross-tool OAuth Account Takeover (COAT) attack is a generalization of the Cross-app OAuth Account Takeover as defined in {{research.cuhk}} and the mix-up attack as defined in {{Section 4.4 of !RFC9700}}. This COAT exploits confusion between the OAuth connection context (i.e., a combination of OAuth provider, tool, tenant) of a centralized client rather than limited to confusion between two distinct authorization servers.
 
 Variants:
-   *  Implicit Grant: In the implicit grant, the attacker receives an
-      access token instead of the code in Step 4.  The attacker's
-      authorization server receives the access token when the client
-      makes either a request to the A-AS userinfo endpoint (defined in
-      [OpenID.Core]) or a request to the attacker's resource server
-      (since the client believes it has completed the flow with A-AS).
-   *  Cross-tool OAuth Request Forgery (CORF): If clients do not store the selected OAuth connection context in the user's session, attackers can mount an attack called Cross-tool OAuth request forgery (CORF). Note that unlike other variants, the goal of this attack is not to obtain an authorization code or access token, but to force the client to use an attacker's authorization code or access token for H-AS. This was referred to as Naïve RP Session Integrity Attack when the OAuth connection context is limited to AS, and is detailed in Section 3.4 of {{arXiv.1601.01229}}.
+
+   *  Implicit Grant: In the implicit grant, the attacker receives an access token instead of the code in Step 4.  The attacker's authorization server receives the access token when the client makes either a request to the A-AS userinfo endpoint (defined in {{OpenID.Core}}) or a request to the attacker's resource server (since the client believes it has completed the flow with A-AS).
+   *  Cross-tool OAuth Request Forgery (CORF): If clients do not store the selected OAuth connection context in the user's session, but in the redirection URI instead, attackers can mount an attack called Cross-tool OAuth Request Forgery (CORF). Note that unlike other variants, the goal of this attack is not to obtain an authorization code or access token, but to force the client to use an attacker's authorization code or access token for H-AS. This was referred to as Naïve RP Session Integrity Attack when the OAuth connection context is limited to AS, and is detailed in Section 3.4 of {{arXiv.1601.01229}}.
    *  Cross Social-Network Request Forgery. If clients use different redirection URIs for different authorization servers, clients do not store the selected authorization server in the user's session, and authorization servers do not check the redirection URIs properly (see {{Section 4.1 of !RFC9700}}), attackers can mount an attack called "Cross Social-Network Request Forgery". These attacks have been observed in practice. Refer to {{research.jcs_14}} for details.
-   *  OpenID Connect: Some variants can be used to attack OpenID
-      Connect.  In these attacks, the attacker misuses features of the
-      OpenID Connect Discovery [OpenID.Discovery] mechanism or replays
-      access tokens or ID Tokens to conduct a mix-up attack.  The
-      attacks are described in detail in Appendix A of
-      [arXiv.1704.08539] and Section 6 of [arXiv.1508.04324v2]
-      ("Malicious Endpoints Attacks").
+   *  OpenID Connect: Some variants can be used to attack OpenID Connect. In these attacks, the attacker misuses features of the OpenID Connect Discovery {{OpenID.Discovery}} mechanism or replays access tokens or ID Tokens to conduct a mix-up attack. The attacks are described in detail in Appendix A of [arXiv.1704.08539] and Section 6 of [arXiv.1508.04324v2] ("Malicious Endpoints Attacks").
 
 ### Countermeasures {#COATCountermeasure}
 
 Unlike what expected in {{Section 4.4 of !RFC9700}}, an authorization server (or issuer) is no longer unique to a client. In modern deployment scenarios, the OAuth client interacts with multiple combinations of OAuth providers, tools and tenants. The client MUST use all variables in their OAuth connection context to form a unique connection context identifier. For instances,
+
 - a platform's client allowing one OAuth provider configuration per tool, while multiple tools can relying on same AS, SHOULD include the tool identifier.
 - in addition to the above, a platform's client allowing multiple OAuth providers for a tool SHOULD include identifiers that represent the tool and the OAuth provider.
-- in addition to the above, an OAuth-as-a-service managed client MUST include identifiers that represent the tenant, tool and OAuth provider.
+- in addition to the above, an OAuth-as-a-Service managed client MUST include identifiers that represent the tenant, tool and OAuth provider.
 
-The client MUST issue distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client MUST store this identifier in the user's session. When an authorization response was received on the redirection URI endpoint, Clients MUST also check that a context identifier matches with the one in the distinct redirection URI. If there is a mismatch, the client MUST abort the flow.
-
+The client MUST issue distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client MUST store this identifier in the user's session. When an authorization response was received on the redirection URI endpoint, clients MUST also check that the context identifier from the URI matches with the one in the distinct redirection URI. If there is a mismatch, the client MUST abort the flow.
 
 ## Cross-User OAuth Session Fixated Linking {#SessionFixation}
 
@@ -520,13 +513,13 @@ The client may first generate a pre-authorization URL to fixate a session before
 Non-normative example request:
 
     GET /oauth?auth_session_id=6064f11c-f73e-425b-b9b9-4a36088cdb2b HTTP/1.1
-    Host: client.somesite.example
+    Host: client.com
 
 Non-normative example response:
     HTTP/1.1 303 See Other
-    Location: https://server.somesite.example/authorize?
+    Location: https://as.example/authorize?
               response_type=code&client_id=K9dTpWzqL7&state=b1d8f043
-              &redirect_uri=https%3A%2F%2Fclient.somesite.example%2Fcb
+              &redirect_uri=https%3A%2F%2Fclient.com%2Fcb
     Set-Cookie: auth_session_id=6064f11c-f73e-425b-b9b9-4a36088cdb2b
 
 This attack differes from the above only by obtaining and using the pre-authorization URL instead, which will first fixate the attacker's session (rather than in step 4).
