@@ -441,8 +441,8 @@ Multiple OAuth connections can be linked to some form of user's identity based o
 - Multi-tenant OAuth-as-a-Service: In cases when the OAuth client is managed by a multi-tenant OAuth-as-a-service provider, a successful OAuth connection are linked to a tenant's user identifier and in addition to the tenant identifier. This is a generalization of the last deployment scenario, where a platform using this OAuth-as-a-service is becoming a tenant. A tenant can usually choose some off-the-shelf tools and add their own with custom OAuth providers to support the tenant's service.
 
 When controlled by an attacker, the open configurations of OAuth providers have posed a new threat to this centralized OAuth client design. If the client fails to properly identify, track, and isolate which proper OAuth connection context (representing a combination of OAuth provider, tool, and tenant) is in use during an authorization flow, an attacker can exploit this to mount two attacks {{research.cuhk}}:
-- Cross-tool OAuth Account Takeover (COAT): an attacker uses a malicious tool to steal a victim's authorization code issued by a honest OAuth provider of a honest tool, and apply the authorization code injection attack (as defined in {{Section 4.5 of !RFC9700}}) using the attacker's identity. This results in a compromised OAuth connection between the attacker's platform identity and the victim's tool account. The impact is equivalent to an account takeover: the attacker can operate the honest tool using the victim's tool account (hijacked either under the same platform, or even cross-tenant that shares a vulnerable OAuth-as-a-service).
-- Cross-tool OAuth request forgery (CORF): an attacker forces a victim to connect with a tool with the attacker's tool account. This results in a compromised OAuth connection between the victim's platform identity and the attacker's tool account. The resulting impact is similar to login CSRF (as described in {{Section 4.4.1.8 of !RFC6819}}): the victim unintentionally interacts with a honest tool on behalf of the attacker, whose traces can be monitored by the attacker using his own account.
+- Cross-tool OAuth Account Takeover (COAT): an attacker uses a malicious tool to steal a victim's authorization code issued by a honest OAuth provider of a honest tool, and apply the authorization code injection (as defined in {{Section 4.5 of !RFC9700}}) against a new OAuth connection with the attacker's identity. This results in a compromised OAuth connection between the attacker's platform identity and the victim's tool account. The impact is equivalent to an account takeover: the attacker can operate the honest tool using the victim's tool account (hijacked either under the same platform, or even cross-tenant that shares a vulnerable OAuth-as-a-service).
+- Cross-tool OAuth request forgery (CORF): an attacker forces a victim to connect with a tool with the attacker's tool account. This results in a compromised OAuth connection between the victim's platform identity and the attacker's tool account. The resulting impact is similar to login CSRF as described in {{Section 4.4.1.8 of !RFC6819}}: the victim's client unintentionally interacts with a honest tool to access resources under the attacker's control.
 
 Preconditions: It is assumed that
 
@@ -491,87 +491,59 @@ Unlike what expected in {{Section 4.4 of !RFC9700}}, an authorization server (or
 
 The client MUST issue distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client MUST store this identifier in the user's session. When an authorization response was received on the redirection URI endpoint, Clients MUST also check that a context identifier matches with the one in the distinct redirection URI. If there is a mismatch, the client MUST abort the flow.
 
-## Session Fixation {#SessionFixation}
-Session fixation attacks can occur when the client relies on an authorization session fixated through a URL, instead of the existing user-agent session, to identify the user at the redirection endpoint.
-The authorization session alone is then used to determine the intended recipient of the access token at the client. Although it is derived from the user-agent session, the client may fail to validate the authorization session's binding to the user-agent session.
-This can be the case, for example, if the `state` parameter is used to carry application state, or if a session identifier is introduced into the OAuth flow.
 
-In a session fixation attack, the attacker attempts to trick a victim into completing an OAuth flow that the attacker initated, thereby linking the resulting access token to the attacker's own session with the client. The goal is to associate the attacker's session at the client with the victim's resources or identity, thereby giving the attacker at least limited access to the victim's resources. This contrasts with Cross-Site Request Forgery (CSRF) attacks (see {{Section 4.7 of !RFC9700}}), which cause a victim to access the attacker's resources.
+## Cross-User OAuth Session Fixated Linking {#SessionFixation}
 
+Based on similar deployment needs as outlined in Section 2.2, multiple OAuth connections can be linked to some form of user's identity (e.g., a platform's user identifier). This identity information is supposedly maintained in a session established and already bound to the user-agent. However, this prerequisite was broken in real-world deployments for various reasons. For instance, in Cross-user-agent OAuth deployments, an authenticated native app client opens a tool linking URL in an external user-agent (a browser) that has no authenticated sessions with the client. As a workaround, the client introduces a session fixation vulnerability: it encodes the a user's session identiifer as part of the URL, in order to fixate a user's session to complete the OAuth connection with the tool/resource.
 
-Note that this section focuses on the authorization code grant. For similar attacks in Cross-device OAuth flows, see {{Section 4 of CDFS}}.
+The Cross-User OAuth Session Fixated Linking exploits this session fixation attack vector. The attacker attempts to trick a victim into completing an OAuth connection flow that the attacker has initiated at the client. As a result, the attacker's session will be used to establish an OAuth connection with the victim's tool resources or identity, hence resulting in the same impact of COAT. However, this attack exploits confusion over the intended user bound to that connection context flow, contrasting with COAT, which exploits confusion within the OAuth connection context (OAuth provider, tool, tenant). 
 
+In general, this session fixation vulnerability MAY be viewed as violating the requirement of "binding the contents of state to the browser (more precisely, the initiating user agent) session" to defend against CSRF ({{Section 4.7 of !RFC9700}}). However, CSRF defenses, including PKCE {{?RFC7636}}, cannot mitigate this new attack, since the entire OAuth flow including the authorization request and the access token request are completed by the same victim user. The impact of the new attack is also more severe from that of typical CSRF attacks.
+
+Note that this section focuses on the authorization code grant. For similar attacks in cross-device OAuth flows, see {{Section 4 of CDFS}}.
 
 ### Attack Description {#FixationAttack}
-The session fixation attack works as follows, with variants of the attack outlined below:
 
-Preconditions: For this variant to work, it is assumed that the client uses `state` to carry the authorization session.
+Preconditions: It is assumed that the client has maintained a user's session. But it does not want to re-authenticate the user for usability reasons, before completing the OAuth connection.
 
-1. The attacker initiates OAuth and obtains an authorization request URL.
-2. The attacker sends this authorization request URL to the victim; the URL contains the `state` parameter indicating the attacker's authorization session.
-3. The victim visits the URL and authorizes the client to access their resources.
-4. Upon receiving the request to the redirection endpoint, the client determines based on the authorization session that the attacker initiated the OAuth flow, thereby associating the attacker's session at the client with the victim's resources.
-5. The attacker now gains access to the victim's resources.
+Example Attack:
+1. From a vulnerable client, the attacker initiates OAuth against a tool and obtains an authorization request URL, in which the `state` has encoded the attaker's session.
+2. The attacker sends this authorization request URL to a victim.
+3. The victim visits the URL and (automatically, due to prior or implicit approvals,) authorizes the client to access their resources.
+4. Upon receiving the `state` at the redirection endpoint, the client fixates the attacker's session and completes the OAuth connection.
+5. The attacker's platform account now gains access to the victim's resources.
 
 Variant:
 
-A variant of the attack can occur when the client employs other means to indicate the authorization session. For example, when a user chooses to start OAuth at the client, the client may first generate a request URL that includes a session ID parameter pointing to the client's website, before redirecting to the authorization endpoint.
-The following non-normative example shows such a request, where the `auth_session_id` is derived from the user-agent session:
+The client may first generate a pre-authorization URL to fixate a session before redirecting to the authorization endpoint.
+
+Non-normative example request:
 
     GET /oauth?auth_session_id=6064f11c-f73e-425b-b9b9-4a36088cdb2b HTTP/1.1
     Host: client.somesite.example
 
-
-The following non-normative example shows the response, which redirects the browser to the authorization request while setting the authorization session in the browser:
-
+Non-normative example response:
     HTTP/1.1 303 See Other
     Location: https://server.somesite.example/authorize?
               response_type=code&client_id=K9dTpWzqL7&state=b1d8f043
               &redirect_uri=https%3A%2F%2Fclient.somesite.example%2Fcb
     Set-Cookie: auth_session_id=6064f11c-f73e-425b-b9b9-4a36088cdb2b
 
-
-Under this variant, Step 1 and Step 2 work as follows:
-
-1. The attacker initiates OAuth and obtains an initial request URL that will generate the authorization request URL.
-2. The attacker sends this initial request URL to the victim; the custom parameter in the URL indicates the attacker's authorization session.
-The remainder of the attack proceeds as described above.
-
-
-### Discussions {#FixationDiscussion}
-
-In traditional OAuth deployments for web applications, where a single origin (the client) and a single user-agent (the web browser) are involved, the session fixation vulnerability can be viewed as a failure to validate the binding of `state` to the user-agent session ({{Section 4.7.1 of !RFC9700}}), or as a failed attempt to retrofit the concept of an authorization session (ID) into OAuth. In such cases, the user-agent session is accessible to the client's redirection endpoint for validation, because they share the same origin (per the same-origin policy {{?RFC6454}}) or, more generally, the same domain (per the cookie standard {{?RFC6265}}).
-
-
-In more complex OAuth deployments, the pattern of relying on a URL-fixated authorization session, rather than the original session at the user-agent, often stems from the user-agent session not being available to the client at the redirection endpoint:
-
-* In Cross-origin OAuth deployments, the redirection endpoint is hosted at a different origin from where the client application's user-agent session exists.
-* In Cross-user-agent OAuth deployments, native app clients that store tokens at their backend and follow {{!RFC8252}} to conduct OAuth in an external user-agent (e.g., the browser) do not have access to the original user-agent, nor to its session, when submitting the authorization code at the redirection endpoint hosted by the native app's backend.
-* In OAuth deployments where the application's user session and its OAuth client are handled by separate services of the same party (e.g., in a microservice architecture) or by different parties (e.g., in the business model of "OAuth-as-a-Service"), the client's redirection endpoint may be unable to interpret the application's user-agent session.
-
-Session fixation attacks in these complex deployments have been observed in practice. Refer to {{research.cuhk2}} and {{research.cuhk3}} for details.
+This attack differes from the above only by obtaining and using the pre-authorization URL instead, which will first fixate the attacker's session (rather than in step 4).
 
 ### Countermeasures {#FixationCountermeasures}
 
-At its core, defending against session fixation requires ensuring that an OAuth flow initiated by one user cannot be completed by another user.
+Defending against this attack requires ensuring that an OAuth connection flow initiated by one user MUST only be completed by the same user.
 
-Note that PKCE {{?RFC7636}} does not mitigate the attack, because both the authorization request and the access token request are completed within the same OAuth flow by the same user (the victim).
+The most straightforward countermeasure is to impose a re-authentication instead of trying to fixate a session if usability condition permits. It is also understandable that the session fixation vector cannot be eliminated due to application needs. For instance, the client's user session and the OAuth client responsible for making OAuth connections are handled by separate services and entities (e.g., seperate services hosted and isolated under different origins, or when the OAuth client is outsourced to an OAuth-as-a-Service provider), as observed by in practice by {{research.cuhk2}} and {{research.cuhk3}}.
 
-The following countermeasures address the root cause.
+Hence, the client MUST bind any *newly fixated session* (conveyed via state or the preauthorization URL during a connection request) with the *existing session* (maintained at the user agent) which initiates the connection request, before proceeding with the access token request. Depending on the specific current settings:
 
-The clients MUST validate the binding of authorization session (whether conveyed via `state` or session cookies) to the existing user-agent session, before proceeding with authorization code exchange.
+* When the connection request and redirection endpoint are hosted in the same origin and same user agent, client MUST perform the binding between the newly fixated session and the existing session before the access token request.
 
-When the user-agent session is available to, and identifiable by, the client at the redirection endpoint (e.g., in same-origin, same-user-agent deployments), clients can perform the validation directly.
-
-In cross-origin deployments, this requires either relocating the redirection endpoint, or redirecting from the redirection endpoint, to a location where the user-agent session is available, and then validate the binding.
-
-In cross-user-agent deployments, this requires either relocating, or redirecting from, the redirection endpoint hosted by the native app's backend to the native app itself (following {{Section 7 of !RFC8252}}). The native app MUST deliver the authorization code to its backend, and then validate the binding.
-
-Alternatively, the client MAY require the user to re-authenticate (i.e., re-establish the user-agent session in the native app) in the external user-agent (i.e., the browser). This approach is less recommended because it degrades usability.
-
-
-Note that when redirecting to the origin or native app where the user-agent session is in place, the client MUST NOT expose the returned location in a way that is controllable by an attacker. Otherwise, an attacker could tamper with the returned location to leak authorization credentials via an open redirect.
-
+* In case the redirection endpoint in hosted elsewhere (different origin or different user agent), the countermeasure requires:
+  * an implementation change to co-locate the connection request and redirection endpoint in the same origin and user agent (see above), or
+  * at the current redirection endpoint, further redirect, using HTTP Location or native app redirection as detailed in {{Section 7 of !RFC8252}}, back to (the starting origin and/or user agent) where the existing session is available. The location of this further redirection MUST NOT be controllable by an attacker, or it will result in Open Redirection ({{Section 4.11 of !RFC9700}}). The client MUST validate the binding between sessions before the access token request. 
 
 # Security Considerations {#Security}
 
