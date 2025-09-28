@@ -434,7 +434,7 @@ use authorization server metadata {{!RFC8414}} or OpenID Discovery
 
 ## Cross-tool OAuth Account Takeover {#COAT}
 
-It is increasingly common that a single OAuth client supports multiple tools, and each of which is mapped to an OAuth provider configuration (which includes at least the authorization server (AS) endpoints and client registration). A successful OAuth connection is established when the OAuth client obtains an access token for a tool based on its corresponding OAuth provider configuration. The tool MAY then use the access token to access the user's resource at an API or resource server (RS).
+It is increasingly common that a single OAuth client supports multiple tools, and each of which is mapped to an OAuth provider configuration (which includes at least the authorization server (AS) endpoints and client registration). A successful OAuth connection is established when the OAuth client obtains an access token for a tool based on its corresponding OAuth provider configuration. The tool can then use the access token to access the user's resource at a resource server (RS).
 
 Multiple OAuth connections can be linked to some form of user's identity based on these common deployment scenarios:
 
@@ -443,7 +443,7 @@ Multiple OAuth connections can be linked to some form of user's identity based o
 
 When controlled by an attacker, the open configurations of OAuth providers have posed a new threat to this centralized OAuth client design. If the client fails to properly identify, track, and isolate which proper OAuth connection context (representing a combination of OAuth provider, tool, and tenant) is in use during an authorization flow, an attacker can exploit this to mount two categories of attacks {{research.cuhk}}{{research.cuhk3}}.
 
-- Cross-tool OAuth Account Takeover (COAT): an attacker uses a malicious tool to steal a victim's authorization code issued by a honest OAuth provider of a honest tool, and apply the authorization code injection attack (as defined in {{Section 4.4 of !RFC9700}}) using the attacker's identity. This results in a compromised OAuth connection between the attacker's platform identity and the victim's tool account. The impact is equivalent to an account takeover: the attacker can operate the honest tool using the victim's tool account (hijacked either under the same platform, or even cross-tenant that shares a vulnerable OAuth-as-a-Service).
+- Cross-tool OAuth Account Takeover (COAT): an attacker uses a malicious tool to steal a victim's authorization code issued by an honest OAuth provider of an honest tool, and apply the authorization code injection attack (as defined in {{Section 4.5 of !RFC9700}}) using the attacker's identity. This results in a compromised OAuth connection between the attacker's platform identity and the victim's tool account. The impact is equivalent to an account takeover: the attacker can operate the honest tool using the victim's tool account (hijacked either under the same platform, or even cross-tenant that shares a vulnerable OAuth-as-a-Service).
 - Cross-tool OAuth Request Forgery (CORF): an attacker forces a victim to connect with a tool with the attacker's tool account. This results in a compromised OAuth connection between the victim's platform identity and the attacker's tool account. The resulting impact is similar to login CSRF (as described in {{Section 4.4.1.8 of !RFC6819}}): the victim unintentionally interacts with an honest tool on behalf of the attacker, and so the victim's traces can be monitored by the attacker using the same account.
 
 ### Attack Description {#COATDescription}
@@ -466,7 +466,7 @@ Attack on the authorization code grant:
 5. Since the client still assumes that the code was issued by A-Tool, as stored in the user's session (with state verified), it will try to redeem the code at A-AS's token endpoint.
 6. The attacker therefore obtains code and can either exchange the code for an access token (for public clients) or perform an authorization code injection attack as described in {{Section 4.5 of !RFC9700}}.
 
-This Cross-tool OAuth Account Takeover (COAT) attack is a generalization of the Cross-app OAuth Account Takeover as defined in {{research.cuhk}} and the mix-up attack as defined in {{Section 4.5 of !RFC9700}}. This COAT exploits confusion between the OAuth connection context (i.e., a combination of OAuth provider, tool, tenant) of a centralized client rather than limited to confusion between two distinct authorization servers.
+This Cross-tool OAuth Account Takeover (COAT) attack is a generalization of the Cross-app OAuth Account Takeover as defined in {{research.cuhk}} and the mix-up attack as defined in {{Section 4.4 of !RFC9700}}. This COAT exploits confusion between the OAuth connection context (i.e., a combination of OAuth provider, tool, tenant) of a centralized client rather than limited to confusion between two distinct authorization servers.
 
 Variants:
 
