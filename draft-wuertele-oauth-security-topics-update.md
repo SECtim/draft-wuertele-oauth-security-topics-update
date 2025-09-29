@@ -607,7 +607,7 @@ for their valuable feedback and contributions to this document.
 
 -02
 
-* Rewrote Mix-up-Variant related sections
+* Rewrote Mix-up related sections
 * Added section on Session Fixation attack
 
 -01
