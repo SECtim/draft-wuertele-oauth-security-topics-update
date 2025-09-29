@@ -52,7 +52,6 @@ normative:
 
 informative:
   OAUTH-7523bis: I-D.draft-ietf-oauth-rfc7523bis-00
-  RFC6265bis: I-D.draft-ietf-httpbis-rfc6265bis-21
   CDFS: I-D.draft-ietf-oauth-cross-device-security-12
   OpenID.Core:
     author:
