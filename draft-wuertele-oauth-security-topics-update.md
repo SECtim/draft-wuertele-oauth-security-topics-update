@@ -538,7 +538,7 @@ Example Attack:
 1. From a vulnerable client, the attacker initiates OAuth against a tool and obtains an authorization request URL, in which the `state` has encoded a newly fixable authorization session of the attacker.
 2. The attacker sends this authorization request URL to a victim.
 3. The victim visits the URL and (automatically, due to prior or implicit approvals,) authorizes the client to access their resources.
-4. Upon receiving the `state` at the redirection endpoint, the client fixates the attacker's session and completes the OAuth connection.
+4. Upon receiving the `state` at the redirection endpoint, the client fixates the attacker's authorization session and completes the OAuth connection.
 5. The attacker's account at the client now gains access to the victim's resources.
 
 Variant:
@@ -558,7 +558,7 @@ Non-normative example response:
               &redirect_uri=https%3A%2F%2Fclient.com%2Fcb
     Set-Cookie: auth_session_id=6064f11c-f73e-425b-b9b9-4a36088cdb2b
 
-This attack differs from the above only by obtaining and using the pre-authorization URL instead, which will first fixate the attacker's session (rather than in Step 4).
+This attack differs from the above only by obtaining and using the pre-authorization URL instead, which will first fixate the attacker's authorization session (rather than in Step 4).
 
 ### Countermeasures {#FixationCountermeasures}
 
