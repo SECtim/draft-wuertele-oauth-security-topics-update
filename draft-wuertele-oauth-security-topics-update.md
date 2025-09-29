@@ -475,18 +475,23 @@ Variants:
    *  OpenID Connect: Some variants can be used to attack OpenID Connect. In these attacks, the attacker misuses features of the OpenID Connect Discovery {{OpenID.Discovery}} mechanism or replays access tokens or ID Tokens to conduct a mix-up attack. The attacks are described in detail in Appendix A of [arXiv.1704.08539] and Section 6 of [arXiv.1508.04324v2] ("Malicious Endpoints Attacks").
 
 ### Countermeasures {#COATCountermeasure}
+In modern deployment scenarios, the OAuth client interacts with multiple combinations of OAuth providers, tools and tenants. The client MUST use all variables in their OAuth connection context to form a unique connection context identifier. For instances,
 
-Unlike what expected in {{Section 4.4 of !RFC9700}}, an authorization server (or issuer) is no longer unique to a client. In modern deployment scenarios, the OAuth client interacts with multiple combinations of OAuth providers, tools and tenants. The client MUST use all variables in their OAuth connection context to form a unique connection context identifier. For instances,
-
-- a platform's client allowing one OAuth provider configuration per tool, while multiple tools can relying on same AS, SHOULD include the tool identifier.
-- in addition to the above, a platform's client allowing multiple OAuth providers for a tool SHOULD include identifiers that represent the tool and the OAuth provider.
+- a client allowing one OAuth provider configuration per tool SHOULD include the tool identifier.
+- in addition to the above, a client allowing multiple OAuth providers for a tool SHOULD include identifiers that represent the tool and the OAuth provider.
 - in addition to the above, an OAuth-as-a-Service managed client MUST include identifiers that represent the tenant, tool and OAuth provider.
 
-The client MUST issue distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client MUST store this identifier in the user's session. When an authorization response was received on the redirection URI endpoint, clients MUST also check that the context identifier from the URI matches with the one in the distinct redirection URI. If there is a mismatch, the client MUST abort the flow.
+Unless otherwise specified as follows, the client MUST issue per-context distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client MUST store this identifier in the user's session. When an authorization response was received on the redirection URI endpoint, clients MUST also check that the context identifier from the URI matches with the one in the distinct redirection URI. If there is a mismatch, the client MUST abort the flow.
+
+Existing mix-up countermeasures {{Section 4.4 of !RFC9700}} can be a replacement under the following conditions:
+- the client has entirely dropped the support to implicit grant, and
+- the OAuth provider specifies an AS not by individual AS endpoints but instead replaced with an abstract issuer identifier representing the endpoints, and
+- the issuer idenifier is used either in place of the connection context identifier or be seperatedly returned according to  [RFC9207], and
+- an additional runtime resolution is used to resolve the issuer to retrieve the associated AS endpoints (e.g., with the OAuth Metadata protocol). Clients using such resolution solely to populate an OAuth provider defined with individual AS endpoints and lack the connection context identifier defense will remain vulnerable.
 
 ## Cross-User OAuth Session Fixated Linking {#SessionFixation}
 
-Based on similar deployment needs as outlined in Section 2.2, multiple OAuth connections can be linked to some form of user's identity (e.g., a platform's user identifier). This identity information is supposedly maintained in a session established and already bound to the user-agent. However, this prerequisite was broken in real-world deployments for various reasons. For instance, in Cross-user-agent OAuth deployments, an authenticated native app client opens a tool linking URL in an external user-agent (a browser) that has no authenticated sessions with the client. As a workaround, the client introduces a session fixation vulnerability: it encodes the a user's session identiifer as part of the URL, in order to fixate a user's session to complete the OAuth connection with the tool/resource.
+Based on similar deployment needs as outlined in Section 2.2, multiple OAuth connections can be linked to some form of user's identity (e.g., a platform's user identifier). This identity information is supposedly maintained in a session established and already bound to the user agent. However, this prerequisite was broken in real-world deployments for various reasons. For instance, in cross-user-agent OAuth deployments, an authenticated native app client opens a tool linking URL in an external user agent (a browser) that has no authenticated sessions with the client. As a workaround, the client introduces a session fixation vulnerability: it encodes the a user's session identiifer as part of the URL, in order to fixate a user's session to complete the OAuth connection with the tool/resource.
 
 The Cross-User OAuth Session Fixated Linking exploits this session fixation attack vector. The attacker attempts to trick a victim into completing an OAuth connection flow that the attacker has initiated at the client. As a result, the attacker's session will be used to establish an OAuth connection with the victim's tool resources or identity, hence resulting in the same impact of COAT. However, this attack exploits confusion over the intended user bound to that connection context flow, contrasting with COAT, which exploits confusion within the OAuth connection context (OAuth provider, tool, tenant). 
 
