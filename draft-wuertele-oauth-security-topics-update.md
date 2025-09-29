@@ -450,7 +450,8 @@ Preconditions: It is assumed that
 
 * the implicit or authorization code grant is used with multiple OAuth connection contexts, of which one combination is considered "honest" (H-Tool using H-AuthProvider with H-AS) and one is operated by the attacker (A-Tool using A-AuthProvider with A-AS), and
 * the client stores the connection context chosen by the user in a session bound to the user's browser, and
-* the client issues redirection URIs which do not depend on all variables in the connection context (e.g., auth provider, tool, tenant).
+* the client issues redirection URIs which do not depend on all variables in the connection context (e.g., auth provider, tool, tenant), and
+* the authorization servers properly check the redirection URI by enforcing exact redirection URI matching (otherwise, see [research.jcs_14] for details).
 
 In the following, it is further assumed that the client is registered with H-AS (URI: `https://honest.as.example`, client ID: `7ZGZldHQ`) and with A-AS (URI: `https://attacker.example`, client ID: `666RVZJTA`). Assume that the client issues the redirection URI `https://client.com/honest-cb` for the honest tool and `https://client.com/attack-cb` for the attacker's. URLs shown in the following example are shortened for presentation to include only parameters relevant to the attack.
 
@@ -471,7 +472,6 @@ Variants:
 
    *  Implicit Grant: In the implicit grant, the attacker receives an access token instead of the code in Step 4.  The attacker's authorization server receives the access token when the client makes either a request to the A-AS userinfo endpoint (defined in {{OpenID.Core}}) or a request to the attacker's resource server (since the client believes it has completed the flow with A-AS).
    *  Cross-tool OAuth Request Forgery (CORF): If clients do not store the selected OAuth connection context in the user's session, but in the redirection URI instead, attackers can mount an attack called Cross-tool OAuth Request Forgery (CORF). This results in a compromised OAuth connection between the victim's platform identity and the attacker's tool account. The goal of this specific attack variant is not to obtain an authorization code or access token, but to force the client to use an attacker's authorization code or access token for H-AS. This Cross-tool OAuth Request Forgery attack is a generalization of the Cross-app OAuth Request Forgery as defined in {{research.cuhk}} and the Naïve RP Session Integrity Attack when the OAuth connection context is limited to AS, and is detailed in Section 3.4 of {{arXiv.1601.01229}}.
-   *  Cross Social-Network Request Forgery. If clients use different redirection URIs for different authorization servers, clients do not store the selected authorization server in the user's session, and authorization servers do not check the redirection URIs properly (see {{Section 4.1 of !RFC9700}}), attackers can mount an attack called "Cross Social-Network Request Forgery". These attacks have been observed in practice. Refer to {{research.jcs_14}} for details.
    *  OpenID Connect: Some variants can be used to attack OpenID Connect. In these attacks, the attacker misuses features of the OpenID Connect Discovery {{OpenID.Discovery}} mechanism or replays access tokens or ID Tokens to conduct a mix-up attack. The attacks are described in detail in Appendix A of [arXiv.1704.08539] and Section 6 of [arXiv.1508.04324v2] ("Malicious Endpoints Attacks").
 
 ### Countermeasures {#COATCountermeasure}
