@@ -520,6 +520,7 @@ Non-normative example request:
     Host: client.com
 
 Non-normative example response:
+
     HTTP/1.1 303 See Other
     Location: https://as.example/authorize?
               response_type=code&client_id=K9dTpWzqL7&state=b1d8f043
