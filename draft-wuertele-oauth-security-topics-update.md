@@ -434,7 +434,7 @@ use authorization server metadata {{!RFC8414}} or OpenID Discovery
 
 ## Cross-tool OAuth Account Takeover {#COAT}
 
-It is increasingly common and observed that a single OAuth client supports multiple tools, and each of which is mapped to a shareable OAuth provider configuration (which includes at least the authorization server (AS) endpoints and client registration). A successful OAuth connection is established when the OAuth client obtains an access token for a tool based on its corresponding OAuth provider configuration. The tool can then use the access token to access the user's resource at a resource server (RS).
+It is increasingly common and observed that a single OAuth client supports multiple tools, and each of which is mapped to an OAuth provider configuration (which includes at least the authorization server (AS) endpoints and client registration). A successful OAuth connection is established when the OAuth client obtains an access token for a tool based on its corresponding OAuth provider configuration. The tool can then use the access token to access the user's resource at a resource server (RS).
 
 Multiple OAuth connections can be linked to some form of user's identity based on these common deployment scenarios:
 
@@ -474,12 +474,12 @@ Variants:
    *  OpenID Connect: Some variants can be used to attack OpenID Connect. In these attacks, the attacker misuses features of the OpenID Connect Discovery {{OpenID.Discovery}} mechanism or replays access tokens or ID Tokens to conduct a mix-up attack. The attacks are described in detail in Appendix A of [arXiv.1704.08539] and Section 6 of [arXiv.1508.04324v2] ("Malicious Endpoints Attacks").
 
 ### Countermeasures {#COATCountermeasure}
-The client MUST NOT share OAuth providers with completed client registrations across tools and tenants of different owners.
+The client MUST NOT share OAuth providers with completed client registrations across tools and tenants belonging to different owners.
 
 The client MUST use all variables in its supported OAuth connection context to form a unique connection context identifier. Therefore,
 
-- a client allowing a (set of) tool to be mapped to only one OAuth provider, MUST use the unique tool identifier;
-- a client allowing a (set of) tool to use a potentially untrusted OAuth provider from another owner besides their own MUST additionally include the OAuth provider identiifer;
+- a client allowing a tool to be mapped to only one OAuth provider, MUST use the unique tool identifier;
+- a client allowing a tool to use a OAuth provider from another owner besides their own MUST additionally include the OAuth provider identifier;
 - a cross-tenant client MUST additionally include the tenant identifier, if the tool identifier is not globally unique.
 
 Unless otherwise specified as follows, the client MUST issue per-context distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client MUST store this identifier in the user's session. When an authorization response was received on the redirection URI endpoint, clients MUST also check that the context identifier from the URI matches with the one in the distinct redirection URI. If there is a mismatch, the client MUST abort the flow.
