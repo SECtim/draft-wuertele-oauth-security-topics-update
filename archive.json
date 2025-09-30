@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-22T02:01:37.803014+00:00",
+  "timestamp": "2025-09-30T00:37:58.393821+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -1499,6 +1499,56 @@
               "updatedAt": "2025-06-16T16:41:37Z"
             }
           ]
+        }
+      ]
+    },
+    {
+      "number": 33,
+      "id": "PR_kwDOOKn4ys6rE7Vb",
+      "title": "Rewrite Mix-up-related Section & Add Session Fixation Section",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/33",
+      "state": "MERGED",
+      "author": "KevinLuo2000",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Hi @SECtim and @PedramHD ,\r\n\r\nHere's the draft with updated sections on our side, for discussions at the Interim.\r\n\r\nCould you help merge it?\r\n\r\nReview & Discussions are also welcomed!\r\n\r\nThanks,\r\nKaixuan and Adonis",
+      "createdAt": "2025-09-29T11:29:42Z",
+      "updatedAt": "2025-09-29T13:05:32Z",
+      "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "baseRefName": "main",
+      "baseRefOid": "a9646f7cec41df6f651d5a9c0eb102e493aad1a9",
+      "headRepository": "KevinLuo2000/draft-wuertele-oauth-security-topics-update",
+      "headRefName": "main",
+      "headRefOid": "99fb3e6e047244d3c4203ce8d49a58f85f323604",
+      "closedAt": "2025-09-29T13:05:32Z",
+      "mergedAt": "2025-09-29T13:05:32Z",
+      "mergedBy": "SECtim",
+      "mergeCommit": {
+        "oid": "9445e3d746b39f517499443cf785233f5c7a7288"
+      },
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Major Changes:\r\n\r\n* Rewrite Mix-up-related Section\r\n* Add Session Fixation Section\r\n\r\nNote: \r\n\r\nWe temporarily removed the Client Configuration Confusion Attack (previously in https://datatracker.ietf.org/doc/html/draft-wuertele-oauth-security-topics-update-01#section-2.3.4) from this version, because the defense of COAT actually also protects this attack. We will consider adding back its attack descriptions when real-world attack instances are found, or after having a clearer thought on how to organize it under the current structure.\r\n\r\nPlease feel free to also share your thoughts on this!",
+          "createdAt": "2025-09-29T11:36:48Z",
+          "updatedAt": "2025-09-29T11:40:56Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOKn4ys7De6tv",
+          "commit": {
+            "abbreviatedOid": "99fb3e6"
+          },
+          "author": "PedramHD",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-09-29T12:55:20Z",
+          "updatedAt": "2025-09-29T12:55:20Z",
+          "comments": []
         }
       ]
     }
