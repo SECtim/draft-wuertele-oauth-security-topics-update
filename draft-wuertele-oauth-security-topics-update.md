@@ -503,14 +503,15 @@ Variants:
    *  OpenID Connect: Some variants can be used to attack OpenID Connect. In these attacks, the attacker misuses features of the OpenID Connect Discovery {{OpenID.Discovery}} mechanism or replays access tokens or ID Tokens to conduct a mix-up attack. The attacks are described in detail in Appendix A of {{arXiv.1704.08539}} and Section 6 of {{arXiv.1508.04324v2}} ("Malicious Endpoints Attacks").
 
 ### Countermeasures {#COATCountermeasure}
-The client MUST NOT share OAuth providers with completed client registrations across tools and tenants belonging to different owners.
+The client MUST NOT share OAuth providers with completed client regi![Uploading image.png…]()
+strations across tools and tenants belonging to different owners.
 
 The client MUST use all variables in its supported OAuth connection context to form a unique connection context identifier, which always includes the unique tool identifier. Additionally,
 
 - a client allowing each tool to use multiple OAuth providers, of which one AS may get compromised as assumed in {{Section 4.4 of !RFC9700}}, MUST also include the OAuth provider identifier;
-- a cross-tenant client MUST also include the tenant identifier, if the tool identifier is not globally unique.
+- a cross-tenant client MUST also include the tenant identifier, in case the tool identifier is unique only among a tenant.
 
-Unless otherwise specified as follows, the client MUST issue per-context distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client MUST store this identifier in the user's session. When an authorization response was received on the redirection URI endpoint, clients MUST also check that the context identifier from the URI matches with the one in the distinct redirection URI. If there is a mismatch, the client MUST abort the flow.
+Unless otherwise specified as follows, the client MUST issue per-context distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client MUST store this identifier in the user's session. When an authorization response was received on the redirection URI endpoint, clients MUST also check that the context identifier from the session matches with the one in the distinct redirection URI. If there is a mismatch, the client MUST abort the flow.
 
 Existing mix-up countermeasures {{Section 4.4 of !RFC9700}} can be a replacement under the following conditions:
 
