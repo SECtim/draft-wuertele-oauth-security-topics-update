@@ -503,8 +503,7 @@ Variants:
    *  OpenID Connect: Some variants can be used to attack OpenID Connect. In these attacks, the attacker misuses features of the OpenID Connect Discovery {{OpenID.Discovery}} mechanism or replays access tokens or ID Tokens to conduct a mix-up attack. The attacks are described in detail in Appendix A of {{arXiv.1704.08539}} and Section 6 of {{arXiv.1508.04324v2}} ("Malicious Endpoints Attacks").
 
 ### Countermeasures {#COATCountermeasure}
-The client MUST NOT share OAuth providers with completed client regi![Uploading image.png…]()
-strations across tools and tenants belonging to different owners.
+The client MUST NOT share OAuth providers with completed client registrations across tools and tenants belonging to different owners.
 
 The client MUST use all variables in its supported OAuth connection context to form a unique connection context identifier, which always includes the unique tool identifier. Additionally,
 
