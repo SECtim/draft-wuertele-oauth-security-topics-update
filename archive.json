@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-30T00:37:58.393821+00:00",
+  "timestamp": "2025-10-02T00:36:36.166706+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -1551,6 +1551,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 34,
+      "id": "PR_kwDOOKn4ys6rcfsL",
+      "title": "typo fix",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/34",
+      "state": "CLOSED",
+      "author": "adon-at-work",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-10-01T00:11:54Z",
+      "updatedAt": "2025-10-01T01:17:41Z",
+      "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "baseRefName": "main",
+      "baseRefOid": "9445e3d746b39f517499443cf785233f5c7a7288",
+      "headRepository": "adon-at-work/draft-wuertele-oauth-security-topics-update",
+      "headRefName": "patch-1",
+      "headRefOid": "6d6a73e46bc5e4b618283c757d0e16c5d066b75a",
+      "closedAt": "2025-10-01T01:17:41Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
