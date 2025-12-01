@@ -7,13 +7,13 @@ Internet-Draft                                               P. Hosseyni
 Updates: 6749, 6750, 7521, 7522, 7523, 9700      University of Stuttgart
          (if approved)                                            K. Luo
 Intended status: Best Current PracticeThe Chinese University of Hong Kong
-Expires: 2 April 2026                                            A. Fung
+Expires: 4 June 2026                                             A. Fung
                                                 Samsung Research America
-                                                       29 September 2025
+                                                         1 December 2025
 
 
           Updates to OAuth 2.0 Security Best Current Practice
-           draft-wuertele-oauth-security-topics-update-latest
+             draft-ietf-oauth-security-topics-update-latest
 
 Abstract
 
@@ -30,7 +30,7 @@ About This Document
    https://SECtim.github.io/draft-wuertele-oauth-security-topics-update/
    draft-wuertele-oauth-security-topics-update.html.  Status information
    for this document may be found at https://datatracker.ietf.org/doc/
-   draft-wuertele-oauth-security-topics-update/.
+   draft-ietf-oauth-security-topics-update/.
 
    Discussion of this document takes place on the Web Authorization
    Protocol mailing list (mailto:oauth@ietf.org), which is archived at
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 April 2026.
+   This Internet-Draft will expire on 4 June 2026.
 
 Copyright Notice
 
