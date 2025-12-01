@@ -1,11 +1,13 @@
-# OAuth 2.0 Security Best Current Practice
+<!-- regenerate: on (set to off if you edit this file) -->
 
-This is the working area for the individual Internet-Draft, "OAuth 2.0 Security Best Current Practice".
+# Updates to OAuth 2.0 Security Best Current Practice
 
-* [Editor's Copy](https://SECtim.github.io/draft-wuertele-oauth-security-topics-update/#go.draft-wuertele-oauth-security-topics-update.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-wuertele-oauth-security-topics-update)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-wuertele-oauth-security-topics-update)
-* [Compare Editor's Copy to Individual Draft](https://SECtim.github.io/draft-wuertele-oauth-security-topics-update/#go.draft-wuertele-oauth-security-topics-update.diff)
+This is the working area for the IETF [OAUTH Working Group](https://datatracker.ietf.org/group/oauth/documents/) Internet-Draft, "Updates to OAuth 2.0 Security Best Current Practice".
+
+* [Editor's Copy](https://SECtim.github.io/draft-wuertele-oauth-security-topics-update/#go.draft-ietf-oauth-security-topics-update.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-ietf-oauth-security-topics-update)
+* [Working Group Draft](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics-update)
+* [Compare Editor's Copy to Working Group Draft](https://SECtim.github.io/draft-wuertele-oauth-security-topics-update/#go.draft-ietf-oauth-security-topics-update.diff)
 
 
 ## Contributing
@@ -13,9 +15,8 @@ This is the working area for the individual Internet-Draft, "OAuth 2.0 Security 
 See the
 [guidelines for contributions](https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/blob/main/CONTRIBUTING.md).
 
-Contributions can be made by creating pull requests.
-The GitHub interface supports creating pull requests using the Edit (✏) button.
-
+The contributing file also has tips on how to make contributions, if you
+don't already know how to do that.
 
 ## Command Line Usage
 
