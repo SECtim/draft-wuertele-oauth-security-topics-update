@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-02T00:36:36.166706+00:00",
+  "timestamp": "2025-12-07T00:46:26.993815+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -337,22 +337,29 @@
       "id": "I_kwDOOKn4ys6zhwVk",
       "title": "Clarify the application scenario and attack scenario of \"Open Ecosystems\"",
       "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/19",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "KevinLuo2000",
-      "authorAssociation": "NONE",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "(This is part of the feedback by @adon-at-work on https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/17, to be resolved by @KevinLuo2000)\n\n**Condense Section 2.3.1 \"OAuth in Open Ecosystems\" and Section 2.3.2 \"Attack Scenario\":**\n\n> More generally, quite many content isn\u2019t written like a spec, but more like a blog/paper/story, and it will surprise those who come for a very cold BCP or a spec. Whether it\u2019s traditional/new, less barrier, and how open is irrelevant from spec perspective, they\u2019re more like market trends or just considerations for evaluating security risk/impact only. A link to perhaps a blog for such content (or a presentation talking about reversal) could be good, but they shouldn\u2019t be the main text of the spec. Those information, if absolutely relevant, should be compressed no more than 1 paragraph. I\u2019m afraid the more content you have, the harder it is to get consensus with a broad community. My point is less is better when drafting up the spec.\n\n**Clarify the scope of \"Open Ecosystems\":**\n\n> I have to also admit that I have a different opinion on DCR. May be I should not accuse it with \u201cno body using it\u201d or \u201cimpractical\u201d, when I lately figured the open-banking standard backed by UK gov has DCR standardized (99% similar to OAuth2 DCR as I briefly overviewed). Think about there\u2019s a universal banking app that works across all different (UK) banks. I assume a user can just go to such a universal banking app, choose let\u2019s say HSBC (which under the hood hits HSBC\u2019s DCR) or even directly specify any URL that conforms to the UK open-banking standard. Then the client negotiates some client credential for oauth client authentication, and subsequently launches auth code grant to authenticate the user too. \n> \n> I don\u2019t know whether we should classify it as open-ecosystem, where the app will then speak the same standardized banking protocols regardless of what bank resource servers are. May be they can support bank/issuer-sharing oauth scenarios since even a single user can have multiple bank accounts with a single bank. But it does have certain openness where a user can dynamically feed a new OAuth \u201cclient-configuration\u201d at will, and can face COAT attacks. \n> \n> I don\u2019t know how widely adopted that thing is, may be there\u2019s just some part of the world in EU we don\u2019t know enough. Let\u2019s just assume this existed, or may hypothetically exist in the future as a properly valid use case. Hence, I want AS-sharing to be described just as a characteristic by itself, instead of tiring it to and put it under a section of open-ecosystem. \n> \n> One line on AS-sharing, I think, is good and succinct enough to bring up the problem:\n> > AS-sharing. a client can use a (honest) AS, with multiple sets of different client credentials (e.g.., client id), for legitimate purposes.\n> \n",
       "createdAt": "2025-04-22T19:46:12Z",
-      "updatedAt": "2025-06-12T05:29:19Z",
-      "closedAt": null,
+      "updatedAt": "2025-12-04T15:37:02Z",
+      "closedAt": "2025-12-04T15:37:02Z",
       "comments": [
         {
           "author": "KevinLuo2000",
-          "authorAssociation": "NONE",
+          "authorAssociation": "COLLABORATOR",
           "body": "I have kept the \u201copen ecosystem\u201d terminology and structure, as I do think it better motivates the issuer-sharing mix-up setup and the client configuration confusion attack. With all the recent developments in MCP and reflection on integration platforms, I feel the open ecosystem concept needs a special call-out.\n \nTo that end, I also generalized the \u201copen ecosystem\u201d definition to make it less specific to Integration Platforms.\nSee https://kevinluo2000.github.io/TestIETF/draft-wuertele-oauth-security-topics-update.html#name-oauth-in-open-ecosystems.\n ",
           "createdAt": "2025-06-12T03:10:20Z",
           "updatedAt": "2025-06-12T05:29:19Z"
+        },
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This issue is related to the individual draft (-01).\n\nIn the latest version (WG-adopted -00) we did not bring up the concept of \"open ecosystems\", so closing this issue for now. We can reopen it if needed in the future.",
+          "createdAt": "2025-12-04T15:37:02Z",
+          "updatedAt": "2025-12-04T15:37:02Z"
         }
       ]
     },
@@ -361,29 +368,36 @@
       "id": "I_kwDOOKn4ys6zhycn",
       "title": "Decide whether to include \"Client Configuration Confusion\"",
       "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/20",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "KevinLuo2000",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "(This is part of the feedback by @adon-at-work on #17, to be resolved by @KevinLuo2000)\n\n> I don\u2019t have a good idea how 2.3.4 should be structured, but I\u2019m very afraid that may stir up more debate as one may argue it shouldn\u2019t be as an OAuth protocol issue. For argument sake, it\u2019s more a resource server issue, or more like an issue of \u201copen-ecosystem\u201d where access token is given to a resource endpoint controlled by attacker. I want it in, as 2.3, like a section of its own, as I think it\u2019s valuable to the community, but hesitate that people might not be very receptive, and it may take a lot more battles to fight that section in.\n",
       "createdAt": "2025-04-22T19:51:03Z",
-      "updatedAt": "2025-06-15T07:04:18Z",
-      "closedAt": null,
+      "updatedAt": "2025-12-04T15:34:09Z",
+      "closedAt": "2025-12-04T15:34:09Z",
       "comments": [
         {
           "author": "KevinLuo2000",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "body": "> For argument sake, it\u2019s ... more like an issue of \u201copen-ecosystem\u201d where access token is given to a resource endpoint controlled by attacker.\n\nExactly. That's why I'd rather fit the section under the umbrella of \"Attacks in Open Ecosystems\".\n\nFurthermore, when the resource server URL can be specified at runtime, the threat is called out in RFC9700 Section 4.9.1 ([Access Token Phishing by Counterfeit Resource Server](https://datatracker.ietf.org/doc/html/rfc9700#name-access-token-phishing-by-co)), with defenses mentioned by Section 4.9.3 ([Countermeasures](https://datatracker.ietf.org/doc/html/rfc9700#name-countermeasures-8)) such as making access tokens sender-constrained and audience-restricted.\n\n> it\u2019s more a resource server issue\n\nI would say although our \"Client Configuration Confusion\" is Resource Server-related, it is complementary to the aforementioned threat and defense.\n* Threat-wise, we focus on reusing registered clients of an honest AS to exfiltrate access tokens, when the client has no intention of leaking the registered client's tokens to an attacker-controlled resource server.\n* Defense-wise, sender-constrained and audience-restricted tokens are sort of like defense-in-depth, while the defense for client configuration confusion is a specific security measure to resolve issues in open ecosystems.",
           "createdAt": "2025-06-12T03:23:28Z",
           "updatedAt": "2025-06-12T13:41:49Z"
         },
         {
           "author": "KevinLuo2000",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "body": "Related issues: #22 , #23 .",
           "createdAt": "2025-06-15T07:04:18Z",
           "updatedAt": "2025-06-15T07:04:18Z"
+        },
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "body": "In the latest version (WG-adopted -00) we refrained from bringing up \"client configuration confusion attack\", so closing this issue for now. We can reopen it if needed in the future.",
+          "createdAt": "2025-12-04T15:34:09Z",
+          "updatedAt": "2025-12-04T15:34:09Z"
         }
       ]
     },
@@ -392,36 +406,43 @@
       "id": "I_kwDOOKn4ys6zh1Kx",
       "title": "Restructure \"Mix-up Reloaded\"-related Sections",
       "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/21",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "KevinLuo2000",
-      "authorAssociation": "NONE",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "(This is part of the feedback by @adon-at-work on #17, to be resolved by @KevinLuo2000)\n\n> With due respect, I recommend the following structure, with contents from 2.3.3 absorbed in appropriate sections.\n> \n> I suppose we should write it as a new attack, either we call it Advanced Mix-up Attacks (if you want to honor D Fett) or COAT and CORF Attacks, or even COAT and CORF (aka. Advanced mix-up). As you introduce it, may be we should just say this section 2.2 supersedes mix-up as defined in RFC9700 and/or we should frame there\u2019re n variants, and certain variants is covered by RFC9700.\n> \n> **2.2.1 Attack Description**\n> \u201cThe description here follows RFC9700 section 4.4 (kinda give credit to them), with new variants of the attack outlined below.\u201d\n> \n> Preconditions:\n> * copy presumptions that are still valid, probably we will use only the first one in 4.4\n> * **AS-sharing. a client can use a (honest) AS, with multiple sets of different client credentials (e.g.., client id), for legitimate purposes.** (RFC9700 implicitly assumed/implied otherwise. Just in case a client can guarantee uniqueness of AS, RFC9700 4.4 suffices\u2026 I assume this is true. If not, we may point to a discussion section.)\n> A final paragraph like \u201cHence this advanced mix-up requires less assumptions than the mixup in RFC9700.\u201d\n> And so we split the discussion into 2 subsections\n> \n> **2.2.1.1 Same redirect_uri**\n> Same as 4.4.1 + redirect_uri in the attack steps\n> Variants:\n> * Mix-Up with Interception. (same as 4.4.4.1) still copy their text\n> * Implicit Grant(same as 4.4.4.1) still copy their text\n> * OpenID Connect(same as 4.4.4.1) still copy their text\n> * Na\u00efve\u2026 or CORF (new)\n> * Whatever other new variant\n> \n> **2.2.1.2 Distinct redirect_uri**\n> Open this paragraph with why it can still fail, as opposed to understanding in RFC9700.\n> Same as 4.4.1 with distinct redirect_uri adjusted accordingly in attack steps\n> \n> Variants:\n> * Mix-Up with Interception. refer to 2.2.2.1\n> * Implicit Grant. refer to 2.2.2.1\n> * OpenID Connect. refer to 2.2.2.1\n> * Inherit other in 2.2.2.1\n> * Add any new, if any\n> \n> (new and old) Variants corresponding and unique to distinct redirect_uri.\n> \n> **2.2.2 Countermeasures.**\n> 2.2.2.1\n> When precondition 2 does not hold, or when client has enforced that the AS-sharing condition will NOT exist. One may refer to 4.4.2, except with the following cavets/updates\u2026\u2026 this is basically your draft. But please make those suggested defenses split also in bullet form that kinda correspond to Variant list (better if you can come up with a name for them instead of Variant 1,2,3).\n> \n> 2.2.2.2\n> Given precondition 2, 2.2.1.1 needs to change to use distinct redirect_uri, right?",
       "createdAt": "2025-04-22T19:56:57Z",
-      "updatedAt": "2025-06-13T01:15:30Z",
-      "closedAt": null,
+      "updatedAt": "2025-12-04T15:38:47Z",
+      "closedAt": "2025-12-04T15:38:47Z",
       "comments": [
         {
           "author": "KevinLuo2000",
-          "authorAssociation": "NONE",
+          "authorAssociation": "COLLABORATOR",
           "body": "> AS-sharing. a client can use a (honest) AS, with multiple sets of different client credentials (e.g.., client id), for legitimate purposes. (RFC9700 implicitly assumed/implied otherwise. Just in case a client can guarantee uniqueness of AS, RFC9700 4.4 suffices\u2026 I assume this is true. If not, we may point to a discussion section.)\n\nI agree, but there maybe some misunderstandings here. Let me clarify:\n\n**On AS-sharing:**\n* If a client can guarantee uniqueness of AS, as you said, RFC9700 4.4 suffices, which is true.\n* If a client cannot guarantee uniqueness of AS, my claim is, RFC9700 4.4 still suffices (though there is an alternative) in defense (4.4.2), but needs clarifications on the attack descriptions (4.4.1). \n\n----\nFor **attack descriptions** (4.4.1), there are some ambiguities in the texts:\n> Preconditions: For this variant of the attack to work, it is assumed that\n> ...\n> * **the client stores the authorization server chosen by the user** in a session bound to the user's browser and uses the same redirection URI for each authorization server.\n\n> Attack on the authorization code grant:\n> ...\n> 2. **The client stores in the user's session that the user selected \"A-AS\"** and ...\n\nImplementers may argue that, \"storing the _authorization server_ chosen by the user\" will break the functional requirement of tracking issuer-sharing client configurations (e.g., sending the correct client credentials to the token endpoint). In other words, for a client to distinguish issuer-sharing client configurations, it cannot (just) store the \"authorization server\" chosen by the user, but should (also) store the \"client configuration\". Thus, the attacks in scenarios with shared issuers are simply out of scope of RFC9700 4.4.1, since the preconditions do not hold.\n\nThis is the confusing part with the attack description. I tried to clarify it in https://kevinluo2000.github.io/TestIETF/draft-wuertele-oauth-security-topics-update.html#name-attack-description-2.\n\n\n----\nWhen it comes to **countermeasures** (4.4.2), however, I would argue that 4.4 is sufficient.\nThe defenses in 4.4.2 requires the client to track each issuer (in a session), and compare with the returned issuer. The defenses do work for issuer-sharing client configurations, because the issuer bind authorization and token endpoints, leaving no room for the infiltration of a malicious endpoint. A client supporting issuer-sharing client configurations can, store the client configuration chosen by the user (for functional needs), and, at the same time, store and compare the returned issuer (for mix-up defense).\n\nTherefore, I suggested the \"distinct redirect_uri per client configuration\" defense as an _alternative_ to issuer-based defenses. See https://kevinluo2000.github.io/TestIETF/draft-wuertele-oauth-security-topics-update.html#name-countermeasures-2.\n",
           "createdAt": "2025-06-13T01:08:44Z",
           "updatedAt": "2025-06-13T01:15:30Z"
         },
         {
           "author": "KevinLuo2000",
-          "authorAssociation": "NONE",
+          "authorAssociation": "COLLABORATOR",
           "body": "**Structure:**\n> 2.2.1 Attack Description\n> 2.2.1.1 Same redirect_uri\n> 2.2.1.2 Distinct redirect_uri\n\nWhile same/distinct redirect_uri do relate to the attack preconditions, IMHO it is not a decisive factor in mix-up, thus I'd rather not treat it as a top-level separation in the attack description. Also, the \"distinct\" term alone can be unspecified since there are distinct per _issuer_ and distinct per _client configuration_. \n\n\n> 2.2.2 Countermeasures.\n> 2.2.2.1\n> When precondition 2 (AS-sharing) does not hold\n> 2.2.2.2\n> Given precondition 2 (AS-sharing), ...\n\nI agree with the separation here. I think AS/issuer-sharing should be the decisive factor in defense, and also the attack description. \n- Old World - No issuer-sharing: RFC9700 Section 4.4 + https://kevinluo2000.github.io/TestIETF/draft-wuertele-oauth-security-topics-update.html#section-2.2 .\n- New World - With issuer-sharing (Commonly seen in Open Ecosystems): https://kevinluo2000.github.io/TestIETF/draft-wuertele-oauth-security-topics-update.html#section-2.3.3.",
           "createdAt": "2025-06-13T01:08:52Z",
           "updatedAt": "2025-06-13T01:08:52Z"
         },
         {
           "author": "KevinLuo2000",
-          "authorAssociation": "NONE",
+          "authorAssociation": "COLLABORATOR",
           "body": "**Clarification:**\n> 2.2.2.2\n> Given precondition 2, 2.2.1.1 (Attack Description - Same redirect_uri) needs to change to use distinct redirect_uri, right?\n\nNot really. With same redirect_uri, a client could:\n* store each client configuration in a session (to fulfill functional requirement), AND\n* store each issuer in a session (maybe associated with stored client configuration thus no need of extra storage in session), AND\n* match with returned issuer identifier following RFC9207 (to fulfill security requirement a.k.a. mix-up defense).\n\nThis can be done without changing to use distinct redirect_uri.",
           "createdAt": "2025-06-13T01:08:58Z",
           "updatedAt": "2025-06-13T01:12:14Z"
+        },
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The restructuring of the sections was done in individual draft -02/WG-adopted -00 version.",
+          "createdAt": "2025-12-04T15:38:47Z",
+          "updatedAt": "2025-12-04T15:38:47Z"
         }
       ]
     },
@@ -430,32 +451,48 @@
       "id": "I_kwDOOKn4ys67ldGt",
       "title": "Idea: Alternative defense for Client Configuration Confusion attack",
       "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/22",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "KevinLuo2000",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "The current defense for Client Configuration Confusion attack ([Section 2.3.4.2](https://kevinluo2000.github.io/TestIETF/draft-wuertele-oauth-security-topics-update.html#section-2.3.4.2)) is to enforce redirect_uri distinction, so as to prevent a malicious client configuration from using a preregistered client_id at honest AS. This defense takes effect at runtime (i.e., at the authorization endpoint in OAuth flows), but a side-effect may arise at registration time if DCR is used. Thus we further require software_id distinction at DCR client registration request, specifically meant to resolve this caveat.\n\n\nIn a recent discussion, @adon-at-work suggested the following alternative defense: \n\nIf DCR is the only client authentication method supported by a client, distinct software_id per client configuration MUST be used in client registration requests. \n\nRationale: A different software_id would render a different software statement in DCR client registration request, thus a different client_id being returned in DCR response. When client_ids are distinct, this would make the threat analogous to phishing threats that register new clients at an honest AS, making it out of scope of this attack.\n\nNote: the reason why this alternative defense is only modeled for (pure) DCR is that, for the case of manual (reversed) registration, it is non-trivial and impractical for a client in production environment to block duplicate client_ids from registration.\n\n\nWe should think about if such alternative defense shall be incorporated into the spec.\nAlso, resolve #23 first, which could be a blocker.",
       "createdAt": "2025-06-15T06:21:46Z",
-      "updatedAt": "2025-06-15T07:03:20Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2025-12-04T15:32:53Z",
+      "closedAt": "2025-12-04T15:32:53Z",
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This issue is related to the individual draft (-01).\n\nIn the latest version (WG-adopted -00) we did not explicitly bring up the attack of \"client configuration confusion attack\", so closing this issue for now. We can reopen it if needed in the future.",
+          "createdAt": "2025-12-04T15:32:53Z",
+          "updatedAt": "2025-12-04T15:32:53Z"
+        }
+      ]
     },
     {
       "number": 23,
       "id": "I_kwDOOKn4ys67lgse",
       "title": "On normative requirement of software_id",
       "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/23",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "KevinLuo2000",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "In the current writing, the defense for client configuration confusion attack involves the following caveat (and its resolution):\n\n> When dynamic client registration is supported, **clients SHOULD also specify a different software identifier** (software_id) in client registration requests for each client configuration. This prevents client registration requests from being rejected by the authorization server when different redirection URIs are used, if the authorization server follows the excerpt of Section 5 of RFC7591 below:\n> > An authorization server could also refuse registration requests from a known software identifier that is requesting different redirection URIs or a different client URI.\n\n\nHere we are basically requiring a client software instance to have different software ids for different client configurations. Although this requirement is only meant for open ecosystems, it imposes a normative change to the definition of software_id in RFC7591, where \n> the **\"software_id\" SHOULD remain the same** for all instances of the client software.\n\nIs there a better solution?\n\nOr maybe, this is not conflicting with the normative requirement in RFC7591 at all, when justified like below:\nThe registered clients for different client configurations shall be treated as different client softwares, because it is not the clients or client developers, but external developers or end-users, that integrate a certain piece of client configuration. Furthermore, conceptually, each client configuration itself operates an OAuth (sub-)client, although they may coexist at the same (aggregated) client software, reusing its OAuth client codebase.\n\nHowever, this may require further clarification on the definition of client software, which is only a single sentence in RFC7591:\n> Client Software\n> Software implementing an OAuth 2.0 client.",
       "createdAt": "2025-06-15T06:45:51Z",
-      "updatedAt": "2025-06-15T06:49:09Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2025-12-04T15:34:31Z",
+      "closedAt": "2025-12-04T15:31:30Z",
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This issue belongs to the individual draft (-01).\n\nIn the latest version (WG-adopted -00) we did not explicitly bring up \"client configuration confusion attack\", so closing this issue for now. We can reopen it if needed in the future.\n\n",
+          "createdAt": "2025-12-04T15:31:30Z",
+          "updatedAt": "2025-12-04T15:34:31Z"
+        }
+      ]
     },
     {
       "number": 24,
@@ -478,32 +515,48 @@
       "id": "I_kwDOOKn4ys67mUTJ",
       "title": "Decide on a name for \"Client Configuration Confusion Attack\"",
       "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/25",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "KevinLuo2000",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Alternative Names: RS Mix-up / RS Confusion / AS-RS Mix-up / AS-RS Confusion. \n\nAny better ideas?\n\n\n**IMHO, the current name \"Client Configuration Confusion Attack\" best captures the gist of the attack.** Because the attack is not really mixing up RSes (RS mix-up/confusion) or simply pairing an AS with an unintended RS (AS-RS mix-up/confusion). \n\nDissecting the name \"Client Configuration Confusion Attack\":\n* It's one \"_client configuration_\", as a whole, can reuse the established client registration (aka registered client) at another client configuration, thus breaking the isolation boundary of client configuration, which is the \"_confusion_\" part.\n* To abuse this setup, we consider the case where the client configuration is attacker-controlled, who can specify a malicious RS to be paired with an honest AS where the client already has an established client_id (under an honest client configuration). The goal would be leaking honest AS' tokens, which is the \"_attack_\" part.\n\n---\nTo clarify, this attack is motivated by:\n* the setting of open ecosystems (where shared authorization server/issuer and attacker-controlled client configuration is possible), and\n* the fact that registering a new client is sometimes considered a privileged operation (with the corresponding attack mere consent phishing), and there's usually silent authorization configured at AS side when authorizing client_id with prior consent.\n-> therefore the attack's focus is on reusing registered client_ids.",
       "createdAt": "2025-06-15T11:26:10Z",
-      "updatedAt": "2025-06-15T11:38:51Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2025-12-04T15:35:27Z",
+      "closedAt": "2025-12-04T15:35:27Z",
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This issue is related to the individual draft (-01).\n\nIn the latest version (WG-adopted -00) we did not explicitly bring up \"client configuration confusion attack\", so closing this issue for now. We can reopen it if needed in the future.",
+          "createdAt": "2025-12-04T15:35:27Z",
+          "updatedAt": "2025-12-04T15:35:27Z"
+        }
+      ]
     },
     {
       "number": 26,
       "id": "I_kwDOOKn4ys67rzny",
       "title": "Definition of \"Open Ecosystem\"",
       "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/26",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "SECtim",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Continue the discussion from #17 \n\n---\n\n> It might be helpful for readers to explicitly say something along the lines of \"in what we refer to as open ecosystems, the registration roles are reversed: ...\" at the beginning of that paragraph.\n...\nIs there a good reason to not define \"open ecosystems\" via the \"reversed registration\" characteristic?\n\nThanks for the question! I'd say the intended generalizability of the spec may influence how we adjust the language.\n\nI did not define \"open ecosystems\" using the \"reversed registration\" characteristic because:\n\n* Two open ecosystem patterns:\n  - For Integration Platforms (the focus of our research paper), the \"reversed registration\" pattern makes perfect sense. The AS/RS, as external developers of the integration platform, proactively registers at the client, which is a reverse direction compared with ordinary OAuth deployments.\n  - However, in the spec, I also want to be less restrictive, and incorporate another possible open ecosystem pattern, that is gaining popularity in the AI Agent space (e.g., within the MCP protocol). In this case, the \"openness\" in the ecosystem stems not from external developers, but from end-users, who can enter ANY AS/RS's urls, and make the client interact with them.\n  - AFAIK, the \"reversed registration\" characteristic does **not** apply to this second case, since the AS/RS is still passively waiting for a non-reversed registration. \n* Nuance between \"registration\" and \"integration\":\n  - I also want to avoid overloading the term \"registration\", which in OAuth typically refers to client registration, i.e., the client already knows which AS it wants to contact, and goes register with the AS to obtain a client id and credential. What we're describing here is how the client decides which AS and RS to interact with, which I believe is better captured by the term \"integration\" rather than \"registration\".\n* On the term \"reversed\":\n  - I'm also unsure whether the term \"reversed\" might be a bit overloaded. If all AS/RS/Client registration information are manually provided (e.g., filled in as a form at the client's developer portal as in Integration Platforms), we could for sure confidently use the term \"reversed\". But if AS Metadata/PRM/DCR is used, then the AS Metadata/PRM/Client Registration Request shall be sent from the client to the AS/RS, which does not reflect the \"reversed\" pattern.\n\n\n----\nTo further explain my stance on the definition of open ecosystem, I'd like to reference the following RFCs:\n\nRFC8414 Authorization Server Metadata [Section 1](https://datatracker.ietf.org/doc/html/rfc8414#section-1):\n> The means by which the client chooses an authorization server is out\n   of scope.  In some cases, its issuer identifier may be **manually\n   configured** into the client.  In other cases, it may be **dynamically\n   discovered**, for instance, through the use of WebFinger [[RFC7033](https://www.rfc-editor.org/rfc/rfc7033)], as\n   described in [Section 2](https://www.rfc-editor.org/rfc/rfc8414#section-2) of \"OpenID Connect Discovery 1.0\"\n   [[OpenID.Discovery](https://www.rfc-editor.org/rfc/rfc8414#ref-OpenID.Discovery)].\n\n\nRFC9728 Protected Resource Metadata [Section 1](https://datatracker.ietf.org/doc/html/rfc9728#section-1-2):\n> The means by which the client obtains the location of the protected\n   resource is out of scope for this document.  In some cases, the\n   location may be **manually configured** into the client; for example, an\n   email client could provide an interface for a user to enter the URL\n   of their JSON Meta Application Protocol (JMAP) server [RFC8620].  In\n   other cases, it may be **dynamically discovered**; for example, a user\n   could enter their email address into an email client, the client\n   could perform WebFinger discovery [RFC7033] (in a manner related to\n   the description in Section 2 of [OpenID.Discovery]) to find the\n   resource server, and the client could then fetch the resource server\n   metadata to find the authorization server to use to obtain\n   authorization to access the user's email.\n\n\nOverall, rather than separating based on whether the AS/RS is \"manually configured\" or \"dynamically discovered\" (as above), I'd propose a different separation, based on _who_ integrates the AS and RS:\n- If it's the client or client developer, then it's a more trusted environment (unless you don't trust the client at all, which is a different story), because the client can solely decide which AS/RS to integrate based on its needs. This is what I referred to as the \"traditional OAuth deployments\".\n- If the integration is initiated by external developers or end-users, then it's a less trusted environment, because the client cannot, or at least is not the only party involved in making the integration decision. This is what I try to define as the \"open ecosystems\" pattern.\n\n----\n> I am not sure I agree with defining \"open ecosystems\" as below, because deciding what is accessible to a client is up to the **AS/RS/RO** in the traditional OAuth model as well.\n> > protected resources accessible to a client are configured beyond the discretion of the client or client developers\n\n\nI agree this is a bit confusing. Though I haven't found a satisfactory alternative yet.\n\n* If an **RO** (i.e., end-user) can decide what is accessible to the client, I guess it's more like the two examples in the RFC9728 Section 1 paragraph above. I think this case can fall under our definition of open ecosystems (similar to the MCP case).\n* If an **AS/RS** can decide what is accessible to a client, I guess we should further distinguish the nuance between \"expose\" and \"configure\":\n  - If the AS/RS's role is to decide whether to _expose_ a certain resource to a particular client (so that the resource can/cannot be accessible to the client), I would say this is orthogonal to what we try to define here. But we may need to clarify the language to avoid confusion.\n  - If the AS/RS's role is to decide whether to _configure_ itself at a particular client, I'd say this falls under our definition of open ecosystems (the Integration Platform case).\n\n----\n\nI've also touched up the language around \"client configurations\", so that the concept is not limited to open ecosystem, but also applicable to the traditional OAuth model. \n\nFeel free to let me know if the above explanations are helpful. We can work on the changes/discuss further in issues.\n\n_Originally posted by @KevinLuo2000 in https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/17#discussion_r2149062904_\n            ",
       "createdAt": "2025-06-16T07:11:08Z",
-      "updatedAt": "2025-06-16T07:11:46Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2025-12-04T15:28:30Z",
+      "closedAt": "2025-12-04T15:28:30Z",
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This issue belongs to the individual draft (-01). \n\nIn the latest version (WG-adopted -00) we refrained from bringing up the concept of \"Open Ecosystem\", so closing this issue for now. We can reopen it if needed in the future.",
+          "createdAt": "2025-12-04T15:28:30Z",
+          "updatedAt": "2025-12-04T15:28:30Z"
+        }
+      ]
     },
     {
       "number": 27,
