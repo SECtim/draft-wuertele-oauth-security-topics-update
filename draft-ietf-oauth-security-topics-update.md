@@ -602,7 +602,7 @@ for their valuable feedback and contributions to this document.
 -01
 * Clarify the scope of COAT defense
 * Clarify the countermeasures of Session Fixation
-* Use terminology with less ambiguity and aligns with standard OAuth
+* Use terminology that is less ambiguous and aligned with standard OAuth
 * Fix typos and Update references
 * TODO...
 
