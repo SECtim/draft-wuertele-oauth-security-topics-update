@@ -24,7 +24,7 @@ venue:
   mail: "oauth@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/oauth/"
   github: "SECtim/draft-wuertele-oauth-security-topics-update"
-  latest: "https://SECtim.github.io/draft-wuertele-oauth-security-topics-update/draft-wuertele-oauth-security-topics-update.html"
+  latest: "https://SECtim.github.io/draft-wuertele-oauth-security-topics-update/draft-ietf-oauth-security-topics-update.html"
 
 author:
  -
@@ -41,7 +41,7 @@ author:
     fullname: "Kaixuan Luo"
     organization: The Chinese University of Hong Kong
     email: kaixuan@ie.cuhk.edu.hk
-    country: Hong Kong
+    country: Hong Kong, China
  -
     fullname: "Adonis Fung"
     organization: Samsung Research America
@@ -51,8 +51,8 @@ author:
 normative:
 
 informative:
-  OAUTH-7523bis: I-D.draft-ietf-oauth-rfc7523bis-00
-  CDFS: I-D.draft-ietf-oauth-cross-device-security-12
+  OAUTH-7523bis: I-D.draft-ietf-oauth-rfc7523bis-05
+  CDFS: I-D.draft-ietf-oauth-cross-device-security-15
   OpenID.Core:
     author:
     - ins: N. Sakimura
@@ -217,13 +217,6 @@ informative:
       - name: arXiv
         value: 1508.04324v2
     title: "On the security of modern Single Sign-On Protocols: Second-Order Vulnerabilities in OpenID Connect"
-  MCP-Spec:
-    author:
-      - ins: Anthropic
-        name: Anthropic PBC
-    date: June 2025
-    target: https://modelcontextprotocol.io/specification/2025-06-18
-    title: Model Context Protocol (MCP) Specification
 
 --- abstract
 
