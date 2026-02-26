@@ -447,7 +447,7 @@ Note that "issuer identifier" here does not refer to the term "issuer"
 as defined in {{Section 4.4 of RFC9700}}, but to the issuer identifier
 defined in {{!RFC8414}} and {{OpenID.Discovery}}. In particular, the
 issuer identifier is not just "an abstract identifier for the
-combination the authorization endpoint and token endpoint".
+combination of the authorization endpoint and token endpoint".
 
 
 #### Exact Target Endpoint URI {#AudienceInjectionCountermeasuresTargetEP}
