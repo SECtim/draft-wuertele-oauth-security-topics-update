@@ -477,7 +477,6 @@ Preconditions: It is assumed that
 
 * the implicit or authorization code grant is used with multiple OAuth connection contexts, of which one combination is considered "honest" (H-Tool using H-AuthProvider with H-AS) and one is operated by the attacker (A-Tool using A-AuthProvider with A-AS), and
 * the client stores the connection context chosen by the user in a session bound to the user's browser, and
-* the client issues redirection URIs which do not depend on all variables in the connection context (e.g., auth provider, tool, tenant), and
 * the authorization servers properly check the redirection URI by enforcing exact redirection URI matching (otherwise, see Cross Social-Network Request Forgery in {{research.jcs_14}} for details).
 
 In the following, it is further assumed that the client is registered with H-AS (URI: `https://honest.as.example`, client ID: `7ZGZldHQ`) and with A-AS (URI: `https://attacker.example`, client ID: `666RVZJTA`). Assume that the client issues the redirection URI `https://client.com/honest-cb` for the honest tool and `https://client.com/attack-cb` for the attacker's. URLs shown in the following example are shortened for presentation to include only parameters relevant to the attack.
