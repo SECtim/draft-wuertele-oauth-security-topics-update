@@ -519,7 +519,7 @@ Existing mix-up countermeasures {{Section 4.4 of !RFC9700}} can be a replacement
 - the issuer identifier is used either in place of the connection context identifier or is separately returned according to {{?RFC9207}}, and
 - an additional runtime resolution is used to resolve the issuer to retrieve the associated AS endpoints (e.g., with the authorization server metadata {{!RFC8414}}). Clients using such resolution solely to populate an OAuth provider defined with individual AS endpoints and lack the connection context identifier defense will remain vulnerable.
 
-At its core, the COAT defense relies on the client maintaining (and likely reusing) a client-assigned identifier that uniquely identifies each AS instance configured at the client. 
+At its core, the COAT defense relies on the client maintaining (and likely reusing) a client-assigned identifier that uniquely identifies each AS instance configured at the client.
 This connection context identifier is of particular relevance when the issuer identifier required by mix-up countermeasures is not available, such as in deployments where AS endpoints are manually configured at the client, rather than using authorization server metadata {{!RFC8414}} or OpenID Discovery {{OpenID.Discovery}}.
 
 
