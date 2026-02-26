@@ -599,18 +599,12 @@ for their valuable feedback and contributions to this document.
 
 [[ To be removed from the final specification ]]
 
--02
-
-* Rewrote Mix-up related sections
-* Added section on Session Fixation attack
-
 -01
-
-* Updated temporary title
-* Added introductory paragraphs, replaced placeholders
-* Clarified issuer does not uniquely identify client config
-* Cleaned up acknowledgement list
+* Clarify the scope of COAT defense
+* Clarify the countermeasures of Session Fixation
+* Use terminology with less ambiguity and aligns with standard OAuth 
+* Fix typos and Update references
+* TODO...
 
 -00
-
-* Initial version
+* WG adoption, no changes from previous individual draft
