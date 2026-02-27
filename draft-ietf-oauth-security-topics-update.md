@@ -505,7 +505,7 @@ Variants:
 ### Countermeasures {#COATCountermeasure}
 The client MUST NOT share OAuth providers with completed client registrations across tools and tenants belonging to different owners.
 
-The client MUST use all variables in its supported OAuth connection context to form a unique connection context identifier, which always includes the unique tool identifier. Additionally,
+The client MUST use all variables in its supported OAuth connection context to form a connection context identifier that uniquely identifies each AS instance configured at the client. This identifier always includes the unique tool identifier. Additionally,
 
 - a client allowing each tool to use multiple OAuth providers, of which one AS may get compromised as assumed in {{Section 4.4 of !RFC9700}}, MUST also include the OAuth provider identifier;
 - a cross-tenant client MUST also include the tenant identifier, if the tool identifier is not globally unique.
@@ -515,13 +515,9 @@ Unless otherwise specified as follows, the client MUST issue per-context distinc
 Existing mix-up countermeasures {{Section 4.4 of !RFC9700}} can be a replacement under the following conditions:
 
 - the client has entirely dropped the support to implicit grant, and
-- the OAuth provider specifies an AS not by individual AS endpoints but instead replaced with an abstract issuer identifier representing the endpoints, and
+- the OAuth provider specifies an AS not by manually configured individual AS endpoints but instead replaced with an abstract issuer identifier representing the endpoints, and
 - the issuer identifier is used either in place of the connection context identifier or is separately returned according to {{?RFC9207}}, and
-- an additional runtime resolution is used to resolve the issuer to retrieve the associated AS endpoints (e.g., with the authorization server metadata {{!RFC8414}}). Clients using such resolution solely to populate an OAuth provider defined with individual AS endpoints and lack the connection context identifier defense will remain vulnerable.
-
-At its core, the COAT defense relies on the client maintaining (and likely reusing) a client-assigned identifier that uniquely identifies each AS instance configured at the client.
-This connection context identifier is of particular relevance when the issuer identifier required by mix-up countermeasures is not available, such as in deployments where AS endpoints are manually configured at the client, rather than using authorization server metadata {{!RFC8414}} or OpenID Discovery {{OpenID.Discovery}}.
-
+- an additional runtime resolution is used to resolve the issuer to retrieve the associated AS endpoints (e.g., with the authorization server metadata {{!RFC8414}} or OpenID Discovery {{OpenID.Discovery}}). Clients using such resolution solely to populate an OAuth provider defined with individual AS endpoints and lack the connection context identifier defense will remain vulnerable.
 
 ## Cross-user OAuth Session Fixation {#SessionFixation}
 
