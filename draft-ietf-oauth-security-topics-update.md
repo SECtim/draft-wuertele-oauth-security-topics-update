@@ -505,7 +505,7 @@ Variants:
 ### Countermeasures {#COATCountermeasure}
 The client MUST NOT share OAuth providers with completed client registrations across toolkits and tenants belonging to different owners.
 
-The client MUST use all variables in its supported OAuth connection context to form a unique connection context identifier, which always includes the unique toolkit identifier. Additionally,
+The client MUST use all variables in its supported OAuth connection context to form a unique connection context identifier, which always includes the unique tool identifier. Additionally,
 
 - a client allowing each toolkit to use multiple OAuth providers, of which one AS may be compromised as assumed in {{Section 4.4 of !RFC9700}}, MUST also include the OAuth provider identifier;
 - a cross-tenant client MUST also include the tenant identifier, if the toolkit identifier is not globally unique.
