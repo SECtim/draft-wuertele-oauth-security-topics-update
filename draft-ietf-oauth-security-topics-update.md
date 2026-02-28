@@ -516,7 +516,7 @@ Unless otherwise specified as follows, the client MUST issue per-context distinc
 Existing countermeasures for mix-up attacks ({{Section 4.4 of !RFC9700}}) can be a replacement under the following conditions:
 
 - the client has entirely dropped the support to implicit grant, and
-- the OAuth provider specifies an AS not by individual AS endpoints but instead replaced with an abstract issuer identifier (as defined in {{Section 4.4 of RFC9700}}) representing the endpoints, and
+- the OAuth provider specifies an AS not by individual AS endpoints but instead by an abstract issuer identifier (as defined in {{Section 4.4 of RFC9700}}) representing the endpoints, and
 - the issuer identifier is used either in place of the connection context identifier in the redirection URI or is separately returned according to {{?RFC9207}}, and
 - an additional runtime resolution is used to resolve the issuer to retrieve the associated AS endpoints (e.g., with the authorization server metadata {{!RFC8414}}). Clients using such resolution solely to pre-populate individual AS endpoint fields, without any coupling with the issuer identifier will remain vulnerable.
 
