@@ -573,7 +573,7 @@ Hence, the client MUST bind any *newly fixated authorization session* (conveyed 
 * If the user session is accessible at the redirection endpoint, the client can validate this binding directly.
 
 * If the user session is not accessible at the redirection endpoint, for example, because the redirection endpoint is hosted in a different origin or accessed from a different user agent than where the user session is maintained, the countermeasure requires one of the following to make the session accessible prior to validation:
-  * an implementation change to co-locate the redirection endpoint under the same origin(s) as the endpoint maintaining the user session, and/or to re-authenticate the user at the redirection endpoint from the external user agent (e.g., a browser), or
+  * an implementation change to co-locate the redirection endpoint under the same origin as the endpoint maintaining the user session, and/or to re-authenticate the user at the redirection endpoint from the external user agent (e.g., a browser), or
   * from the current redirection endpoint, performing a further redirection back to the starting origin and/or user agent where the existing session is available. For native apps, the redirect options specified in {{Section 7 of !RFC8252}} MUST be used. The location of this further redirection MUST NOT be controllable by an attacker, or it will result in Open Redirection ({{Section 4.11 of !RFC9700}}).
 
 # Security Considerations {#Security}
