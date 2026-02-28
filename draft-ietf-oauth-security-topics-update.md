@@ -460,7 +460,7 @@ use authorization server metadata {{!RFC8414}} or OpenID Discovery
 {{OpenID.Discovery}}.
 
 
-## Cross-tool OAuth Account Takeover {#COAT}
+## Cross-toolkit OAuth Account Takeover {#COAT}
 
 It is increasingly common and observed that a single OAuth client supports multiple tools. Each set of tools, known as a toolkit, is mapped to an OAuth provider configuration, which includes at least the authorization server (AS) endpoints and client registration. A successful OAuth connection is established when the OAuth client obtains an access token for a tool based on its corresponding OAuth provider configuration. The tool can then use the access token to access the user's protected resource at a resource server (RS).
 
