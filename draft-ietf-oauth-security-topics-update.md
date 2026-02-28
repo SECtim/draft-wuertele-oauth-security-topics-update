@@ -536,7 +536,7 @@ Preconditions: It is assumed that the client has maintained a user's session. Bu
 
 Example Attack:
 
-1. From a vulnerable client, the attacker initiates OAuth against a tool and obtains an authorization request URL, in which the `state` parameter has encoded a newly fixable authorization session of the attacker.
+1. From a vulnerable client, the attacker initiates OAuth against a tool and obtains an authorization request URL, in which the `state` parameter has encoded a newly created authorization session of the attacker.
 2. The attacker sends this authorization request URL to a victim.
 3. The victim visits the URL and (automatically, due to prior or implicit approvals,) authorizes the client to access their resources.
 4. Upon receiving the `state` at the redirection endpoint, the client fixates the attacker's authorization session and completes the OAuth flow.
