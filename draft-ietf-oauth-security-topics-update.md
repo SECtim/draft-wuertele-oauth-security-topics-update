@@ -41,7 +41,8 @@ author:
     fullname: "Kaixuan Luo"
     organization: The Chinese University of Hong Kong
     email: kaixuan@ie.cuhk.edu.hk
-    country: Hong Kong, China
+    region: Hong Kong
+    country: China
  -
     fullname: "Adonis Fung"
     organization: Samsung Research America
