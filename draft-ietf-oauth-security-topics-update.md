@@ -600,6 +600,7 @@ for their valuable feedback and contributions to this document.
 [[ To be removed from the final specification ]]
 
 -01
+
 * Clarify the scope of COAT defense
 * Clarify the countermeasures of Session Fixation
 * Use terminology that is less ambiguous and aligned with standard OAuth
@@ -607,4 +608,5 @@ for their valuable feedback and contributions to this document.
 * TODO...
 
 -00
+
 * WG adoption, no changes from previous individual draft
