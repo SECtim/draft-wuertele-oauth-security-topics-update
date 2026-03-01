@@ -510,7 +510,7 @@ The client MUST use all variables in its supported OAuth connection context to f
 - a client allowing each tool to use multiple OAuth providers, of which one AS may get compromised as assumed in {{Section 4.4 of !RFC9700}}, MUST also include the OAuth provider identifier;
 - a multi-tenant client MUST also include the tenant identifier, if the tool identifier is not globally unique.
 
-Unless otherwise specified as follows, the client MUST issue per-context distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client MUST store this identifier in the user's session. When an authorization response was received on the redirection URI endpoint, the client MUST also check that the context identifier from the URI matches with the one in the distinct redirection URI. If there is a mismatch, the client MUST abort the flow.
+Unless otherwise specified as follows, the client MUST issue per-context distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client MUST store this identifier in the user's session. When an authorization response was received on the redirection URI endpoint, clients MUST also check that the context identifier from the URI matches with the one in the distinct redirection URI. If there is a mismatch, the client MUST abort the flow.
 
 Existing mix-up countermeasures {{Section 4.4 of !RFC9700}} can be a replacement under the following conditions:
 
