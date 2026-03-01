@@ -508,7 +508,7 @@ The client MUST NOT share OAuth providers with completed client registrations ac
 The client MUST use all variables in its supported OAuth connection context to form a unique connection context identifier, which always includes the unique tool identifier. Additionally,
 
 - a client allowing each toolkit to use multiple OAuth providers, of which one AS may be compromised as assumed in {{Section 4.4 of !RFC9700}}, MUST also include the OAuth provider identifier;
-- a cross-tenant client MUST also include the tenant identifier, if the toolkit identifier is not globally unique.
+- a multi-tenant client MUST also include the tenant identifier, if the toolkit identifier is not globally unique.
 
 Unless otherwise specified as follows, the client MUST issue per-context distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client MUST store this identifier in the user's session. When an authorization response was received on the redirection URI endpoint, clients MUST also check that the context identifier from the URI matches with the one in the distinct redirection URI. If there is a mismatch, the client MUST abort the flow.
 
