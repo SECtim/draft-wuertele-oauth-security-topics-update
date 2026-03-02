@@ -28,9 +28,9 @@ About This Document
 
    The latest revision of this draft can be found at
    https://SECtim.github.io/draft-wuertele-oauth-security-topics-update/
-   draft-wuertele-oauth-security-topics-update.html.  Status information
-   for this document may be found at https://datatracker.ietf.org/doc/
-   draft-ietf-oauth-security-topics-update/.
+   draft-ietf-oauth-security-topics-update.html.  Status information for
+   this document may be found at https://datatracker.ietf.org/doc/draft-
+   ietf-oauth-security-topics-update/.
 
    Discussion of this document takes place on the Web Authorization
    Protocol mailing list (mailto:oauth@ietf.org), which is archived at
@@ -737,21 +737,18 @@ Host: client.com
 
    [CDFS]     Kasselman, P., Fett, D., and F. Skokan, "Cross-Device
               Flows: Security Best Current Practice", Work in Progress,
-              Internet-Draft, draft-ietf-oauth-cross-device-security-12,
-              5 September 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-oauth-cross-device-security-12>.
-
-   [MCP-Spec] Anthropic, "Model Context Protocol (MCP) Specification",
-              June 2025, <https://modelcontextprotocol.io/
-              specification/2025-06-18>.
+              Internet-Draft, draft-ietf-oauth-cross-device-security-15,
+              23 January 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-oauth-cross-device-security-15>.
 
    [OAUTH-7523bis]
-              Jones, M. B., Campbell, B., and C. Mortimore, "JSON Web
-              Token (JWT) Profile for OAuth 2.0 Client Authentication
-              and Authorization Grants", Work in Progress, Internet-
-              Draft, draft-ietf-oauth-rfc7523bis-00, 21 February 2025,
+              Jones, M. B., Campbell, B., Mortimore, C., and F. Skokan,
+              "Updates to OAuth 2.0 JSON Web Token (JWT) Client
+              Authentication and Assertion-Based Authorization Grants",
+              Work in Progress, Internet-Draft, draft-ietf-oauth-
+              rfc7523bis-05, 12 January 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-oauth-
-              rfc7523bis-00>.
+              rfc7523bis-05>.
 
    [OpenID.CIBA]
               Fernandez, G., Walter, F., Nennker, A., Tonge, D., and B.
@@ -862,25 +859,24 @@ Document History
 
    [[ To be removed from the final specification ]]
 
-   -02
-
-   *  Rewrote Mix-up related sections
-
-   *  Added section on Session Fixation attack
-
    -01
 
-   *  Updated temporary title
+   *  Clarify that shared redirection URI is not a precondition of COAT
 
-   *  Added introductory paragraphs, replaced placeholders
+   *  Clarify that COAT countermeasure uniquely identifies each
+      configured AS instance
 
-   *  Clarified issuer does not uniquely identify client config
+   *  Clarify Session Fixation countermeasures and relationship to CSRF
+      and PKCE
 
-   *  Cleaned up acknowledgement list
+   *  Use terminology that is less ambiguous and better aligned with
+      standard OAuth language
+
+   *  Editorial clarifications and fixes, and reference updates
 
    -00
 
-   *  Initial version
+   *  WG adoption, no changes from previous individual draft
 
 Authors' Addresses
 
@@ -898,7 +894,8 @@ Authors' Addresses
 
    Kaixuan Luo
    The Chinese University of Hong Kong
-   Hong Kong
+   Hong Kong,
+   China
    Email: kaixuan@ie.cuhk.edu.hk
 
 
