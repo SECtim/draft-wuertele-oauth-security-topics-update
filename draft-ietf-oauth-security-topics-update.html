@@ -1598,7 +1598,7 @@ use authorization server metadata <span>[<a href="#RFC8414" class="cite xref">RF
 <a href="#section-2.2.2" class="section-number selfRef">2.2.2. </a><a href="#name-countermeasures-2" class="section-name selfRef">Countermeasures</a>
           </h4>
 <p id="section-2.2.2-1">The client <span class="bcp14">MUST NOT</span> share OAuth providers with completed client registrations across toolkits and tenants belonging to different owners.<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.2.2-2">The client <span class="bcp14">MUST</span> use all variables in its supported OAuth connection context to form a unique connection context identifier, which always includes the unique tool identifier. Additionally,<a href="#section-2.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.2.2-2">The client <span class="bcp14">MUST</span> use all variables in its supported OAuth connection context to form a connection context identifier that uniquely identifies each AS instance configured at the client. This identifier always includes the unique toolkit identifier. Additionally,<a href="#section-2.2.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2.2-3.1">
               <p id="section-2.2.2-3.1.1">a client allowing each toolkit to use multiple OAuth providers, of which one AS may be compromised as assumed in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>, <span class="bcp14">MUST</span> also include the OAuth provider identifier;<a href="#section-2.2.2-3.1.1" class="pilcrow">¶</a></p>
@@ -1614,13 +1614,13 @@ use authorization server metadata <span>[<a href="#RFC8414" class="cite xref">RF
               <p id="section-2.2.2-6.1.1">the client has entirely dropped the support to implicit grant, and<a href="#section-2.2.2-6.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-2.2.2-6.2">
-              <p id="section-2.2.2-6.2.1">the OAuth provider specifies an AS not by individual AS endpoints but instead replaced with an abstract issuer identifier representing the endpoints, and<a href="#section-2.2.2-6.2.1" class="pilcrow">¶</a></p>
+              <p id="section-2.2.2-6.2.1">the OAuth provider specifies an AS not by individually configured AS endpoints but instead by an abstract issuer identifier (as defined in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4.2" class="relref">Section 4.4.2</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>) that represents the endpoints, and<a href="#section-2.2.2-6.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-2.2.2-6.3">
-              <p id="section-2.2.2-6.3.1">the issuer identifier is used either in place of the connection context identifier or is separately returned according to <span>[<a href="#RFC9207" class="cite xref">RFC9207</a>]</span>, and<a href="#section-2.2.2-6.3.1" class="pilcrow">¶</a></p>
+              <p id="section-2.2.2-6.3.1">the issuer identifier is used either in place of the connection context identifier in the redirection URI or is separately returned according to <span>[<a href="#RFC9207" class="cite xref">RFC9207</a>]</span>, and<a href="#section-2.2.2-6.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-2.2.2-6.4">
-              <p id="section-2.2.2-6.4.1">an additional runtime resolution is used to resolve the issuer to retrieve the associated AS endpoints (e.g., with the authorization server metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span>). Clients using such resolution solely to populate an OAuth provider defined with individual AS endpoints and lack the connection context identifier defense will remain vulnerable.<a href="#section-2.2.2-6.4.1" class="pilcrow">¶</a></p>
+              <p id="section-2.2.2-6.4.1">an additional runtime resolution is used to resolve the issuer to retrieve the associated AS endpoints (e.g., with the authorization server metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> or OpenID Discovery <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span>). Clients using such resolution solely to pre-populate individual AS endpoint fields, without any coupling with the issuer identifier will remain vulnerable.<a href="#section-2.2.2-6.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
