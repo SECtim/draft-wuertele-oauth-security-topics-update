@@ -566,12 +566,14 @@ Table of Contents
    In general, this session fixation vulnerability may be viewed as
    violating the requirement of "binding the contents of state to the
    browser (more precisely, the initiating user agent) session" to
-   defend against CSRF (Section 4.7 of [RFC9700]).  However, CSRF
-   defenses, including PKCE [RFC7636], cannot mitigate this new attack,
-   since the entire OAuth flow including the authorization request and
-   the access token request are completed by the same victim user.  The
-   impact of the new attack is also more severe from that of typical
-   CSRF attacks.
+   defend against Cross-Site Request Forgery (CSRF, see Section 4.7 of
+   [RFC9700]).  However, while PKCE [RFC7636] can mitigate CSRF, PKCE
+   alone cannot mitigate this new attack: Since the entire OAuth flow
+   including the authorization request and the request to redirection
+   endpoint is completed by the same victim user, the cryptographic
+   binding of authorization request and access token request enforced by
+   PKCE is preserved.  The impact of the new attack is also more severe
+   than that of typical CSRF attacks.
 
    Note that this section focuses on the authorization code grant.  For
    similar attacks in cross-device OAuth flows, see Section 4 of [CDFS].
