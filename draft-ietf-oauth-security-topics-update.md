@@ -567,7 +567,7 @@ To defend against the Cross-user OAuth Session Fixation attack, the client MUST 
 
 The most straightforward countermeasure is to identify the initiating user via their existing session at the client, rather than introducing a fixated session, if usability conditions permit. However, eliminating the session fixation vector may not always be feasible due to application needs. For instance, when the OAuth client responsibilities of establishing OAuth connections and the application's session management are handled by separate entities (e.g., separate services isolated under different origins, accessed from different user agents, or when the OAuth client is outsourced to an OAuth-as-a-Service provider), as observed in practice by {{research.cuhk2}} and {{research.cuhk3}}.
 
-Hence, the client MUST bind any *newly fixated authorization session* (conveyed via `state` or the pre-authorization URL) with the *existing user session* (maintained at the user agent) that initiates the OAuth flow, and validate this binding before proceeding with the access token request. Depending on the specific current settings:
+Hence, the client MUST validate the binding of any *newly fixated authorization session* (conveyed via `state` or the pre-authorization URL) to the *existing user session* (maintained at the user agent) that initiates the OAuth flow, before proceeding with the access token request. Depending on the specific current settings:
 
 * If the user session is accessible at the redirection endpoint, the client can validate this binding directly.
 
