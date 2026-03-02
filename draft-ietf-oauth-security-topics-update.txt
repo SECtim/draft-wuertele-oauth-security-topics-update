@@ -7,9 +7,9 @@ Internet-Draft                                               P. Hosseyni
 Updates: 6749, 6750, 7521, 7522, 7523, 9700      University of Stuttgart
          (if approved)                                            K. Luo
 Intended status: Best Current PracticeThe Chinese University of Hong Kong
-Expires: 4 June 2026                                             A. Fung
+Expires: 3 September 2026                                        A. Fung
                                                 Samsung Research America
-                                                         1 December 2025
+                                                            2 March 2026
 
 
           Updates to OAuth 2.0 Security Best Current Practice
@@ -56,11 +56,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 June 2026.
+   This Internet-Draft will expire on 3 September 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -315,7 +315,8 @@ Table of Contents
    "issuer" as defined in Section 4.4 of [RFC9700], but to the issuer
    identifier defined in [RFC8414] and [OpenID.Discovery].  In
    particular, the issuer identifier is not just "an abstract identifier
-   for the combination the authorization endpoint and token endpoint".
+   for the combination of the authorization endpoint and token
+   endpoint".
 
 2.1.2.2.  Exact Target Endpoint URI
 
