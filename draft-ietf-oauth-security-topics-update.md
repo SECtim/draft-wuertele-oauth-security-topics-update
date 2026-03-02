@@ -602,11 +602,11 @@ for their valuable feedback and contributions to this document.
 
 -01
 
-* Clarify the scope of COAT defense
-* Clarify the countermeasures of Session Fixation
-* Use terminology that is less ambiguous and aligned with standard OAuth
-* Fix typos and Update references
-* TODO...
+* Clarify that shared redirection URI is not a precondition of COAT
+* Clarify that COAT countermeasure uniquely identifies each configured AS instance
+* Clarify Session Fixation countermeasures and relationship to CSRF and PKCE
+* Use terminology that is less ambiguous and better aligned with standard OAuth language
+* Editorial clarifications and fixes, and reference updates
 
 -00
 
