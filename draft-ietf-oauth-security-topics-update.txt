@@ -391,10 +391,6 @@ Table of Contents
    *  the client stores the connection context chosen by the user in a
       session bound to the user's browser, and
 
-   *  the client issues redirection URIs which do not depend on all
-      variables in the connection context (e.g., auth provider, tool,
-      tenant), and
-
    *  the authorization servers properly check the redirection URI by
       enforcing exact redirection URI matching (otherwise, see Cross
       Social-Network Request Forgery in [research.jcs_14] for details).
