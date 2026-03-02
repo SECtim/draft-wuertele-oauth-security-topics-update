@@ -24,7 +24,7 @@ venue:
   mail: "oauth@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/oauth/"
   github: "SECtim/draft-wuertele-oauth-security-topics-update"
-  latest: "https://SECtim.github.io/draft-wuertele-oauth-security-topics-update/draft-wuertele-oauth-security-topics-update.html"
+  latest: "https://SECtim.github.io/draft-wuertele-oauth-security-topics-update/draft-ietf-oauth-security-topics-update.html"
 
 author:
  -
@@ -41,7 +41,8 @@ author:
     fullname: "Kaixuan Luo"
     organization: The Chinese University of Hong Kong
     email: kaixuan@ie.cuhk.edu.hk
-    country: Hong Kong
+    region: Hong Kong
+    country: China
  -
     fullname: "Adonis Fung"
     organization: Samsung Research America
@@ -51,8 +52,8 @@ author:
 normative:
 
 informative:
-  OAUTH-7523bis: I-D.draft-ietf-oauth-rfc7523bis-00
-  CDFS: I-D.draft-ietf-oauth-cross-device-security-12
+  OAUTH-7523bis: I-D.draft-ietf-oauth-rfc7523bis-05
+  CDFS: I-D.draft-ietf-oauth-cross-device-security-15
   OpenID.Core:
     author:
     - ins: N. Sakimura
@@ -217,13 +218,6 @@ informative:
       - name: arXiv
         value: 1508.04324v2
     title: "On the security of modern Single Sign-On Protocols: Second-Order Vulnerabilities in OpenID Connect"
-  MCP-Spec:
-    author:
-      - ins: Anthropic
-        name: Anthropic PBC
-    date: June 2025
-    target: https://modelcontextprotocol.io/specification/2025-06-18
-    title: Model Context Protocol (MCP) Specification
 
 --- abstract
 
@@ -606,18 +600,14 @@ for their valuable feedback and contributions to this document.
 
 [[ To be removed from the final specification ]]
 
--02
-
-* Rewrote Mix-up related sections
-* Added section on Session Fixation attack
-
 -01
 
-* Updated temporary title
-* Added introductory paragraphs, replaced placeholders
-* Clarified issuer does not uniquely identify client config
-* Cleaned up acknowledgement list
+* Clarify that shared redirection URI is not a precondition of COAT
+* Clarify that COAT countermeasure uniquely identifies each configured AS instance
+* Clarify Session Fixation countermeasures and relationship to CSRF and PKCE
+* Use terminology that is less ambiguous and better aligned with standard OAuth language
+* Editorial clarifications and fixes, and reference updates
 
 -00
 
-* Initial version
+* WG adoption, no changes from previous individual draft
