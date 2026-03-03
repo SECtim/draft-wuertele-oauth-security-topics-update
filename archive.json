@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-12-07T00:46:26.993815+00:00",
+  "timestamp": "2026-03-03T02:28:21.477223+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -637,6 +637,156 @@
           "updatedAt": "2025-06-19T11:07:30Z"
         }
       ]
+    },
+    {
+      "number": 35,
+      "id": "I_kwDOOKn4ys7s5_np",
+      "title": "Rename \"tool\" for disambiguation",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/35",
+      "state": "CLOSED",
+      "author": "KevinLuo2000",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "KevinLuo2000"
+      ],
+      "labels": [],
+      "body": "The current description of \"tool\" in Section 2.2 & 2.3 could be confusing, especially under Agentic AI context.\nWe originally meant to find a better term for \"(SaaS) integrations\"/\"integrated app\", to avoid the confusion with the \"application\" concept (i.e., OAuth Client, RP) in standard OAuth terminology.\n\nHowever, \"tools\" are often defined in a more fine-grained form, as \"executable functions that perform certain actions\", whereas _a bunch of tools_ put together can map to a certain AS/RS (e.g., MCP spec https://modelcontextprotocol.io/specification/2025-11-25/server).\n\n\n\nConsider some alternative names, such as:\n*  \"toolkit\" (though maybe too narrow and biased toward agent use case), \n* \"resource application\" (as defined in -00 version of [Identity Assertion JWT Authorization Grant](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-identity-assertion-authz-grant-00)), \n* \"connector\" (trendy but may not be as widely-used), \n* or simply just use \"integrations\".\n",
+      "createdAt": "2026-02-22T14:10:34Z",
+      "updatedAt": "2026-03-02T10:20:53Z",
+      "closedAt": "2026-03-02T10:20:53Z",
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Plan to change to \"toolkit\" for now.",
+          "createdAt": "2026-02-26T18:18:08Z",
+          "updatedAt": "2026-02-26T18:18:08Z"
+        }
+      ]
+    },
+    {
+      "number": 36,
+      "id": "I_kwDOOKn4ys7s6G2O",
+      "title": "Fix typo in COAT defense",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/36",
+      "state": "CLOSED",
+      "author": "KevinLuo2000",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "KevinLuo2000"
+      ],
+      "labels": [],
+      "body": "When an authorization response was received on the redirection URI endpoint, clients MUST also check that the context identifier from the URI matches with the one in the distinct redirection URI.\n\n->\n\nWhen an authorization response was received on the redirection URI endpoint, clients MUST also check that the context identifier from the distinct redirection URI matches with the one in the user's session. ",
+      "createdAt": "2026-02-22T14:22:16Z",
+      "updatedAt": "2026-03-02T11:17:08Z",
+      "closedAt": "2026-03-02T11:17:08Z",
+      "comments": []
+    },
+    {
+      "number": 37,
+      "id": "I_kwDOOKn4ys7s7J8c",
+      "title": "Clarify the scope of COAT defense",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/37",
+      "state": "CLOSED",
+      "author": "KevinLuo2000",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "KevinLuo2000"
+      ],
+      "labels": [],
+      "body": "Given the earlier discussion on mandating iss (RFC9207) on the [mailing list](https://mailarchive.ietf.org/arch/msg/oauth/9q_j2KKlkD96WchfIfXshJLqxUM/), I think it's worth better motivating why the defense we propose (per-integration distinct redirect_uri) is needed and where (in which scenarios) does it fit the most.\n\nA few points to keep in mind:\n\n- Standards compliance (RFC6749 / RFC8414 / RFC9207). \n  - RFC8414- and RFC9207-compliant servers can use the issuer identifier to prevent COAT attacks (a.k.a. mix-up attacks). \n  - Our main goal, however, is to protect existing OAuth 2.0-compliant ecosystems (where ASs/clients may not announce/consume RFC 8414 metadata, or support/validate RFC9207), rather than designing a future-proof OAuth version that involves protocol-message changes (which is what OAuth 2.1 is for).\n\n- Issuer-sharing vs. Unique issuers. \n  - (1) In ecosystems where AS metadata is communicated out-of-band (i.e., not via RFC8414), the iss identifier is prone to spoofing. We've seen anti-patterns where platforms allow manually entered issuer values for the \"stored issuer identifier.\" \n  - (2) RFC9207 assumes issuers are unique per OAuth client; in ecosystems where two AS instances share the same issuer, the client needs additional identifiers to uniquely distinguish each integration. Combined with (1), a malicious AS can simply announce the issuer identifier of a honest AS to launch attacks. \n  - Since there is uniqueness identifier guarantee, our recommended defense eliminates this problem.\n\nNote that these are more discussion-level points, no need to put them directly into the spec; but they should inform how we write about this.\n\nOverall, I'm not a big fan of (completely) replacing/overriding the existing text on mix-up (RFC9207 / Section 4.4 of RFC9700).\n- I'd rather profile mix-up variants specifically under the account-linking / connection-context scenario, where existing mix-up defenses have limitations.\n- Plus, better to avoid the style from the [-01 individual draft](https://datatracker.ietf.org/doc/html/draft-wuertele-oauth-security-topics-update-01), which dissects different cases in a way that's hard to follow.\n\nThe expected outcome is that for readers implementing an integration platform / token vault (OAuth-as-a-Service), they shall recognize they are in scope and can find a clear path to resolving the problem after reading the spec.\n",
+      "createdAt": "2026-02-22T16:16:17Z",
+      "updatedAt": "2026-03-02T11:16:28Z",
+      "closedAt": "2026-03-02T11:16:28Z",
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "body": "One possible version (added near the end of COAT defense)\n> At its core, the COAT defense relies on the client maintaining (and likely reusing) a client-assigned identifier that uniquely identifies each AS instance configured at the client.\n\n> This connection context identifier is of particular relevance when the issuer identifier required by mix-up countermeasures is not available, such as in deployments where AS endpoints are manually configured at the client, rather than using authorization server metadata {{!RFC8414}} or OpenID Discovery {{OpenID.Discovery}}.\n",
+          "createdAt": "2026-02-27T14:52:52Z",
+          "updatedAt": "2026-02-27T14:52:52Z"
+        }
+      ]
+    },
+    {
+      "number": 38,
+      "id": "I_kwDOOKn4ys7uAg9I",
+      "title": "Make authorization code passing mechanism in Native App Confidential Client more explicit",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/38",
+      "state": "OPEN",
+      "author": "KevinLuo2000",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "KevinLuo2000"
+      ],
+      "labels": [],
+      "body": "The exact protocol flow of OAuth 2.0 for Native Apps (Confidential Clients), unlike RFC8252 - OAuth 2.0 for Native Apps (Public Clients), is unspecified.\nreference diagram: Page 16 of [Interim Meeting](https://datatracker.ietf.org/meeting/interim-2025-oauth-08/materials/slides-interim-2025-oauth-08-sessa-ietf-interim-updating-the-security-bcp-00).\n\ne.g., how to securely pass authorization code from External UA (Browser) -> Native App Frontend -> Native App Backend needs to be made more explicit in standard authorization code grant, similar to how `response_mode=direct_post` works in OpenID4VP.\n\nThis may warrant a separate OAuth specification (just like how \"OAuth 2.0 for Browser-based Apps\" profiles the BFF/Token-Mediating Backend pattern for SPA confidential clients), or more detailed explanations when describing the Cross-user OAuth Session Fixation countermeasures in this document.\n\nCurrently we only explained the high-level idea.",
+      "createdAt": "2026-02-26T03:57:51Z",
+      "updatedAt": "2026-02-26T19:34:47Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Will leave it as TODO after IETF 125 discussions.",
+          "createdAt": "2026-02-26T19:34:46Z",
+          "updatedAt": "2026-02-26T19:34:46Z"
+        }
+      ]
+    },
+    {
+      "number": 39,
+      "id": "I_kwDOOKn4ys7uJSUB",
+      "title": "Rename \"platform\" to \"application\"",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/39",
+      "state": "CLOSED",
+      "author": "KevinLuo2000",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "KevinLuo2000"
+      ],
+      "labels": [],
+      "body": "It might make sense to rename \"platform\" -> \"application\" in COAT descriptions,  so as to stick to the standard OAuth terminology.\n\nI understand that \"platform\" aligns well with the concept of many services/tools getting integrated in one place, but IMHO it does not bring much benefits beyond that. Moreover, the vendors in scope indeed expand beyond what the industry commonly refer to as \"platform\".\n\n\nI think I can still use it as an example when explaining what kind of \"applications\" are in-scope:\nFor instance,\n\n> This is common where a user authorizes an application (**e.g., a cloud platform** or an agentic AI service) to orchestrate multiple tools, some of which together with their OAuth providers can be contributed by the public. ",
+      "createdAt": "2026-02-26T13:00:34Z",
+      "updatedAt": "2026-03-02T10:20:54Z",
+      "closedAt": "2026-03-02T10:20:54Z",
+      "comments": []
+    },
+    {
+      "number": 40,
+      "id": "I_kwDOOKn4ys7uLX_g",
+      "title": "Clarify that same/distinct redirection URI is not a precondition of COAT",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/40",
+      "state": "CLOSED",
+      "author": "KevinLuo2000",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "KevinLuo2000"
+      ],
+      "labels": [],
+      "body": "Remove the following from the COAT attack precondition: \n> *  the client issues redirection URIs which do not depend on all variables in the connection context (e.g., auth provider, tool, tenant), and\n\nEven if the client issues distinct redirection URIs that can sufficiently distinguish each AS instance, COAT is still feasible when the validation at the client is missing.",
+      "createdAt": "2026-02-26T14:41:12Z",
+      "updatedAt": "2026-03-02T11:15:32Z",
+      "closedAt": "2026-03-02T11:15:32Z",
+      "comments": []
+    },
+    {
+      "number": 47,
+      "id": "I_kwDOOKn4ys7uzRY8",
+      "title": "Clarify Session Fixation's relationship with CSRF",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/47",
+      "state": "CLOSED",
+      "author": "KevinLuo2000",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "KevinLuo2000"
+      ],
+      "labels": [],
+      "body": "Session Fixation and CSRF both break session integrity in OAuth, but only the latter is highlighted in OAuth (2.0) specifications/Security BCP in IETF.\n\nReviewing existing texts on Session-Fixation-CSRF relationship in this document (the introductory paragraphs before Section 2.3.1), I think some points could be further clarified:\n\n> In general, this session fixation vulnerability may be viewed as violating the requirement of \"binding the contents of state to the browser (more precisely, the initiating user agent) session\" to defend against CSRF ([Section 4.7](https://rfc-editor.org/rfc/rfc9700#section-4.7) of [RFC9700]). \n\nThis is true \u2705\ufe0f.\n\n----\n\n> However, CSRF defenses, including PKCE [RFC7636], cannot mitigate this new attack, ...\n- PKCE cannot mitigate this attack: This is true \u2705\ufe0f.\n- All CSRF defenses cannot mitigate the attack: A bit inaccurate. \n  - CSRF boils down to the fact that `state`/`nonce` is not securely bound to the user agent session, but the so-called \"user agent session\" is vaguely defined in existing RFCs. \n  - An ad-hoc authorization session, also a user-agent session itself, could be introduced (e.g., in a pre-authorization URL) and fixated in the user's browser. \n  - The `state`/`nonce` parameter's binding could be strictly validated against this new authorization session (thus not breaking any normative requirement in RFCs), but the authorization session lacks validation of binding with the initial user-agent session at the client, resulting in the Session Fixation vulnerability.\n\nAt the minimum, for now, we can change to\n> Note that PKCE [RFC7636] alone cannot mitigate this new attack, ...\n----\n\n> ... since the entire OAuth flow including the authorization request and the access token request are completed by the same victim user. \n\nThis could be clarified\n->\n> ... since the entire OAuth flow including the authorization request and the request to redirection endpoint are completed by the same victim user, thus the cryptographic binding of authorization request and access token request enforced by PKCE is preserved.\n\n----\n\n> The impact of the new attack is also more severe than that of typical CSRF attacks.\n\nThis is true \u2705\ufe0f.\n",
+      "createdAt": "2026-03-01T06:12:19Z",
+      "updatedAt": "2026-03-02T11:21:06Z",
+      "closedAt": "2026-03-02T11:21:06Z",
+      "comments": []
     }
   ],
   "pulls": [
@@ -1630,6 +1780,961 @@
       "mergeCommit": null,
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 41,
+      "id": "PR_kwDOOKn4ys7GnbQT",
+      "title": "Clarify the scope of COAT defense",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/41",
+      "state": "MERGED",
+      "author": "KevinLuo2000",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #37",
+      "createdAt": "2026-02-26T17:54:37Z",
+      "updatedAt": "2026-03-02T11:16:27Z",
+      "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "baseRefName": "main",
+      "baseRefOid": "825470b35468ef8dcbb57881dd7646779f53f3c1",
+      "headRepository": "KevinLuo2000/draft-wuertele-oauth-security-topics-update",
+      "headRefName": "fix-issue-37",
+      "headRefOid": "5bc1ade3f6619ee881edcaa6452ecb313869c6f3",
+      "closedAt": "2026-03-02T11:16:27Z",
+      "mergedAt": "2026-03-02T11:16:27Z",
+      "mergedBy": "PedramHD",
+      "mergeCommit": {
+        "oid": "4444d1bbef871141fabd80c1796af3d57b5a8789"
+      },
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm open to discuss whether this PR is even needed; and if so, whether the texts needs further in-depth clarification (e.g., regarding \"issuer-sharing\" toolkits).\r\n\r\nOverall, I hope that it better motivates why we have this section.",
+          "createdAt": "2026-02-26T20:08:05Z",
+          "updatedAt": "2026-02-26T20:44:01Z"
+        },
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "body": "After discussion with @adon-at-work , we would make minor edits to existing text, instead of adding separate paragraphs for now. ref: f312f7c",
+          "createdAt": "2026-02-27T04:35:46Z",
+          "updatedAt": "2026-02-28T05:41:35Z"
+        },
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think I'll leave the two remaining comments here to be resolved in the future. Not the main focus of this PR.",
+          "createdAt": "2026-03-02T06:23:18Z",
+          "updatedAt": "2026-03-02T07:09:32Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOKn4ys7mijEK",
+          "commit": {
+            "abbreviatedOid": "f312f7c"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-27T16:18:37Z",
+          "updatedAt": "2026-02-27T16:18:37Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "> The client MUST use all variables in its supported OAuth connection context to form a connection context identifier ...\n\nThis is a normative requirement with MUST, with no exceptions.\n\n\nHowever, it is also mentioned below that \n> **Unless otherwise specified as follows,** the client MUST issue per-context distinct redirection URI that incorporates this unique connection context identifier.\n> ...\n> Existing mix-up countermeasures {{Section 4.4 of !RFC9700}} can be a replacement under the following conditions.\n\nNamely, excluding mix-up countermeasures.\n\nWe'd better be consistent here. @adon-at-work any thoughts?",
+              "createdAt": "2026-02-27T16:18:37Z",
+              "updatedAt": "2026-02-28T07:37:51Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7mjM2N",
+          "commit": {
+            "abbreviatedOid": "f312f7c"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-27T16:53:24Z",
+          "updatedAt": "2026-02-27T16:53:24Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "> a client allowing each tool to use multiple OAuth providers, **of which one AS may get compromised as assumed in {{Section 4.4 of !RFC9700}}**, MUST also include the OAuth provider identifier\n\nI understand this is a realistic relaxation before the MUST. \nBut if we are already expecting a **unique** connection context identifier upfront, is this self-contradictory? That is, breaking uniqueness if OAuth provider identifier is not used assuming AS cannot get compromised.",
+              "createdAt": "2026-02-27T16:53:24Z",
+              "updatedAt": "2026-02-28T07:38:15Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7mrlQm",
+          "commit": {
+            "abbreviatedOid": "f312f7c"
+          },
+          "author": "copilot-pull-request-reviewer",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "## Pull request overview\n\nUpdates the COAT countermeasure text in the OAuth Security Topics Update draft to better describe how clients should construct a connection-context identifier and when existing mix-up defenses (e.g., issuer-based) can substitute for per-context redirect URIs.\n\n**Changes:**\n- Rewords the requirement for forming a connection context identifier to emphasize uniqueness per AS instance configured at the client.\n- Clarifies a precondition for using existing mix-up countermeasures by adjusting wording around endpoint-vs-issuer identification.\n- Expands the issuer resolution example to include OpenID Discovery in addition to RFC 8414 metadata.\n\n\n\n\n\n---\n\n\ud83d\udca1 <a href=\"/SECtim/draft-wuertele-oauth-security-topics-update/new/main?filename=.github/instructions/*.instructions.md\" class=\"Link--inTextBlock\" target=\"_blank\" rel=\"noopener noreferrer\">Add Copilot custom instructions</a> for smarter, more guided reviews. <a href=\"https://docs.github.com/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot\" class=\"Link--inTextBlock\" target=\"_blank\" rel=\"noopener noreferrer\">Learn how to get started</a>.",
+          "createdAt": "2026-02-28T07:24:15Z",
+          "updatedAt": "2026-02-28T07:24:16Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "The PR description mentions adding two explanatory paragraphs about relying on a client-assigned identifier for each AS instance and when issuer identifiers are unavailable, but this diff only rephrases existing requirements and adds an OpenID Discovery example. Either update the PR description or add the intended explanatory text so the change matches the stated scope (Fixes #37).",
+              "createdAt": "2026-02-28T07:24:15Z",
+              "updatedAt": "2026-02-28T07:24:16Z"
+            },
+            {
+              "originalPosition": 14,
+              "body": "The condition \u201cnot by manually configured individual AS endpoints\u201d seems misleading: whether endpoints are manual vs. automatically provisioned isn\u2019t the key distinction here, and it may read as if non-manual endpoint configuration satisfies the condition. Consider rephrasing to focus on the actual requirement (i.e., the OAuth provider is identified by an issuer identifier rather than by individual endpoints).\n```suggestion\n- the OAuth provider is identified by an issuer identifier rather than by individually configured AS endpoints, and\n```",
+              "createdAt": "2026-02-28T07:24:16Z",
+              "updatedAt": "2026-02-28T07:24:16Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7mroB1",
+          "commit": {
+            "abbreviatedOid": "f312f7c"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-28T07:36:27Z",
+          "updatedAt": "2026-02-28T07:36:27Z",
+          "comments": [
+            {
+              "originalPosition": 14,
+              "body": "```suggestion\r\n- the OAuth provider specifies an AS not by individually configured AS endpoints but instead replaced with an abstract issuer identifier representing the endpoints, and\r\n```",
+              "createdAt": "2026-02-28T07:36:27Z",
+              "updatedAt": "2026-02-28T07:36:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m5FI3",
+          "commit": {
+            "abbreviatedOid": "5bc1ade"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-02T01:41:20Z",
+          "updatedAt": "2026-03-02T01:41:20Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "> The client MUST use all variables in its supported OAuth connection context to form a connection context identifier ...\n\nThis is a normative requirement with MUST, with no exceptions.\n\n\nHowever, it is also mentioned below that \n> **Unless otherwise specified as follows,** the client MUST issue per-context distinct redirection URI that incorporates this unique connection context identifier.\n> ...\n> Existing mix-up countermeasures {{Section 4.4 of !RFC9700}} can be a replacement under the following conditions.\n\nNamely, excluding mix-up countermeasures.\n\nWe'd better be consistent here. Any thoughts?",
+              "createdAt": "2026-03-02T01:41:20Z",
+              "updatedAt": "2026-03-02T01:41:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m7FS9",
+          "commit": {
+            "abbreviatedOid": "5bc1ade"
+          },
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-02T06:13:02Z",
+          "updatedAt": "2026-03-02T06:13:02Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m_4jZ",
+          "commit": {
+            "abbreviatedOid": "5bc1ade"
+          },
+          "author": "PedramHD",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-02T11:07:39Z",
+          "updatedAt": "2026-03-02T11:07:39Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 42,
+      "id": "PR_kwDOOKn4ys7GnwRJ",
+      "title": "Fix typo in COAT defense",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/42",
+      "state": "MERGED",
+      "author": "KevinLuo2000",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Resolves #36 . ",
+      "createdAt": "2026-02-26T18:16:05Z",
+      "updatedAt": "2026-03-02T11:17:07Z",
+      "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "baseRefName": "main",
+      "baseRefOid": "825470b35468ef8dcbb57881dd7646779f53f3c1",
+      "headRepository": "KevinLuo2000/draft-wuertele-oauth-security-topics-update",
+      "headRefName": "fix-issue-36",
+      "headRefOid": "a0fea708f142c018eb2fd48f63d70f6e719540f9",
+      "closedAt": "2026-03-02T11:17:07Z",
+      "mergedAt": "2026-03-02T11:17:06Z",
+      "mergedBy": "PedramHD",
+      "mergeCommit": {
+        "oid": "32e7f55b26e4575eadf2af9576c4034210753b90"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOKn4ys7mUIeO",
+          "commit": {
+            "abbreviatedOid": "c56d147"
+          },
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-26T23:04:56Z",
+          "updatedAt": "2026-02-26T23:04:56Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m7Eaf",
+          "commit": {
+            "abbreviatedOid": "a0fea70"
+          },
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-02T06:11:39Z",
+          "updatedAt": "2026-03-02T06:11:39Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m_74l",
+          "commit": {
+            "abbreviatedOid": "a0fea70"
+          },
+          "author": "PedramHD",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-02T11:10:59Z",
+          "updatedAt": "2026-03-02T11:10:59Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 43,
+      "id": "PR_kwDOOKn4ys7Gn29U",
+      "title": "Clarify that same/distinct redirection URI is not a precondition of COAT",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/43",
+      "state": "MERGED",
+      "author": "KevinLuo2000",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Resolves #40 .\r\n\r\nCOAT can happen regardless of the uniqueness of `redirect_uri`. Even with distinct redirect_uri enforced, a client failing to match the distinct element with the one in session is still vulnerable. Therefore remove the precondition.\r\n\r\nSection 4.4 of RFC9700 failed to point this out and assumes \"the client uses the same redirection URI for each authorization server\" as mix-up attack precondition, which is untrue.",
+      "createdAt": "2026-02-26T18:22:36Z",
+      "updatedAt": "2026-03-02T11:15:31Z",
+      "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "baseRefName": "main",
+      "baseRefOid": "825470b35468ef8dcbb57881dd7646779f53f3c1",
+      "headRepository": "KevinLuo2000/draft-wuertele-oauth-security-topics-update",
+      "headRefName": "fix-issue-40",
+      "headRefOid": "88e108b76d50744391f6ef1ba86b79781a7dcad0",
+      "closedAt": "2026-03-02T11:15:31Z",
+      "mergedAt": "2026-03-02T11:15:30Z",
+      "mergedBy": "PedramHD",
+      "mergeCommit": {
+        "oid": "4091d59ae620d4dbc618cb034ea99afc5d2d00e3"
+      },
+      "comments": [
+        {
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "body": "My take is to remove this precondition (rather than clarify it), to avoid readers getting overwhelmed. Leave these points to the defense section.",
+          "createdAt": "2026-02-27T04:42:20Z",
+          "updatedAt": "2026-02-27T04:42:20Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOKn4ys7mUPgM",
+          "commit": {
+            "abbreviatedOid": "88e108b"
+          },
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-26T23:14:08Z",
+          "updatedAt": "2026-02-26T23:14:08Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "* the client issues redirection URIs which do not depend on all variables in the connection context (e.g., auth provider, tool, tenant), nor perform any enforcement on such value when returned in the URI being matching the same context that  starts the connection, and",
+              "createdAt": "2026-02-26T23:14:08Z",
+              "updatedAt": "2026-02-26T23:14:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7mXLsF",
+          "commit": {
+            "abbreviatedOid": "88e108b"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-27T04:41:55Z",
+          "updatedAt": "2026-02-27T04:41:55Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "My take is to remove this precondition (rather than clarify it), to avoid readers getting overwhelmed. Leave these points to the defense section.",
+              "createdAt": "2026-02-27T04:41:55Z",
+              "updatedAt": "2026-02-27T04:41:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m7DyS",
+          "commit": {
+            "abbreviatedOid": "88e108b"
+          },
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-02T06:10:48Z",
+          "updatedAt": "2026-03-02T06:10:48Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7nAABv",
+          "commit": {
+            "abbreviatedOid": "88e108b"
+          },
+          "author": "PedramHD",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-02T11:15:12Z",
+          "updatedAt": "2026-03-02T11:15:12Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 44,
+      "id": "PR_kwDOOKn4ys7GoKk7",
+      "title": "Edits to COAT and Session Fixation sections",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/44",
+      "state": "MERGED",
+      "author": "KevinLuo2000",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- Terminology change\r\n  - tool -> toolkit  for disambiguation, resolves #35 ; \r\n  - platform -> application to stick to standard OAuth terms, resolves #39\r\n- Clarify COAT attack description and countermeasures\r\n- Clarify Session Fixation attack description and countermeasures\r\n- Fix typos and improve wording",
+      "createdAt": "2026-02-26T18:43:12Z",
+      "updatedAt": "2026-03-02T10:20:52Z",
+      "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "baseRefName": "main",
+      "baseRefOid": "825470b35468ef8dcbb57881dd7646779f53f3c1",
+      "headRepository": "KevinLuo2000/draft-wuertele-oauth-security-topics-update",
+      "headRefName": "remaining-changes",
+      "headRefOid": "7d018f68fb62dfc4a22f9e6485f5fd0a26e6e82c",
+      "closedAt": "2026-03-02T10:20:52Z",
+      "mergedAt": "2026-03-02T10:20:52Z",
+      "mergedBy": "SECtim",
+      "mergeCommit": {
+        "oid": "972a9f7bc10879763dfa54a91792b9c0c296eb2b"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOKn4ys7mQ9eu",
+          "commit": {
+            "abbreviatedOid": "cc9df02"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-26T19:46:04Z",
+          "updatedAt": "2026-02-26T19:46:05Z",
+          "comments": [
+            {
+              "originalPosition": 94,
+              "body": "> Clients using such resolution solely to populate an OAuth provider defined with individual AS endpoints and lacking the connection context identifier defense will remain vulnerable.\n\nI'm not sure if I understood this correctly. Sorry that I forgot how we discussed this last September. \nCould you further clarify this, or provide a concrete example? @adon-at-work ",
+              "createdAt": "2026-02-26T19:46:04Z",
+              "updatedAt": "2026-02-26T19:46:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7mROfq",
+          "commit": {
+            "abbreviatedOid": "0018ed7"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-26T20:01:54Z",
+          "updatedAt": "2026-02-26T20:01:54Z",
+          "comments": [
+            {
+              "originalPosition": 49,
+              "body": "> This COAT exploits confusion between the OAuth connection context (i.e., a combination of OAuth provider, toolkit, tenant) of a centralized client rather than being limited to confusion between two distinct authorization servers.\n\nThis claim could be a bit inaccurate. I understand the context a client needs to track is different, but isn't the confusion still between authorization servers, anyway?",
+              "createdAt": "2026-02-26T20:01:54Z",
+              "updatedAt": "2026-02-26T20:04:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7mrZkf",
+          "commit": {
+            "abbreviatedOid": "cc9df02"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-28T06:22:40Z",
+          "updatedAt": "2026-02-28T06:22:41Z",
+          "comments": [
+            {
+              "originalPosition": 94,
+              "body": "Clarified in updated texts.",
+              "createdAt": "2026-02-28T06:22:40Z",
+              "updatedAt": "2026-02-28T06:22:41Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7mrZ7E",
+          "commit": {
+            "abbreviatedOid": "0e9ea98"
+          },
+          "author": "copilot-pull-request-reviewer",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "## Pull request overview\n\nUpdates the OAuth Security Topics Update draft to clarify the COAT and Session Fixation attack descriptions/countermeasures while aligning terminology with standard OAuth wording and improving references/wording.\n\n**Changes:**\n- Renames key terms for clarity/disambiguation (e.g., \u201ctool\u201d \u2192 \u201ctoolkit\u201d, \u201cplatform\u201d \u2192 \u201capplication\u201d in COAT-related text).\n- Refines COAT and Cross-user OAuth Session Fixation attack narratives and countermeasure guidance.\n- Updates/modernizes wording and references in the affected sections.\n\n\n\n\n\n---\n\n\ud83d\udca1 <a href=\"/SECtim/draft-wuertele-oauth-security-topics-update/new/main?filename=.github/instructions/*.instructions.md\" class=\"Link--inTextBlock\" target=\"_blank\" rel=\"noopener noreferrer\">Add Copilot custom instructions</a> for smarter, more guided reviews. <a href=\"https://docs.github.com/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot\" class=\"Link--inTextBlock\" target=\"_blank\" rel=\"noopener noreferrer\">Learn how to get started</a>.",
+          "createdAt": "2026-02-28T06:25:13Z",
+          "updatedAt": "2026-02-28T06:25:15Z",
+          "comments": [
+            {
+              "originalPosition": 2,
+              "body": "The section title still says \"Cross-tool OAuth Account Takeover\", but the body text renames the attack to \"Cross-toolkit OAuth Account Takeover\". Please align the heading and the terminology used throughout the section (and keep the acronym expansion consistent with the chosen name).\n```suggestion\n## Cross-toolkit OAuth Account Takeover {#COAT}\n```",
+              "createdAt": "2026-02-28T06:25:13Z",
+              "updatedAt": "2026-02-28T06:25:15Z"
+            },
+            {
+              "originalPosition": 13,
+              "body": "Grammar issue: \"OAuth responsibilities of a client is managed\" should use a plural verb (e.g., \"responsibilities ... are managed\") or be rephrased as \"the client's OAuth responsibilities are managed\".\n```suggestion\n- Multi-tenant OAuth-as-a-Service (also known as Token Vault): In cases where OAuth responsibilities of a client are managed by a multi-tenant OAuth-as-a-Service provider, a successful OAuth connection is linked to a tenant's user identifier in addition to the tenant identifier. This is a generalization of the last deployment scenario, where an application using this OAuth-as-a-Service is becoming a tenant. A tenant can usually choose some off-the-shelf toolkits using (partially-) completed OAuth providers, if not adding their own toolkits with custom OAuth providers to support the tenant's service.\n```",
+              "createdAt": "2026-02-28T06:25:13Z",
+              "updatedAt": "2026-02-28T06:25:15Z"
+            },
+            {
+              "originalPosition": 25,
+              "body": "Terminology is inconsistent within the COAT preconditions: the section text defines the connection context as (OAuth provider, toolkit, tenant), but this bullet still lists (auth provider, tool, tenant). Please update to \"toolkit\" (or clarify the distinction between a tool vs a toolkit here) to avoid confusion.\n```suggestion\n* the client issues redirection URIs which do not depend on all variables in the connection context (e.g., auth provider, toolkit, tenant), and\n```",
+              "createdAt": "2026-02-28T06:25:14Z",
+              "updatedAt": "2026-02-28T06:25:15Z"
+            },
+            {
+              "originalPosition": 82,
+              "body": "This condition reads ungrammatically/ambiguously: \"specifies an AS not by individual AS endpoints but instead replaced with an abstract issuer identifier\". Please rephrase so it\u2019s clear that the OAuth provider identifies the AS via an issuer identifier (per RFC9700) rather than listing concrete endpoints, and ensure the sentence structure reflects that.\n```suggestion\n- the OAuth provider identifies each AS by an abstract issuer identifier (as defined in {{Section 4.4 of RFC9700}}) rather than by listing individual AS endpoints, and\n```",
+              "createdAt": "2026-02-28T06:25:14Z",
+              "updatedAt": "2026-02-28T06:25:15Z"
+            },
+            {
+              "originalPosition": 92,
+              "body": "This paragraph references COAT, but the parenthetical still describes the OAuth connection context as \"(OAuth provider, tool, tenant)\". Since the COAT section now uses \"toolkit\" for that dimension, please update this parenthetical (or explicitly define why Session Fixation uses \"tool\" instead).\n```suggestion\nThe Cross-user OAuth Session Fixation exploits this session fixation attack vector. The attacker attempts to trick a victim into completing an OAuth flow that the attacker has initiated at the client. As a result, the attacker's session will be used to establish an OAuth connection with the victim's tool resources or identity, hence resulting in the same impact as COAT ({{COAT}}). However, this attack exploits confusion over the intended user bound to that connection context during the OAuth flow, contrasting with COAT, which exploits confusion within the OAuth connection context (OAuth provider, toolkit, tenant).\n```",
+              "createdAt": "2026-02-28T06:25:14Z",
+              "updatedAt": "2026-02-28T06:25:15Z"
+            },
+            {
+              "originalPosition": 16,
+              "body": "This sentence still uses \"same platform\" even though the surrounding text switches to OAuth-standard terminology using \"application\". For consistency with the new terminology (and issue #39), replace \"platform\" here with \"application\".\n```suggestion\nWhen controlled by an attacker, the open configurations of OAuth providers have posed a new threat to this centralized OAuth client design. If the client fails to properly identify, track, and isolate which proper OAuth connection context (representing a combination of OAuth provider, toolkit, and tenant) is in use during an authorization flow, an attacker can exploit this to mount Cross-toolkit OAuth Account Takeover (COAT) attacks (see {{research.cuhk}} and {{research.cuhk3}}). The COAT attacker uses a malicious toolkit to steal a victim's authorization code issued by an honest OAuth provider of an honest toolkit, and apply the authorization code injection (as defined in {{Section 4.5 of !RFC9700}}) against a new OAuth connection with the attacker's identity. This results in a compromised OAuth connection between the attacker's application identity and the victim's toolkit access. The impact is equivalent to an account takeover: the attacker can operate the honest toolkit with the victim's account (hijacked either under the same application, or even cross-tenant that shares a vulnerable OAuth-as-a-service).\n```",
+              "createdAt": "2026-02-28T06:25:14Z",
+              "updatedAt": "2026-02-28T06:25:15Z"
+            },
+            {
+              "originalPosition": 72,
+              "body": "The validation step is currently unclear: it says to check that the context identifier from the request URI \"matches with the one in the distinct redirection URI\", but earlier you store the identifier in the user's session. This would be clearer/correct if it described comparing the identifier in the callback request/URI against the identifier stored in the user's session for that flow (and using consistent terminology like \"redirection URI\" vs \"redirection endpoint\").\n```suggestion\nUnless otherwise specified as follows, the client MUST issue per-context distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client MUST store this identifier in the user's session. When an authorization response is received at the redirection URI, the client MUST retrieve the connection context identifier from the user's session for that flow and verify that it matches the identifier encoded in the redirection URI used for the authorization request. If there is a mismatch, the client MUST abort the flow.\n```",
+              "createdAt": "2026-02-28T06:25:14Z",
+              "updatedAt": "2026-02-28T06:25:15Z"
+            },
+            {
+              "originalPosition": 107,
+              "body": "Wording issue: \"newly fixable authorization session\" is confusing in this context; it seems like you mean a session that can be *fixated* (i.e., attacker-chosen) rather than \"fixable\". Please adjust the term to match the rest of the section\u2019s \"fixate/fixated\" wording.\n```suggestion\n1. From a vulnerable client, the attacker initiates OAuth against a tool and obtains an authorization request URL, in which the `state` parameter has encoded a newly fixatable authorization session of the attacker.\n```",
+              "createdAt": "2026-02-28T06:25:15Z",
+              "updatedAt": "2026-02-28T06:25:15Z"
+            },
+            {
+              "originalPosition": 134,
+              "body": "Normative language is inconsistent: line 570 says the client MUST validate the binding before the token request, but this bullet says the client \"can\" validate directly when the user session is accessible. Please make this a MUST (or otherwise reconcile it with the requirement above).\n```suggestion\n* If the user session is accessible at the redirection endpoint, the client MUST validate this binding directly.\n```",
+              "createdAt": "2026-02-28T06:25:15Z",
+              "updatedAt": "2026-02-28T06:25:15Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7mreIH",
+          "commit": {
+            "abbreviatedOid": "0e9ea98"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-28T06:36:56Z",
+          "updatedAt": "2026-02-28T06:36:56Z",
+          "comments": [
+            {
+              "originalPosition": 134,
+              "body": "This is non-normative descriptions below the normative MUST. No need to change \"can\" to \"MUST\" here.",
+              "createdAt": "2026-02-28T06:36:56Z",
+              "updatedAt": "2026-02-28T06:36:56Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7mri0e",
+          "commit": {
+            "abbreviatedOid": "0e9ea98"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-28T07:08:30Z",
+          "updatedAt": "2026-02-28T07:08:30Z",
+          "comments": [
+            {
+              "originalPosition": 107,
+              "body": "```suggestion\r\n1. From a vulnerable client, the attacker initiates OAuth against a tool and obtains an authorization request URL, in which the `state` parameter has encoded a newly created authorization session of the attacker.\r\n```",
+              "createdAt": "2026-02-28T07:08:30Z",
+              "updatedAt": "2026-02-28T07:10:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7mrkD7",
+          "commit": {
+            "abbreviatedOid": "0e9ea98"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-28T07:17:13Z",
+          "updatedAt": "2026-02-28T07:17:13Z",
+          "comments": [
+            {
+              "originalPosition": 82,
+              "body": "```suggestion\r\n- the OAuth provider specifies an AS not by individual AS endpoints but instead by an abstract issuer identifier (as defined in {{Section 4.4 of RFC9700}}) representing the endpoints, and\r\n```",
+              "createdAt": "2026-02-28T07:17:13Z",
+              "updatedAt": "2026-02-28T07:17:13Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7mrkTX",
+          "commit": {
+            "abbreviatedOid": "0e9ea98"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-28T07:18:56Z",
+          "updatedAt": "2026-02-28T07:18:56Z",
+          "comments": [
+            {
+              "originalPosition": 72,
+              "body": "resolved in #42 ",
+              "createdAt": "2026-02-28T07:18:56Z",
+              "updatedAt": "2026-02-28T07:18:56Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m699j",
+          "commit": {
+            "abbreviatedOid": "5ce429e"
+          },
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-02T06:03:30Z",
+          "updatedAt": "2026-03-02T06:03:30Z",
+          "comments": [
+            {
+              "originalPosition": 127,
+              "body": "> , and validate this binding\n\nminor. can be removed I think.\n\n\"MUST bind the two\" means the two are bounded (binding validated)",
+              "createdAt": "2026-03-02T06:03:30Z",
+              "updatedAt": "2026-03-02T06:03:37Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m7Bnx",
+          "commit": {
+            "abbreviatedOid": "5ce429e"
+          },
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-02T06:08:05Z",
+          "updatedAt": "2026-03-02T06:08:05Z",
+          "comments": [
+            {
+              "originalPosition": 135,
+              "body": "> * If the user session is not accessible at the redirection endpoint, for example, because the redirection endpoint is hosted in a different origin or accessed from a different user agent than where the user session is maintained, \n\nReplacing with \"* Otherwise,\" is good enough, as we further elaborate",
+              "createdAt": "2026-03-02T06:08:05Z",
+              "updatedAt": "2026-03-02T06:09:25Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m7DNx",
+          "commit": {
+            "abbreviatedOid": "5ce429e"
+          },
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "above are editorial touch up",
+          "createdAt": "2026-03-02T06:10:06Z",
+          "updatedAt": "2026-03-02T06:10:06Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m7HM7",
+          "commit": {
+            "abbreviatedOid": "0e9ea98"
+          },
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-02T06:15:27Z",
+          "updatedAt": "2026-03-02T06:15:27Z",
+          "comments": [
+            {
+              "originalPosition": 134,
+              "body": "my two cents. \r\ndoesnt hurt to use MUST",
+              "createdAt": "2026-03-02T06:15:27Z",
+              "updatedAt": "2026-03-02T06:15:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m7MS_",
+          "commit": {
+            "abbreviatedOid": "0e9ea98"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-02T06:20:47Z",
+          "updatedAt": "2026-03-02T06:20:48Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "this precondition is removed in #43 ",
+              "createdAt": "2026-03-02T06:20:47Z",
+              "updatedAt": "2026-03-02T06:26:32Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m7M-I",
+          "commit": {
+            "abbreviatedOid": "0e9ea98"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-02T06:21:27Z",
+          "updatedAt": "2026-03-02T06:21:27Z",
+          "comments": [
+            {
+              "originalPosition": 134,
+              "body": "Even if the user session is readily-accessible at the redirection endpoint, the client may choose to redirect to a same-origin location at different path for validation, rather than validate \"directly\". So I'd rather not use a normative MUST here.",
+              "createdAt": "2026-03-02T06:21:27Z",
+              "updatedAt": "2026-03-02T06:21:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m7cLj",
+          "commit": {
+            "abbreviatedOid": "5ce429e"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-02T06:35:30Z",
+          "updatedAt": "2026-03-02T06:35:30Z",
+          "comments": [
+            {
+              "originalPosition": 127,
+              "body": "```suggestion\r\nHence, the client MUST validate the binding of any *newly fixated authorization session* (conveyed via `state` or the pre-authorization URL) to the *existing user session* (maintained at the user agent) that initiates the OAuth flow, before proceeding with the access token request. Depending on the specific current settings:\r\n```",
+              "createdAt": "2026-03-02T06:35:30Z",
+              "updatedAt": "2026-03-02T06:35:31Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m7i5B",
+          "commit": {
+            "abbreviatedOid": "5ce429e"
+          },
+          "author": "KevinLuo2000",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-03-02T06:44:36Z",
+          "updatedAt": "2026-03-02T06:44:36Z",
+          "comments": [
+            {
+              "originalPosition": 135,
+              "body": "I understand the verbosity, but I kind of meant it. \r\nEach \"further elaboration\" maps back to the summary sentence, which discusses (1) Cross-origin defense and (2) Cross-User-agent defense. See below.\r\n\r\n> * If the user session is not accessible at the redirection endpoint, for example, because (1) the redirection endpoint is hosted in a **different origin** or (2) accessed from a **different user agent** than where the user session is maintained, the countermeasure requires one of the following to make the session accessible prior to validation:\r\n>   * an implementation change to (1) co-locate the redirection endpoint under the same **origin** as the endpoint maintaining the user session, and/or to (2) re-authenticate the user at the redirection endpoint from the external **user agent** (e.g., a browser), or\r\n>   * from the current redirection endpoint, performing a further redirection back to (1) the starting **origin** and/or (2) **user agent** where the existing session is available. For native apps, the redirect options specified in {{Section 7 of !RFC8252}} MUST be used. The location of this further redirection MUST NOT be controllable by an attacker, or it will result in Open Redirection ({{Section 4.11 of !RFC9700}}).\r\n\r\nIf needed, I can make the mapping more explicit.",
+              "createdAt": "2026-03-02T06:44:36Z",
+              "updatedAt": "2026-03-02T07:00:33Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m-5Js",
+          "commit": {
+            "abbreviatedOid": "7d018f6"
+          },
+          "author": "SECtim",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-02T10:20:41Z",
+          "updatedAt": "2026-03-02T10:20:41Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 45,
+      "id": "PR_kwDOOKn4ys7Gotk1",
+      "title": "Update document metadata and references",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/45",
+      "state": "MERGED",
+      "author": "KevinLuo2000",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- update outdated or unused references\r\n- update version history\r\n- update reference to HKSAR in author info per University guideline",
+      "createdAt": "2026-02-26T19:24:19Z",
+      "updatedAt": "2026-03-02T10:10:56Z",
+      "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "baseRefName": "main",
+      "baseRefOid": "825470b35468ef8dcbb57881dd7646779f53f3c1",
+      "headRepository": "KevinLuo2000/draft-wuertele-oauth-security-topics-update",
+      "headRefName": "misc",
+      "headRefOid": "bfced9b7917c6b8acc5fdec66463208d6983d994",
+      "closedAt": "2026-03-02T10:10:56Z",
+      "mergedAt": "2026-03-02T10:10:56Z",
+      "mergedBy": "SECtim",
+      "mergeCommit": {
+        "oid": "499f9d0d6a5b264500179455f95665cc6c161d8b"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOKn4ys7mWICV",
+          "commit": {
+            "abbreviatedOid": "3ba7307"
+          },
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-27T02:49:21Z",
+          "updatedAt": "2026-02-27T02:49:21Z",
+          "comments": [
+            {
+              "originalPosition": 58,
+              "body": "drop if we dont have #41 ",
+              "createdAt": "2026-02-27T02:49:21Z",
+              "updatedAt": "2026-02-27T02:49:21Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m62Nf",
+          "commit": {
+            "abbreviatedOid": "bfced9b"
+          },
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-02T05:50:26Z",
+          "updatedAt": "2026-03-02T05:50:26Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m-tMN",
+          "commit": {
+            "abbreviatedOid": "bfced9b"
+          },
+          "author": "SECtim",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-02T10:10:49Z",
+          "updatedAt": "2026-03-02T10:10:49Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 46,
+      "id": "PR_kwDOOKn4ys7GozCb",
+      "title": "Fix typo in audience injection section",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/46",
+      "state": "MERGED",
+      "author": "KevinLuo2000",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "an abstract identifier for the combination the authorization endpoint and token endpoint\r\n\r\n->\r\n\r\nan abstract identifier for the combination **of** the authorization endpoint and token endpoint",
+      "createdAt": "2026-02-26T19:30:45Z",
+      "updatedAt": "2026-03-02T10:09:20Z",
+      "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "baseRefName": "main",
+      "baseRefOid": "825470b35468ef8dcbb57881dd7646779f53f3c1",
+      "headRepository": "KevinLuo2000/draft-wuertele-oauth-security-topics-update",
+      "headRefName": "typo-fix-audience-injection",
+      "headRefOid": "1d174e81337274647ae77602f9b60a81d03d559e",
+      "closedAt": "2026-03-02T10:09:20Z",
+      "mergedAt": "2026-03-02T10:09:20Z",
+      "mergedBy": "SECtim",
+      "mergeCommit": {
+        "oid": "8dc4d2588c82832aaa0b52591d02d7829a2a83a5"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOKn4ys7mUVDn",
+          "commit": {
+            "abbreviatedOid": "1d174e8"
+          },
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-26T23:21:12Z",
+          "updatedAt": "2026-02-26T23:21:12Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7mWHeJ",
+          "commit": {
+            "abbreviatedOid": "1d174e8"
+          },
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-27T02:48:13Z",
+          "updatedAt": "2026-02-27T02:48:13Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7m-rYk",
+          "commit": {
+            "abbreviatedOid": "1d174e8"
+          },
+          "author": "SECtim",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-02T10:09:13Z",
+          "updatedAt": "2026-03-02T10:09:13Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 48,
+      "id": "PR_kwDOOKn4ys7HI1d8",
+      "title": "Clarify Session Fixation's relationship with CSRF",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/pull/48",
+      "state": "MERGED",
+      "author": "KevinLuo2000",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Resolves #47 .",
+      "createdAt": "2026-03-01T14:55:01Z",
+      "updatedAt": "2026-03-02T11:21:05Z",
+      "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
+      "baseRefName": "main",
+      "baseRefOid": "825470b35468ef8dcbb57881dd7646779f53f3c1",
+      "headRepository": "KevinLuo2000/draft-wuertele-oauth-security-topics-update",
+      "headRefName": "fix-issue-47",
+      "headRefOid": "5073307974ea0c33477cee99435461ed6fe552f6",
+      "closedAt": "2026-03-02T11:21:05Z",
+      "mergedAt": "2026-03-02T11:21:05Z",
+      "mergedBy": "PedramHD",
+      "mergeCommit": {
+        "oid": "36ce48fcee7864cd40e3a13047953416355ce383"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOOKn4ys7m61Ww",
+          "commit": {
+            "abbreviatedOid": "5073307"
+          },
+          "author": "adon-at-work",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-02T05:48:52Z",
+          "updatedAt": "2026-03-02T05:48:52Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOOKn4ys7nAFT0",
+          "commit": {
+            "abbreviatedOid": "5073307"
+          },
+          "author": "PedramHD",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-03-02T11:20:22Z",
+          "updatedAt": "2026-03-02T11:20:22Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
