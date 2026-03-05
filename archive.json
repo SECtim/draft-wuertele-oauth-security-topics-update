@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-03T02:28:21.477223+00:00",
+  "timestamp": "2026-03-05T02:25:01.822408+00:00",
   "repo": "SECtim/draft-wuertele-oauth-security-topics-update",
   "labels": [
     {
@@ -720,9 +720,9 @@
         "KevinLuo2000"
       ],
       "labels": [],
-      "body": "The exact protocol flow of OAuth 2.0 for Native Apps (Confidential Clients), unlike RFC8252 - OAuth 2.0 for Native Apps (Public Clients), is unspecified.\nreference diagram: Page 16 of [Interim Meeting](https://datatracker.ietf.org/meeting/interim-2025-oauth-08/materials/slides-interim-2025-oauth-08-sessa-ietf-interim-updating-the-security-bcp-00).\n\ne.g., how to securely pass authorization code from External UA (Browser) -> Native App Frontend -> Native App Backend needs to be made more explicit in standard authorization code grant, similar to how `response_mode=direct_post` works in OpenID4VP.\n\nThis may warrant a separate OAuth specification (just like how \"OAuth 2.0 for Browser-based Apps\" profiles the BFF/Token-Mediating Backend pattern for SPA confidential clients), or more detailed explanations when describing the Cross-user OAuth Session Fixation countermeasures in this document.\n\nCurrently we only explained the high-level idea.",
+      "body": "The exact protocol flow of OAuth 2.0 for Native Apps (Confidential Clients), unlike RFC8252 - OAuth 2.0 for Native Apps (Public Clients), is unspecified. This opens the door to flawed implementations with session fixation vulnerabilities.\n\nreference diagram: Page 16 of [Interim Meeting](https://datatracker.ietf.org/meeting/interim-2025-oauth-08/materials/slides-interim-2025-oauth-08-sessa-ietf-interim-updating-the-security-bcp-00).\n\nFor instance, how to securely pass authorization code from External UA (Browser) -> Native App Frontend -> Native App Backend needs to be made more explicit in standard authorization code grant, similar to how `response_mode=direct_post` works in OpenID4VP.\n\nThis may warrant a separate OAuth specification (just like how \"OAuth 2.0 for Browser-based Apps\" profiles the BFF/Token-Mediating Backend pattern for SPA confidential clients), or more detailed explanations in this document, when describing the Cross-user OAuth Session Fixation countermeasures.\n\nCurrently we only explained the high-level idea.\n\nPerhaps we can add concrete protocol steps or diagrams in the document?",
       "createdAt": "2026-02-26T03:57:51Z",
-      "updatedAt": "2026-02-26T19:34:47Z",
+      "updatedAt": "2026-03-03T03:48:48Z",
       "closedAt": null,
       "comments": [
         {
@@ -786,6 +786,24 @@
       "createdAt": "2026-03-01T06:12:19Z",
       "updatedAt": "2026-03-02T11:21:06Z",
       "closedAt": "2026-03-02T11:21:06Z",
+      "comments": []
+    },
+    {
+      "number": 49,
+      "id": "I_kwDOOKn4ys7vSGN2",
+      "title": "Revisit the \"toolkit\" terminology",
+      "url": "https://github.com/SECtim/draft-wuertele-oauth-security-topics-update/issues/49",
+      "state": "OPEN",
+      "author": "KevinLuo2000",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "KevinLuo2000"
+      ],
+      "labels": [],
+      "body": "Follow-up to #35 .\n\nIn #35 , \"tool\" was renamed to \"toolkit\" to avoid confusion arising from: \n1) multiple tools within the same toolkit;\n2) tools are sematically closer to RS, whereas the main focus is on AS (except for implicit grant).\n\nHowever, \"toolkit\" is not a widely accepted term in industry either, and may be biased toward AI use cases.\n\nConsider either, renaming \"toolkit\" to a more appropriate term, or providing more (non-normative) concrete use case scenarios with alternative names of \"toolkit\", such as \"integration\", \"connector\", \"resource application\", for ease of understanding.\n_(Suggestion from Prof. Wing Cheong Lau @wclau)_",
+      "createdAt": "2026-03-03T03:38:54Z",
+      "updatedAt": "2026-03-03T03:38:54Z",
+      "closedAt": null,
       "comments": []
     }
   ],
@@ -1793,7 +1811,7 @@
       "labels": [],
       "body": "Fixes #37",
       "createdAt": "2026-02-26T17:54:37Z",
-      "updatedAt": "2026-03-02T11:16:27Z",
+      "updatedAt": "2026-03-04T19:28:21Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "825470b35468ef8dcbb57881dd7646779f53f3c1",
@@ -1976,7 +1994,7 @@
       "labels": [],
       "body": "Resolves #36 . ",
       "createdAt": "2026-02-26T18:16:05Z",
-      "updatedAt": "2026-03-02T11:17:07Z",
+      "updatedAt": "2026-03-04T19:28:22Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "825470b35468ef8dcbb57881dd7646779f53f3c1",
@@ -2044,7 +2062,7 @@
       "labels": [],
       "body": "Resolves #40 .\r\n\r\nCOAT can happen regardless of the uniqueness of `redirect_uri`. Even with distinct redirect_uri enforced, a client failing to match the distinct element with the one in session is still vulnerable. Therefore remove the precondition.\r\n\r\nSection 4.4 of RFC9700 failed to point this out and assumes \"the client uses the same redirection URI for each authorization server\" as mix-up attack precondition, which is untrue.",
       "createdAt": "2026-02-26T18:22:36Z",
-      "updatedAt": "2026-03-02T11:15:31Z",
+      "updatedAt": "2026-03-04T19:28:29Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "825470b35468ef8dcbb57881dd7646779f53f3c1",
@@ -2147,7 +2165,7 @@
       "labels": [],
       "body": "- Terminology change\r\n  - tool -> toolkit  for disambiguation, resolves #35 ; \r\n  - platform -> application to stick to standard OAuth terms, resolves #39\r\n- Clarify COAT attack description and countermeasures\r\n- Clarify Session Fixation attack description and countermeasures\r\n- Fix typos and improve wording",
       "createdAt": "2026-02-26T18:43:12Z",
-      "updatedAt": "2026-03-02T10:20:52Z",
+      "updatedAt": "2026-03-04T19:28:16Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "825470b35468ef8dcbb57881dd7646779f53f3c1",
@@ -2550,7 +2568,7 @@
       "labels": [],
       "body": "- update outdated or unused references\r\n- update version history\r\n- update reference to HKSAR in author info per University guideline",
       "createdAt": "2026-02-26T19:24:19Z",
-      "updatedAt": "2026-03-02T10:10:56Z",
+      "updatedAt": "2026-03-04T19:28:19Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "825470b35468ef8dcbb57881dd7646779f53f3c1",
@@ -2625,7 +2643,7 @@
       "labels": [],
       "body": "an abstract identifier for the combination the authorization endpoint and token endpoint\r\n\r\n->\r\n\r\nan abstract identifier for the combination **of** the authorization endpoint and token endpoint",
       "createdAt": "2026-02-26T19:30:45Z",
-      "updatedAt": "2026-03-02T10:09:20Z",
+      "updatedAt": "2026-03-04T19:28:29Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "825470b35468ef8dcbb57881dd7646779f53f3c1",
@@ -2693,7 +2711,7 @@
       "labels": [],
       "body": "Resolves #47 .",
       "createdAt": "2026-03-01T14:55:01Z",
-      "updatedAt": "2026-03-02T11:21:05Z",
+      "updatedAt": "2026-03-04T19:28:23Z",
       "baseRepository": "SECtim/draft-wuertele-oauth-security-topics-update",
       "baseRefName": "main",
       "baseRefOid": "825470b35468ef8dcbb57881dd7646779f53f3c1",
