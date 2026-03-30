@@ -20,7 +20,7 @@ keyword:
  - best current practice
 venue:
   group: "Web Authorization Protocol"
-  type: ""
+  type: "Working Group"
   mail: "oauth@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/oauth/"
   github: "SECtim/draft-wuertele-oauth-security-topics-update"
