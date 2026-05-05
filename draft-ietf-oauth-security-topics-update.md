@@ -156,6 +156,21 @@ informative:
     target: https://www.blackhat.com/us-25/briefings/schedule/index.html#back-to-the-future-hacking-and-securing-connection-based-oauth-architectures-in-agentic-ai-and-integration-platforms-44686
     refcontent: "Black Hat USA 2025"
     title: "Back to the Future: Hacking and Securing Connection-based OAuth Architectures in Agentic AI and Integration Platforms"
+  research.rub:
+    author:
+    - ins: T. Innocenti
+      name: Tommaso Innocenti
+    - ins: L. Jannett
+      name: Louis Jannett
+    - ins: C. Mainka
+      name: Christian Mainka
+    - ins: V. Mladenov
+      name: Vladislav Mladenov
+    - ins: E. Kirda
+      name: Engin Kirda
+    date: 2025
+    target: https://ieeexplore.ieee.org/document/11023371
+    title: "\"Only as Strong as the Weakest Link\": On the Security of Brokered Single Sign-On on the Web"
   arXiv.1601.01229:
     author:
       - ins: D. Fett
@@ -567,6 +582,155 @@ Hence, the client MUST validate the binding of any *newly fixated authorization 
 * If the user session is not accessible at the redirection endpoint, for example, because the redirection endpoint is hosted in a different origin or accessed from a different user agent than where the user session is maintained, the countermeasure requires one of the following to make the session accessible prior to validation:
   * an implementation change to co-locate the redirection endpoint under the same origin as the endpoint maintaining the user session, and/or to re-authenticate the user at the redirection endpoint from the external user agent (e.g., a browser), or
   * from the current redirection endpoint, performing a further redirection back to the starting origin and/or user agent where the existing session is available. For native apps, the redirect options specified in {{Section 7 of !RFC8252}} MUST be used. The location of this further redirection MUST NOT be controllable by an attacker, or it will result in Open Redirection ({{Section 4.11 of !RFC9700}}).
+
+## Shared Consent in Brokered Authorization {#SharedConsent}
+
+In a brokered authorization deployment, an intermediate entity (called the *broker* in the following) mediates between OAuth clients and one or more upstream authorization servers (referred to as *AS* in the following).
+The broker acts as an authorization server towards each downstream client and, at the same time, acts as a client towards each AS.
+
+When the broker registers itself once at an AS and reuses this single registration for every downstream client it serves, the AS cannot distinguish between those downstream clients.
+As a consequence, the consent the user grants for one downstream client is silently reused for any other downstream client that integrates the same broker.
+A malicious downstream client integrated with the same broker can therefore obtain access to the user's protected resources without the user ever consenting to that client.
+
+### Attack Description {#SharedConsentDescription}
+
+The descriptions here follow {{research.rub}}, where additional details of the attack are laid out.
+Shared consent attacks require at least two downstream clients (one honest, one malicious) to be integrated with the same broker, and that broker to register itself as a single client at the AS.
+
+In the following, let `H-Client` and `M-Client` be downstream clients (honest and attacker-controlled, respectively) integrated with broker `B`.
+The broker `B` registers itself once at the AS and obtains a single client identifier `cid_B@AS` together with a single redirection URI bound to the broker.
+The broker uses this single registration whenever it issues an authorization request triggered from any of its downstream clients to the AS.
+At `B`, `H-Client` is registered as `cid_HC@B` and `M-Client` is registered as `cid_MC@B`, each with its own redirection URI bound to the respective downstream client.
+From the point of view of the AS, every flow that `B` initiates appears to come from the same client `cid_B@AS`, regardless of which downstream client actually triggered the flow.
+
+The broker acts invisibly to the user during the flow.
+It renders no consent screen of its own and no other user-visible UI that would indicate that an additional entity is involved between the downstream client and the AS.
+The broker's origin appears in the user agent's address bar only briefly while the user agent is redirected from the downstream client to the AS, and this transition happens instantly.
+
+The exact form of the authorization response (`authz res`) returned to a downstream client is out of scope for this attack.
+
+The flaw is illustrated in the following figure:
+
+~~~
+  User        H-Client      M-Client          B                      AS
+    |             |             |             |                       |
+    |             |    authz req: cid_HC@B    |                       |
+    |             |-------------------------->|                       |
+    |             |             |             |  authz req: cid_B@AS  |
+    |             |             |             |---------------------->|
+    |             |          consent: cid_B@AS|                       |
+    |<--------------------------------------------------------------->|
+    |             |             |             |       authz res       |
+    |             |             |             |<----------------------|
+    |             |         authz res         |                       |
+    |             |<--------------------------|                       |
+    |             |             |             |                       |
+    |             |           authz req: cid_MC@B                     |
+    |             |             |------------>|                       |
+    |             |             |             |  authz req: cid_B@AS  |
+    |             |             |             |---------------------->|
+    |             |             |             |       authz res       |
+    |             |             |             |<----------------------|
+    |             |             |  authz res  |                       |
+    |             |             |<------------|                       |
+~~~
+
+In the second phase of the figure, no consent prompt is rendered for `M-Client`.
+The AS only sees the broker's client identifier `cid_B@AS`, for which the user has already granted consent in the first phase, so the AS silently issues a token to `B` (c.f. `prompt=none` parameter defined in Section 3.1.2.1 of {{OpenID.Core}}) and `B` returns an `authz res` to `M-Client`.
+
+### Countermeasures {#SharedConsentCountermeasures}
+
+The root cause of shared consent attacks is that the AS cannot tell on whose behalf the broker is acting and therefore cannot ask the user for consent on a per-downstream-client basis.
+Brokers MUST employ at least one of the following two countermeasures.
+
+#### Per-Client Registration at the Upstream Authorization Server {#SharedConsentRegistration}
+
+Each downstream client MUST be registered as a separate client at the AS.
+
+The broker MUST provide each downstream client with a redirection URI that is hosted by the broker.
+The broker MUST also instruct the downstream client to register at every AS the client expects to use, using the broker-provided redirection URI.
+
+The downstream client is responsible for performing this registration at each AS, obtaining a distinct client identifier (e.g., `cid_HC@AS` for the honest client and `cid_MC@AS` for the malicious client) and any associated credentials (such as a client secret).
+The downstream client MUST hand these credentials over to the broker, which gives the broker full control to act on behalf of the downstream client at the AS.
+When initiating an authorization flow to the AS on behalf of a downstream client, the broker MUST use the credentials of exactly that downstream client.
+
+This countermeasure ensures that the AS recognizes each downstream client as a distinct client, and that any consent prompt rendered by the AS is bound to a single downstream client.
+Consent granted for one downstream client is therefore not reusable for another.
+
+~~~
+  User        H-Client      M-Client          B                      AS
+    |             |             |             |                       |
+    |             |    authz req: cid_HC@B    |                       |
+    |             |-------------------------->|                       |
+    |             |             |             | authz req: cid_HC@AS  |
+    |             |             |             |---------------------->|
+    |             |         consent: cid_HC@AS|                       |
+    |<--------------------------------------------------------------->|
+    |             |             |             |       authz res       |
+    |             |             |             |<----------------------|
+    |             |         authz res         |                       |
+    |             |<--------------------------|                       |
+    |             |             |             |                       |
+    |             |           authz req: cid_MC@B                     |
+    |             |             |------------>|                       |
+    |             |             |             | authz req: cid_MC@AS  |
+    |             |             |             |---------------------->|
+    |             |         consent: cid_MC@AS|                       |
+    |<--------------------------------------------------------------->|
+    |             |             |             |       authz res       |
+    |             |             |             |<----------------------|
+    |             |             |  authz res  |                       |
+    |             |             |<------------|                       |
+~~~
+
+#### Broker-Side Consent Screen {#SharedConsentBrokerConsent}
+
+The broker MUST present an explicit consent screen to the user that identifies the downstream client, before initiating its own authorization request to the AS on behalf of the downstream client.
+The broker MUST NOT skip this consent screen based on a previously granted consent for a different downstream client.
+The broker MAY remember the user's consent decision per downstream client (e.g., per `client_id` of the downstream client), but MUST NOT remember it across different downstream clients.
+
+This countermeasure prevents the broker from silently reusing a consent granted for one downstream client when initiating a request to the AS on behalf of another, even when the AS cannot distinguish between the broker's downstream clients.
+
+~~~
+  User        H-Client      M-Client          B                      AS
+    |             |             |             |                       |
+    |             |    authz req: cid_HC@B    |                       |
+    |             |-------------------------->|                       |
+    |            consent: cid_HC@B            |                       |
+    |<--------------------------------------->|                       |
+    |             |             |             |  authz req: cid_B@AS  |
+    |             |             |             |---------------------->|
+    |             |          consent: cid_B@AS|                       |
+    |<--------------------------------------------------------------->|
+    |             |             |             |       authz res       |
+    |             |             |             |<----------------------|
+    |             |         authz res         |                       |
+    |             |<--------------------------|                       |
+    |             |             |             |                       |
+    |             |           authz req: cid_MC@B                     |
+    |             |             |------------>|                       |
+    |            consent: cid_MC@B            |                       |
+    |<--------------------------------------->|                       |
+    |             |             |             |  authz req: cid_B@AS  |
+    |             |             |             |---------------------->|
+    |             |             |             |       authz res       |
+    |             |             |             |<----------------------|
+    |             |             |  authz res  |                       |
+    |             |             |<------------|                       |
+~~~
+
+#### Discussion of the Countermeasures {#SharedConsentDiscussion}
+
+The two countermeasures have different practical trade-offs.
+
+The Per-Client Registration countermeasure ({{SharedConsentRegistration}}) confronts the user with only one consent screen per OAuth flow, which improves the user experience.
+It also leaves the protocol between the downstream client and the broker unconstrained.
+The broker may expose a non-OAuth, custom interface to the downstream client and is only required to behave as an OAuth client towards the AS.
+
+The Broker-Side Consent Screen countermeasure ({{SharedConsentBrokerConsent}}) results in two fully OAuth-conformant flows chained one after another (downstream client to broker, broker to AS).
+This is easier for downstream client developers, since they do not need to register their downstream client at every AS the broker integrates with, which can be a substantial effort given that a single broker is typically integrated with many ASes.
+
+Both countermeasures are implemented entirely on the client side (the downstream client and the broker) and require no changes to any AS.
 
 # Security Considerations {#Security}
 
