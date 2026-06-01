@@ -168,7 +168,7 @@ informative:
       name: Vladislav Mladenov
     - ins: E. Kirda
       name: Engin Kirda
-    date: 2025
+    date: May 2025
     target: https://ieeexplore.ieee.org/document/11023371
     title: "\"Only as Strong as the Weakest Link\": On the Security of Brokered Single Sign-On on the Web"
   arXiv.1601.01229:
@@ -583,9 +583,9 @@ Hence, the client MUST validate the binding of any *newly fixated authorization 
   * an implementation change to co-locate the redirection endpoint under the same origin as the endpoint maintaining the user session, and/or to re-authenticate the user at the redirection endpoint from the external user agent (e.g., a browser), or
   * from the current redirection endpoint, performing a further redirection back to the starting origin and/or user agent where the existing session is available. For native apps, the redirect options specified in {{Section 7 of !RFC8252}} MUST be used. The location of this further redirection MUST NOT be controllable by an attacker, or it will result in Open Redirection ({{Section 4.11 of !RFC9700}}).
 
-## Shared Consent in Brokered Authorization {#SharedConsent}
+## Shared Consent in Brokered OAuth {#SharedConsent}
 
-In a brokered authorization deployment, an intermediate entity (called the *broker* in the following) mediates between OAuth clients and one or more upstream authorization servers (referred to as *AS* in the following).
+In a brokered OAuth deployment, an intermediate entity (called the *broker* in the following) mediates between OAuth clients and one or more upstream authorization servers (referred to as *AS* in the following).
 The broker acts as an authorization server towards each downstream client and, at the same time, acts as a client towards each AS.
 
 When the broker registers itself once at an AS and reuses this single registration for every downstream client it serves, the AS cannot distinguish between those downstream clients.
@@ -636,7 +636,7 @@ The flaw is illustrated in the following figure:
 ~~~
 
 In the second phase of the figure, no consent prompt is rendered for `M-Client`.
-The AS only sees the broker's client identifier `cid_B@AS`, for which the user has already granted consent in the first phase, so the AS silently issues a token to `B` (c.f. `prompt=none` parameter defined in Section 3.1.2.1 of {{OpenID.Core}}) and `B` returns an `authz res` to `M-Client`.
+The AS only sees the broker's client identifier `cid_B@AS`, for which the user has already granted consent in the first phase, so the AS silently issues a token to `B` (cf. the `prompt` parameter with the `none` value defined in Section 3.1.2.1 of {{OpenID.Core}}) and `B` returns an `authz res` to `M-Client`.
 
 ### Countermeasures {#SharedConsentCountermeasures}
 
@@ -730,7 +730,7 @@ The broker may expose a non-OAuth, custom interface to the downstream client and
 The Broker-Side Consent Screen countermeasure ({{SharedConsentBrokerConsent}}) results in two fully OAuth-conformant flows chained one after another (downstream client to broker, broker to AS).
 This is easier for downstream client developers, since they do not need to register their downstream client at every AS the broker integrates with, which can be a substantial effort given that a single broker is typically integrated with many ASes.
 
-Both countermeasures are implemented entirely on the client side (the downstream client and the broker) and require no changes to any AS.
+Both countermeasures are implemented entirely on the client side (the downstream client and the broker) and require no software or protocol changes to any AS.
 
 # Security Considerations {#Security}
 
