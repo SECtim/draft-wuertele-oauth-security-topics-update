@@ -583,8 +583,10 @@ Hence, the client MUST validate the binding of any *newly fixated authorization 
 
 ## Shared Consent in Brokered OAuth {#SharedConsent}
 
-In a brokered OAuth deployment, an intermediate entity (called the *broker* in the following) mediates between OAuth clients and one or more upstream authorization servers (referred to as *AS* in the following).
+In a brokered OAuth deployment, an intermediate entity (called the *broker* in the following) mediates between downstream clients and one or more upstream authorization servers (referred to as *AS* in the following).
 The broker acts as an authorization server towards each downstream client and, at the same time, acts as a client towards each AS.
+Throughout this section, the terms *upstream* and *downstream* are used relative to the broker and the direction in which authorization flows.
+The AS is *upstream* as the source of authorization and tokens, while the clients the broker serves are *downstream* as the recipients of the access the broker obtains on their behalf.
 
 When the broker registers itself once at an AS and reuses this single registration for every downstream client it serves, the AS cannot distinguish between those downstream clients.
 As a consequence, the consent the user grants for one downstream client is silently reused for any other downstream client that integrates the same broker.
@@ -646,9 +648,9 @@ Brokers MUST employ at least one of the following two countermeasures.
 Each downstream client MUST be registered as a separate client at the AS.
 
 The broker MUST provide each downstream client with a redirection URI that is hosted by the broker.
-The broker MUST also instruct the downstream client to register at every AS the client expects to use, using the broker-provided redirection URI.
+The broker MUST also instruct the downstream client to register at every AS it expects to use, using the broker-provided redirection URI.
 
-The downstream client is responsible for performing this registration at each AS, obtaining a distinct client identifier (e.g., `cid_HC@AS` for the honest client and `cid_MC@AS` for the malicious client) and any associated credentials (such as a client secret).
+The downstream client is responsible for performing this registration at each AS, obtaining a distinct client identifier (e.g., `cid_HC@AS` for `H-Client` and `cid_MC@AS` for `M-Client`) and any associated credentials (such as a client secret).
 The downstream client MUST hand these credentials over to the broker, which gives the broker full control to act on behalf of the downstream client at the AS.
 When initiating an authorization flow to the AS on behalf of a downstream client, the broker MUST use the credentials of exactly that downstream client.
 
