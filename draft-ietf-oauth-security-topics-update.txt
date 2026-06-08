@@ -7,9 +7,9 @@ Internet-Draft                                               P. Hosseyni
 Updates: 6749, 6750, 7521, 7522, 7523, 9700      University of Stuttgart
          (if approved)                                            K. Luo
 Intended status: Best Current PracticeThe Chinese University of Hong Kong
-Expires: 3 September 2026                                        A. Fung
+Expires: 10 December 2026                                        A. Fung
                                                 Samsung Research America
-                                                            2 March 2026
+                                                             8 June 2026
 
 
           Updates to OAuth 2.0 Security Best Current Practice
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 September 2026.
+   This Internet-Draft will expire on 10 December 2026.
 
 Copyright Notice
 
@@ -367,7 +367,7 @@ Table of Contents
    OAuth provider, toolkit, and tenant) is in use during an
    authorization flow, an attacker can exploit this to mount Cross-
    toolkit OAuth Account Takeover (COAT) attacks (see [research.cuhk]
-   and [research.cuhk3]).  The COAT attacker uses a malicious toolkit to
+   and [research.cuhk2]).  The COAT attacker uses a malicious toolkit to
    steal a victim's authorization code issued by an honest OAuth
    provider of an honest toolkit, and applies the authorization code
    injection (as defined in Section 4.5 of [RFC9700]) against a new
@@ -644,7 +644,7 @@ Host: client.com
    (e.g., separate services isolated under different origins, accessed
    from different user agents, or when the OAuth client is outsourced to
    an OAuth-as-a-Service provider), as observed in practice by
-   [research.cuhk2] and [research.cuhk3].
+   [research.cuhk2].
 
    Hence, the client MUST validate the binding of any _newly fixated
    authorization session_ (conveyed via state or the pre-authorization
@@ -786,25 +786,12 @@ Host: client.com
               kaixuan.pdf>.
 
    [research.cuhk2]
-              Luo, K., Wang, X., Fung, A., Lecomte, J., and W. C. Lau,
-              "One Hack to Rule Them All: Pervasive Account Takeovers in
-              Integration Platforms for Workflow Automation, Virtual
-              Voice Assistant, IoT, & LLM Services", Black Hat USA 2024,
-              August 2024, <https://www.blackhat.com/us-24/briefings/
-              schedule/#one-hack-to-rule-them-all-pervasive-account-
-              takeovers-in-integration-platforms-for-workflow-
-              automation-virtual-voice-assistant-iot-38-llm-services-
-              38994>.
-
-   [research.cuhk3]
-              Luo, K., Wang, X., Fung, A., Bi, Y., and W. C. Lau, "Back
-              to the Future: Hacking and Securing Connection-based OAuth
-              Architectures in Agentic AI and Integration Platforms",
-              Black Hat USA 2025, August 2025,
-              <https://www.blackhat.com/us-25/briefings/schedule/
-              index.html#back-to-the-future-hacking-and-securing-
-              connection-based-oauth-architectures-in-agentic-ai-and-
-              integration-platforms-44686>.
+              Luo, K., Wang, X., Fung, P. H. A., and W. C. Lau,
+              "Demystifying the (In)Security of OAuth-based Account
+              Linking in Connector Ecosystems", 2026 IEEE Symposium on
+              Security and Privacy (SP), May 2026,
+              <https://doi.ieeecomputersociety.org/10.1109/
+              SP63933.2026.00128>.
 
    [research.jcs_14]
               Bansal, C., Bhargavan, K., Delignat-Lavaud, A., and S.
