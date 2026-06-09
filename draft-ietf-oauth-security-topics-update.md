@@ -654,13 +654,14 @@ Brokers MUST employ at least one of the following two countermeasures.
 #### Per-Client Registration at the Upstream Authorization Server {#SharedConsentRegistration}
 
 Each downstream client MUST be registered as a separate client at the AS.
+When initiating an authorization flow to the AS on behalf of a downstream client, the broker MUST use the registration of exactly that downstream client.
 
-The broker MUST provide each downstream client with a redirection URI that is hosted by the broker.
-The broker MUST also instruct the downstream client to register at every AS it expects to use, using the broker-provided redirection URI.
-
-The downstream client is responsible for performing this registration at each AS, obtaining a distinct client identifier (e.g., `cid_HC@AS` for `H-Client` and `cid_MC@AS` for `M-Client`) and any associated credentials (such as a client secret).
-The downstream client MUST hand these credentials over to the broker, which gives the broker full control to act on behalf of the downstream client at the AS.
-When initiating an authorization flow to the AS on behalf of a downstream client, the broker MUST use the credentials of exactly that downstream client.
+The specific mechanism by which these per-client registrations are established is out of scope of this document.
+In practice, they are commonly established as follows:
+The broker provides each downstream client with a redirection URI that is hosted by the broker, and instructs the downstream client to register at every AS it expects to use, using the broker-provided redirection URI.
+The downstream client performs this registration at each AS, obtaining a distinct client identifier (e.g., `cid_HC@AS` for `H-Client` and `cid_MC@AS` for `M-Client`) and any associated credentials (such as a client secret).
+The downstream client then hands these credentials over to the broker, which gives the broker full control to act on behalf of the downstream client at the AS.
+Alternatively, the broker can register each downstream client at the AS itself.
 
 This countermeasure ensures that the AS recognizes each downstream client as a distinct client, and that any consent prompt rendered by the AS is bound to a single downstream client.
 Consent granted for one downstream client is therefore not reusable for another.
