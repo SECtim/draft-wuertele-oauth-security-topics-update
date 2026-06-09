@@ -584,9 +584,16 @@ Hence, the client MUST validate the binding of any *newly fixated authorization 
 ## Shared Consent in Brokered OAuth {#SharedConsent}
 
 In a brokered OAuth deployment, an intermediate entity (called the *broker* in the following) mediates between downstream clients and one or more upstream authorization servers (referred to as *AS* in the following).
-The broker acts as an authorization server towards each downstream client and, at the same time, acts as a client towards each AS.
+The broker acts as an OAuth client towards each AS.
+Towards its downstream clients, the broker either acts as an authorization server itself, exposing a standards-compliant OAuth interface, or it exposes a custom, non-OAuth interface, as commonly found in multi-tenant OAuth-as-a-Service offerings (also known as Token Vaults, see {{COAT}}).
+The attack and countermeasures described in this section apply regardless of which of these two interfaces the broker exposes to its downstream clients.
+
 Throughout this section, the terms *upstream* and *downstream* are used relative to the broker and the direction in which authorization flows.
 The AS is *upstream* as the source of authorization and tokens, while the clients the broker serves are *downstream* as the recipients of the access the broker obtains on their behalf.
+
+The term *downstream client* furthermore denotes a unit of trust rather than necessarily a single application or an OAuth client in the sense of {{!RFC6749}}.
+Multiple applications belonging to the same owner, such as the toolkits of a single tenant of a multi-tenant broker or the applications of an organization operating its own broker, may legitimately share a single registration and consent decision and thus be treated as a single downstream client.
+Applications belonging to different owners constitute distinct downstream clients.
 
 When the broker registers itself once at an AS and reuses this single registration for every downstream client it serves, the AS cannot distinguish between those downstream clients.
 As a consequence, the consent the user grants for one downstream client is silently reused for any other downstream client that integrates the same broker.
@@ -598,6 +605,8 @@ The descriptions here follow {{research.rub}}, where additional details of the a
 Shared consent attacks require at least two downstream clients (one honest, one malicious) to be integrated with the same broker, and that broker to register itself as a single client at the AS.
 
 In the following, let `H-Client` and `M-Client` be downstream clients (honest and attacker-controlled, respectively) integrated with broker `B`.
+As a non-normative example, the description assumes that `B` exposes a standards-compliant OAuth interface to its downstream clients.
+
 The broker `B` registers itself once at the AS and obtains a single client identifier `cid_B@AS` together with a single redirection URI bound to the broker.
 The broker uses this single registration whenever it issues an authorization request triggered from any of its downstream clients to the AS.
 At `B`, `H-Client` is registered as `cid_HC@B` and `M-Client` is registered as `cid_MC@B`, each with its own redirection URI bound to the respective downstream client.
@@ -722,12 +731,11 @@ This countermeasure prevents the broker from silently reusing a consent granted 
 
 The two countermeasures have different practical trade-offs.
 
-The Per-Client Registration countermeasure ({{SharedConsentRegistration}}) confronts the user with only one consent screen per OAuth flow, which improves the user experience.
-It also leaves the protocol between the downstream client and the broker unconstrained.
-The broker may expose a non-OAuth, custom interface to the downstream client and is only required to behave as an OAuth client towards the AS.
+The Per-Client Registration countermeasure ({{SharedConsentRegistration}}) confronts the user with at most one consent screen per authorization flow, which improves the user experience.
+However, it requires each downstream client to be registered at every AS the broker integrates with, which can be a substantial effort given that a single broker is typically integrated with many ASes.
 
-The Broker-Side Consent Screen countermeasure ({{SharedConsentBrokerConsent}}) results in two fully OAuth-conformant flows chained one after another (downstream client to broker, broker to AS).
-This is easier for downstream client developers, since they do not need to register their downstream client at every AS the broker integrates with, which can be a substantial effort given that a single broker is typically integrated with many ASes.
+The Broker-Side Consent Screen countermeasure ({{SharedConsentBrokerConsent}}) spares downstream clients this registration effort, since the broker's single registration at each AS is reused for all downstream clients.
+However, the user may be confronted with up to two consent screens in a single authorization flow: one rendered by the broker identifying the downstream client, and one rendered by the AS identifying the broker.
 
 Both countermeasures are implemented entirely on the client side (the downstream client and the broker) and require no software or protocol changes to any AS.
 
