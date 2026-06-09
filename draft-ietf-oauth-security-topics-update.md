@@ -605,7 +605,6 @@ From the point of view of the AS, every flow that `B` initiates appears to come 
 
 The broker acts invisibly to the user during the flow.
 It renders no consent screen of its own and no other user-visible UI that would indicate that an additional entity is involved between the downstream client and the AS.
-The broker's origin appears in the user agent's address bar only briefly while the user agent is redirected from the downstream client to the AS, and this transition happens instantly.
 
 The exact form of the authorization response (`authz res`) returned to a downstream client is out of scope for this attack.
 
