@@ -743,6 +743,7 @@ This document has no IANA actions.
 We would like to thank
 [^acksAddNames]{: source="Tim W."}
 Daniel Fett,
+Louis Jannett,
 Wing Cheong Lau,
 Julien Lecomte,
 Aaron Parecki,
