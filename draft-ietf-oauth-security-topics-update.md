@@ -587,7 +587,7 @@ A malicious downstream client integrated with the same broker can therefore obta
 ### Attack Description {#SharedConsentDescription}
 
 The descriptions here follow {{research.rub}}, where additional details of the attack are laid out.
-Shared consent attacks require at least two downstream clients (one honest, one malicious) to be integrated with the same broker, and that broker to register itself as a single client at the AS.
+Shared consent attacks require at least two downstream clients (one honest, one malicious) to be integrated with the same (honest) broker, and that broker to register itself as a single client at the (honest) upstream AS.
 
 In the following, let `H-Client` and `M-Client` be downstream clients (honest and attacker-controlled, respectively) integrated with broker `B`.
 As a non-normative example, the description assumes that `B` exposes a standards-compliant OAuth interface to its downstream clients.
