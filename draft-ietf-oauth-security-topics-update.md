@@ -683,7 +683,7 @@ The broker MUST present an explicit consent screen to the user that identifies t
 The broker MUST NOT skip this consent screen based on a previously granted consent for a different downstream client.
 The broker MAY remember the user's consent decision per downstream client (e.g., per `client_id` of the downstream client), but MUST NOT remember it across different downstream clients.
 
-This countermeasure prevents the broker from silently reusing a consent granted for one downstream client when initiating a request to the AS on behalf of another, even when the AS cannot distinguish between the broker's downstream clients.
+This countermeasure prevents the broker from silently reusing a consent granted for one downstream client when initiating a request to the AS on behalf of another downstream client, even when the AS cannot distinguish between the broker's downstream clients.
 
 ~~~
   User        H-Client      M-Client          B                      AS
