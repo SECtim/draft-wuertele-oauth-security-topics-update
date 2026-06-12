@@ -394,17 +394,20 @@ authorization server, audience injection attacks are possible.
 Therefore, audience injection attacks need to be prevented by the
 client.
 
-Note that the following countermeasures mandate the use of single
-audience value (as opposed to multiple audiences in array). This is because {{Section 4.1.3
-of ?RFC7519}} allows the receiver of an audience-restricted JWT to
-accept the JWT even if the receiver identifies with only one of the
-values in such an array.
-
 Clients that interact with more than one authorization server and
 authenticate with signature-based client authentication methods MUST
 employ one of the following countermeasures, unless audience injection
 attacks are mitigated by other means, such as using fresh key material
 for each authorization server.
+
+The countermeasures described below mandate the use of single audience
+value (as opposed to multiple audiences in an array).  This is because
+{{Section 4.1.3 of ?RFC7519}} allows the receiver of an
+audience-restricted JWT to accept the JWT even if the receiver
+identifies with only one of the values in such an array.  Since the
+countermeasures rely on the client using an unambiguous audience value,
+there is no value in including additional ones (that would need to be
+unambiguous as well).
 
 Note that the countermeasures described in
 {{AudienceInjectionCountermeasuresASissuer}} and
