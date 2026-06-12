@@ -1319,10 +1319,10 @@ to interact with at least two authorization servers, one of which is
 malicious, and to authenticate to both with a signature-based
 authentication method using the same key pair.  The following
 description uses the <code>jwt-bearer</code> client authentication from
-<span>[<a href="#RFC7523" class="cite xref">RFC7523</a>]</span>, see <a href="#AudienceInjectionAuthNMethods" class="auto internal xref">Section 2.1.1.3</a> for other affected
+<span>[<a href="#RFC7523" class="cite xref">RFC7523</a>]</span>, see <a href="#AudienceInjectionAuthNMethods" class="auto internal xref">Section 2.1.1.4</a> for other affected
 client authentication methods.  Furthermore, the client needs to be
 willing to authenticate at an endpoint other than the token endpoint at
-the attacker authorization server (see <a href="#AudienceInjectionEndpoints" class="auto internal xref">Section 2.1.1.2</a>).<a href="#section-2.1.1-1" class="pilcrow">¶</a></p>
+the attacker authorization server (see <a href="#AudienceInjectionEndpoints" class="auto internal xref">Section 2.1.1.3</a>).<a href="#section-2.1.1-1" class="pilcrow">¶</a></p>
 <div id="core-attack-steps">
 <section id="section-2.1.1.1">
             <h5 id="name-core-attack-steps">
@@ -1375,70 +1375,83 @@ by the client and contains, among others, the following claims:<a href="#section
 "aud": "https://honest.com/token"
 </pre><a href="#section-2.1.1.1-10" class="pilcrow">¶</a>
 </div>
-<p id="section-2.1.1.1-11">Due to the malicious use of H-AS' token endpoint in A-AS'
-authorization server metadata, the <code>aud</code> claim contains H-AS' token
-endpoint.  Recall that both A-AS and H-AS registered the client with
-client ID <code>cid</code>, and that the client uses the same key pair for
-authentication at both authorization servers.  Hence, this client
-assertion is a valid authentication credential for the client at
-H-AS.<a href="#section-2.1.1.1-11" class="pilcrow">¶</a></p>
-<p id="section-2.1.1.1-12">The use of the token endpoint to identify the authorization server as a
-client assertion's audience even for client assertions that are not sent
-to the token endpoint is encouraged, or at least allowed by many
+<p id="section-2.1.1.1-11">Due to the malicious use of H-AS' token endpoint in A-AS' authorization
+server metadata, the <code>aud</code> claim contains H-AS' token endpoint (see
+<a href="#TokenEPasAud" class="auto internal xref">Section 2.1.1.2</a>).  Recall that both A-AS and H-AS registered the
+client with client ID <code>cid</code>, and that the client uses the same key pair
+for authentication at both authorization servers.  Hence, this client
+assertion is a valid authentication credential for the client at H-AS.<a href="#section-2.1.1.1-11" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.1-12">Once the attacker obtained such a client assertion, it can impersonate
+the client towards H-AS.  This enables multiple attacks.  For example,
+the attacker may obtain access tokens via a client credentials grant.
+Another example is the attacker initiating a regular authorization code
+grant where a victim user grants access to the honest client at H-AS,
+but the access token ends up with the attacker (since the attacker fully
+impersonates the client in this case, mechanisms like DPoP <span>[<a href="#RFC9449" class="cite xref">RFC9449</a>]</span>
+cannot protect against the attack).<a href="#section-2.1.1.1-12" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.1-13">Further attack scenarios and additional details are given in
+<span>[<a href="#research.ust" class="cite xref">research.ust</a>]</span>.<a href="#section-2.1.1.1-13" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="TokenEPasAud">
+<section id="section-2.1.1.2">
+            <h5 id="name-token-endpoint-as-client-as">
+<a href="#section-2.1.1.2" class="section-number selfRef">2.1.1.2. </a><a href="#name-token-endpoint-as-client-as" class="section-name selfRef">Token Endpoint as Client Assertion Audience</a>
+            </h5>
+<p id="section-2.1.1.2-1">The use of the token endpoint to identify the authorization server as a
+client assertion's audience (even for client assertions that are not sent
+to the token endpoint) is encouraged, or at least allowed by many
 standards, including <span>[<a href="#RFC7521" class="cite xref">RFC7521</a>]</span>, <span>[<a href="#RFC7522" class="cite xref">RFC7522</a>]</span>, <span>[<a href="#RFC7523" class="cite xref">RFC7523</a>]</span>, <span>[<a href="#RFC9126" class="cite xref">RFC9126</a>]</span>,
 <span>[<a href="#OpenID.Core" class="cite xref">OpenID.Core</a>]</span>, <span>[<a href="#OpenID.CIBA" class="cite xref">OpenID.CIBA</a>]</span>, and all standards referencing the IANA
 registry for OAuth Token Endpoint Authentication Methods for available
-client authentication methods.<a href="#section-2.1.1.1-12" class="pilcrow">¶</a></p>
-<p id="section-2.1.1.1-13">As described in <span>[<a href="#research.ust" class="cite xref">research.ust</a>]</span>, the attacker can then utilize the
-obtained client authentication assertion to impersonate the client and,
-for example, obtain access tokens.<a href="#section-2.1.1.1-13" class="pilcrow">¶</a></p>
+client authentication methods.<a href="#section-2.1.1.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="AudienceInjectionEndpoints">
-<section id="section-2.1.1.2">
+<section id="section-2.1.1.3">
             <h5 id="name-endpoints-requiring-client-">
-<a href="#section-2.1.1.2" class="section-number selfRef">2.1.1.2. </a><a href="#name-endpoints-requiring-client-" class="section-name selfRef">Endpoints Requiring Client Authentication</a>
+<a href="#section-2.1.1.3" class="section-number selfRef">2.1.1.3. </a><a href="#name-endpoints-requiring-client-" class="section-name selfRef">Endpoints Requiring Client Authentication</a>
             </h5>
-<p id="section-2.1.1.2-1">As mentioned above, the attack is only possible if the client
+<p id="section-2.1.1.3-1">As mentioned above, the attack is only possible if the client
 authenticates to an endpoint other than the token endpoint at A-AS.
 This is because if the client sends a token request to A-AS, it will use
 A-AS' token endpoint as published by A-AS and hence, send the token
-request to H-AS, i.e., the attacker cannot obtain the client assertion.<a href="#section-2.1.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.1.1.2-2">As detailed in <span>[<a href="#research.ust" class="cite xref">research.ust</a>]</span>, the attack is confirmed to be possible
+request to H-AS, i.e., the attacker cannot obtain the client assertion.<a href="#section-2.1.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.3-2">As detailed in <span>[<a href="#research.ust" class="cite xref">research.ust</a>]</span>, the attack is confirmed to be possible
 if the client authenticates with such client assertions at the following
-endpoints of A-AS:<a href="#section-2.1.1.2-2" class="pilcrow">¶</a></p>
+endpoints of A-AS:<a href="#section-2.1.1.3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.1.1.2-3.1">
-                <p id="section-2.1.1.2-3.1.1">Pushed Authorization Endpoint (see <span>[<a href="#RFC9126" class="cite xref">RFC9126</a>]</span>)<a href="#section-2.1.1.2-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-2.1.1.3-3.1">
+                <p id="section-2.1.1.3-3.1.1">Pushed Authorization Endpoint (see <span>[<a href="#RFC9126" class="cite xref">RFC9126</a>]</span>)<a href="#section-2.1.1.3-3.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-2.1.1.2-3.2">
-                <p id="section-2.1.1.2-3.2.1">Token Revocation Endpoint (see <span>[<a href="#RFC7009" class="cite xref">RFC7009</a>]</span>)<a href="#section-2.1.1.2-3.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-2.1.1.3-3.2">
+                <p id="section-2.1.1.3-3.2.1">Token Revocation Endpoint (see <span>[<a href="#RFC7009" class="cite xref">RFC7009</a>]</span>)<a href="#section-2.1.1.3-3.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-2.1.1.2-3.3">
-                <p id="section-2.1.1.2-3.3.1">CIBA Backchannel Authentication Endpoint (see <span>[<a href="#OpenID.CIBA" class="cite xref">OpenID.CIBA</a>]</span>)<a href="#section-2.1.1.2-3.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-2.1.1.3-3.3">
+                <p id="section-2.1.1.3-3.3.1">CIBA Backchannel Authentication Endpoint (see <span>[<a href="#OpenID.CIBA" class="cite xref">OpenID.CIBA</a>]</span>)<a href="#section-2.1.1.3-3.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-2.1.1.2-3.4">
-                <p id="section-2.1.1.2-3.4.1">Device Authorization Endpoint (see <span>[<a href="#RFC8628" class="cite xref">RFC8628</a>]</span>)<a href="#section-2.1.1.2-3.4.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-2.1.1.3-3.4">
+                <p id="section-2.1.1.3-3.4.1">Device Authorization Endpoint (see <span>[<a href="#RFC8628" class="cite xref">RFC8628</a>]</span>)<a href="#section-2.1.1.3-3.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-2.1.1.2-4">Note that this list of examples is not exhaustive. Hence, any client
+<p id="section-2.1.1.3-4">Note that this list of examples is not exhaustive. Hence, any client
 that might authenticate at any endpoint other than the token endpoint
 <span class="bcp14">SHOULD</span> employ countermeasures as described in
-<a href="#AudienceInjectionCountermeasures" class="auto internal xref">Section 2.1.2</a>.<a href="#section-2.1.1.2-4" class="pilcrow">¶</a></p>
+<a href="#AudienceInjectionCountermeasures" class="auto internal xref">Section 2.1.2</a>.<a href="#section-2.1.1.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="AudienceInjectionAuthNMethods">
-<section id="section-2.1.1.3">
+<section id="section-2.1.1.4">
             <h5 id="name-affected-client-authenticat">
-<a href="#section-2.1.1.3" class="section-number selfRef">2.1.1.3. </a><a href="#name-affected-client-authenticat" class="section-name selfRef">Affected Client Authentication Methods</a>
+<a href="#section-2.1.1.4" class="section-number selfRef">2.1.1.4. </a><a href="#name-affected-client-authenticat" class="section-name selfRef">Affected Client Authentication Methods</a>
             </h5>
-<p id="section-2.1.1.3-1">The same attacks are possible for the <code>private_key_jwt</code> client
+<p id="section-2.1.1.4-1">The same attacks are possible for the <code>private_key_jwt</code> client
 authentication method defined in <span>[<a href="#OpenID.Core" class="cite xref">OpenID.Core</a>]</span>, as well as
 instantiations of client authentication assertions defined in
-<span>[<a href="#RFC7521" class="cite xref">RFC7521</a>]</span>, including the SAML assertions defined in <span>[<a href="#RFC7522" class="cite xref">RFC7522</a>]</span>.<a href="#section-2.1.1.3-1" class="pilcrow">¶</a></p>
-<p id="section-2.1.1.3-2">Furthermore, a similar attack is possible for <code>jwt-bearer</code> authorization
+<span>[<a href="#RFC7521" class="cite xref">RFC7521</a>]</span>, including the SAML assertions defined in <span>[<a href="#RFC7522" class="cite xref">RFC7522</a>]</span>.<a href="#section-2.1.1.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.4-2">Furthermore, a similar attack is possible for <code>jwt-bearer</code> authorization
 grants as defined in <span><a href="https://rfc-editor.org/rfc/rfc7523#section-2.1" class="relref">Section 2.1</a> of [<a href="#RFC7523" class="cite xref">RFC7523</a>]</span>, albeit under
-additional assumptions (see <span>[<a href="#research.ust" class="cite xref">research.ust</a>]</span> for details).<a href="#section-2.1.1.3-2" class="pilcrow">¶</a></p>
+additional assumptions (see <span>[<a href="#research.ust" class="cite xref">research.ust</a>]</span> for details).<a href="#section-2.1.1.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1458,28 +1471,20 @@ endpoint as an audience value when authenticating to the attacker
 authorization server, audience injection attacks are possible.
 Therefore, audience injection attacks need to be prevented by the
 client.<a href="#section-2.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.1.2-2">Note that the following countermeasures mandate the use of single
-audience value (as opposed to multiple audiences in array). This is because <span><a href="https://rfc-editor.org/rfc/rfc7519#section-4.1.3" class="relref">Section 4.1.3</a> of [<a href="#RFC7519" class="cite xref">RFC7519</a>]</span> allows the receiver of an audience-restricted JWT to
-accept the JWT even if the receiver identifies with only one of the
-values in such an array.<a href="#section-2.1.2-2" class="pilcrow">¶</a></p>
-<p id="section-2.1.2-3">Clients that interact with more than one authorization server and
+<p id="section-2.1.2-2">Clients that interact with more than one authorization server and
 authenticate with signature-based client authentication methods <span class="bcp14">MUST</span>
 employ one of the following countermeasures, unless audience injection
 attacks are mitigated by other means, such as using fresh key material
-for each authorization server.<a href="#section-2.1.2-3" class="pilcrow">¶</a></p>
-<p id="section-2.1.2-4">Note that the countermeasures described in
-<a href="#AudienceInjectionCountermeasuresASissuer" class="auto internal xref">Section 2.1.2.1</a> and
-<a href="#AudienceInjectionCountermeasuresTargetEP" class="auto internal xref">Section 2.1.2.2</a> do not imply any normative
-changes to the authorization server: <span><a href="https://rfc-editor.org/rfc/rfc7519#section-4.1.3" class="relref">Section 4.1.3</a> of [<a href="#RFC7519" class="cite xref">RFC7519</a>]</span>
-requires the authorization server to only accept a JWT if the
-authorization server can identify itself with (at least one of the
-elements in) the JWT's audience value. Authentication JWTs produced by a
-client implementing one of these countermeasures meet this condition.
-Of course, an authorization server <span class="bcp14">MAY</span> still decide to only accept its
-issuer identifier (<a href="#AudienceInjectionCountermeasuresASissuer" class="auto internal xref">Section 2.1.2.1</a>) or the
-endpoint that received the JWT
-(<a href="#AudienceInjectionCountermeasuresTargetEP" class="auto internal xref">Section 2.1.2.2</a>) as an audience value, for
-example, to force its clients to adopt the respective countermeasure.<a href="#section-2.1.2-4" class="pilcrow">¶</a></p>
+for each authorization server.  It is <span class="bcp14">RECOMMENDED</span> to prefer the
+countermeasure described in <a href="#AudienceInjectionCountermeasuresASissuer" class="auto internal xref">Section 2.1.2.1</a>.<a href="#section-2.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-3">The countermeasures described below mandate the use of single audience
+value (as opposed to multiple audiences in an array).  This is because
+<span><a href="https://rfc-editor.org/rfc/rfc7519#section-4.1.3" class="relref">Section 4.1.3</a> of [<a href="#RFC7519" class="cite xref">RFC7519</a>]</span> allows the receiver of an
+audience-restricted JWT to accept the JWT even if the receiver
+identifies with only one of the values in such an array.  Since the
+countermeasures rely on the client using an unambiguous audience value,
+there is no value in including additional ones (that would need to be
+unambiguous as well).<a href="#section-2.1.2-3" class="pilcrow">¶</a></p>
 <div id="AudienceInjectionCountermeasuresASissuer">
 <section id="section-2.1.2.1">
             <h5 id="name-authorization-server-issuer">
@@ -1509,6 +1514,46 @@ sent as that client assertion's sole audience value.<a href="#section-2.1.2.2-1"
 <p id="section-2.1.2.2-2">This countermeasure can be used for authorization servers that do not
 use authorization server metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> or OpenID Discovery
 <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span>.<a href="#section-2.1.2.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="implementation-considerations">
+<section id="section-2.1.2.3">
+            <h5 id="name-implementation-consideratio">
+<a href="#section-2.1.2.3" class="section-number selfRef">2.1.2.3. </a><a href="#name-implementation-consideratio" class="section-name selfRef">Implementation Considerations</a>
+            </h5>
+<p id="section-2.1.2.3-1">Technically, the countermeasures described in
+<a href="#AudienceInjectionCountermeasuresASissuer" class="auto internal xref">Section 2.1.2.1</a> and
+<a href="#AudienceInjectionCountermeasuresTargetEP" class="auto internal xref">Section 2.1.2.2</a> do not imply any normative
+changes to the authorization server: <span><a href="https://rfc-editor.org/rfc/rfc7519#section-4.1.3" class="relref">Section 4.1.3</a> of [<a href="#RFC7519" class="cite xref">RFC7519</a>]</span>
+requires the authorization server to only accept a (client assertion) JWT if the
+authorization server can identify itself with (at least one of the
+elements in) the JWT's audience value. Client assertions produced by a
+client implementing one of these countermeasures meet this condition.<a href="#section-2.1.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.2.3-2">However, some existing authorization server implementations only accept
+their token endpoint as the audience value in client assertions,
+including for authentication at endpoints other than the token endpoint.
+Clients interacting with such authorization servers <span class="bcp14">MUST</span> employ
+alternative countermeasures.  In this case, clients <span class="bcp14">SHOULD</span> use one of
+the following countermeasures, in decreasing order of preference:<a href="#section-2.1.2.3-2" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.1.2.3-3">
+<li id="section-2.1.2.3-3.1">
+                <p id="section-2.1.2.3-3.1.1">Use distinct authentication key material with each authorization server.<a href="#section-2.1.2.3-3.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li id="section-2.1.2.3-3.2">
+                <p id="section-2.1.2.3-3.2.1">Ensure the use of unique client identifiers across all authorization servers (note that this might not be feasible in some ecosystems, for example, in connection with OpenID Federation <span>[<a href="#OpenID.Federation" class="cite xref">OpenID.Federation</a>]</span>).<a href="#section-2.1.2.3-3.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li id="section-2.1.2.3-3.3">
+                <p id="section-2.1.2.3-3.3.1">Ensure uniqueness of all (client identifier, token endpoint) pairs and use the token endpoint as the sole audience value in all client assertions.<a href="#section-2.1.2.3-3.3.1" class="pilcrow">¶</a></p>
+</li>
+            </ol>
+<p id="section-2.1.2.3-4">While an authorization server that already accepts (among other values)
+its issuer identifier or the exact endpoint as client assertion audience
+values does not need to change anything, such an authorization server
+<span class="bcp14">MAY</span> still decide to restrict acceptance to its issuer identifier
+(<a href="#AudienceInjectionCountermeasuresASissuer" class="auto internal xref">Section 2.1.2.1</a>) or the endpoint that
+received the client assertion
+(<a href="#AudienceInjectionCountermeasuresTargetEP" class="auto internal xref">Section 2.1.2.2</a>) as an audience value, for
+example, to force its clients to adopt the respective countermeasure.<a href="#section-2.1.2.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1810,6 +1855,10 @@ Set-Cookie: auth_session_id=6064f11c-f73e-425b-b9b9-4a36088cdb2b
         <dd>
 <span class="refAuthor">Sakimura, N.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Jones, M.</span>, and <span class="refAuthor">E. Jay</span>, <span class="refTitle">"OpenID Connect Discovery 1.0 incorporating errata set 2"</span>, <time datetime="2023-12" class="refDate">December 2023</time>, <span>&lt;<a href="https://openid.net/specs/openid-connect-discovery-1_0.html">https://openid.net/specs/openid-connect-discovery-1_0.html</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="OpenID.Federation">[OpenID.Federation]</dt>
+        <dd>
+<span class="refAuthor">Hedberg, R.</span>, <span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Solberg, A.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">De Marco, G.</span>, and <span class="refAuthor">V. Dzhuvinov</span>, <span class="refTitle">"OpenID Federation 1.0"</span>, <time datetime="2026-02" class="refDate">February 2026</time>, <span>&lt;<a href="https://openid.net/specs/openid-federation-1_0-final.html">https://openid.net/specs/openid-federation-1_0-final.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="research.cuhk">[research.cuhk]</dt>
         <dd>
 <span class="refAuthor">Luo, K.</span>, <span class="refAuthor">Wang, X.</span>, <span class="refAuthor">Fung, P. H. A.</span>, <span class="refAuthor">Lau, W. C.</span>, and <span class="refAuthor">J. Lecomte</span>, <span class="refTitle">"Universal Cross-app Attacks: Exploiting and Securing OAuth 2.0 in Integration Platforms"</span>, <span class="refContent">34th USENIX Security Symposium (USENIX Security 25)</span>, <time datetime="2025-08" class="refDate">August 2025</time>, <span>&lt;<a href="https://www.usenix.org/system/files/usenixsecurity25-luo-kaixuan.pdf">https://www.usenix.org/system/files/usenixsecurity25-luo-kaixuan.pdf</a>&gt;</span>. </dd>
@@ -1851,8 +1900,12 @@ Set-Cookie: auth_session_id=6064f11c-f73e-425b-b9b9-4a36088cdb2b
 <span class="refAuthor">Lodderstedt, T.</span>, <span class="refAuthor">Campbell, B.</span>, <span class="refAuthor">Sakimura, N.</span>, <span class="refAuthor">Tonge, D.</span>, and <span class="refAuthor">F. Skokan</span>, <span class="refTitle">"OAuth 2.0 Pushed Authorization Requests"</span>, <span class="seriesInfo">RFC 9126</span>, <span class="seriesInfo">DOI 10.17487/RFC9126</span>, <time datetime="2021-09" class="refDate">September 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9126">https://www.rfc-editor.org/rfc/rfc9126</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9207">[RFC9207]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Meyer zu Selhausen, K.</span> and <span class="refAuthor">D. Fett</span>, <span class="refTitle">"OAuth 2.0 Authorization Server Issuer Identification"</span>, <span class="seriesInfo">RFC 9207</span>, <span class="seriesInfo">DOI 10.17487/RFC9207</span>, <time datetime="2022-03" class="refDate">March 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9207">https://www.rfc-editor.org/rfc/rfc9207</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9449">[RFC9449]</dt>
+      <dd>
+<span class="refAuthor">Fett, D.</span>, <span class="refAuthor">Campbell, B.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Lodderstedt, T.</span>, <span class="refAuthor">Jones, M.</span>, and <span class="refAuthor">D. Waite</span>, <span class="refTitle">"OAuth 2.0 Demonstrating Proof of Possession (DPoP)"</span>, <span class="seriesInfo">RFC 9449</span>, <span class="seriesInfo">DOI 10.17487/RFC9449</span>, <time datetime="2023-09" class="refDate">September 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9449">https://www.rfc-editor.org/rfc/rfc9449</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1881,28 +1934,40 @@ Xianbo Wang<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <a href="#name-document-history" class="section-name selfRef">Document History</a>
       </h2>
 <p id="appendix-B-1">[[ To be removed from the final specification ]]<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<p id="appendix-B-2">-01<a href="#appendix-B-2" class="pilcrow">¶</a></p>
+<p id="appendix-B-2">-02<a href="#appendix-B-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B-3.1">
-          <p id="appendix-B-3.1.1">Clarify that shared redirection URI is not a precondition of COAT<a href="#appendix-B-3.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.1.1">Simplify core attack description for Audience Injection attacks by moving "why token EP" discussion to a new section<a href="#appendix-B-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-3.2">
-          <p id="appendix-B-3.2.1">Clarify that COAT countermeasure uniquely identifies each configured AS instance<a href="#appendix-B-3.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.2.1">Include concrete examples for how an attacker may misuse client assertions obtained via Audience Injection attacks<a href="#appendix-B-3.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-3.3">
-          <p id="appendix-B-3.3.1">Clarify Session Fixation countermeasures and relationship to CSRF and PKCE<a href="#appendix-B-3.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-B-3.4">
-          <p id="appendix-B-3.4.1">Use terminology that is less ambiguous and better aligned with standard OAuth language<a href="#appendix-B-3.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-B-3.5">
-          <p id="appendix-B-3.5.1">Editorial clarifications and fixes, and reference updates<a href="#appendix-B-3.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.3.1">Add implementation considerations for Audience Injection countermeasures, including recommendations for how to deal with ASs that only accept their token endpoint as audience value<a href="#appendix-B-3.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-B-4">-00<a href="#appendix-B-4" class="pilcrow">¶</a></p>
+<p id="appendix-B-4">-01<a href="#appendix-B-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B-5.1">
-          <p id="appendix-B-5.1.1">WG adoption, no changes from previous individual draft<a href="#appendix-B-5.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-5.1.1">Clarify that shared redirection URI is not a precondition of COAT<a href="#appendix-B-5.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-5.2">
+          <p id="appendix-B-5.2.1">Clarify that COAT countermeasure uniquely identifies each configured AS instance<a href="#appendix-B-5.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-5.3">
+          <p id="appendix-B-5.3.1">Clarify Session Fixation countermeasures and relationship to CSRF and PKCE<a href="#appendix-B-5.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-5.4">
+          <p id="appendix-B-5.4.1">Use terminology that is less ambiguous and better aligned with standard OAuth language<a href="#appendix-B-5.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-5.5">
+          <p id="appendix-B-5.5.1">Editorial clarifications and fixes, and reference updates<a href="#appendix-B-5.5.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-B-6">-00<a href="#appendix-B-6" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-B-7.1">
+          <p id="appendix-B-7.1.1">WG adoption, no changes from previous individual draft<a href="#appendix-B-7.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
