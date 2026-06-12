@@ -907,6 +907,18 @@ Document History
 
    [[ To be removed from the final specification ]]
 
+   -02
+
+   *  Simplify core attack description for Audience Injection attacks by
+      moving "why token EP" discussion to a new section
+
+   *  Include concrete examples for how an attacker may misuse client
+      assertions obtained via Audience Injection attacks
+
+   *  Add implementation considerations for Audience Injection
+      countermeasures, including recommendations for how to deal with
+      ASs that only accept their token endpoint as audience value
+
    -01
 
    *  Clarify that shared redirection URI is not a precondition of COAT
