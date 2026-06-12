@@ -7,9 +7,9 @@ Internet-Draft                                               P. Hosseyni
 Updates: 6749, 6750, 7521, 7522, 7523, 9700      University of Stuttgart
          (if approved)                                            K. Luo
 Intended status: Best Current PracticeThe Chinese University of Hong Kong
-Expires: 10 December 2026                                        A. Fung
+Expires: 14 December 2026                                        A. Fung
                                                 Samsung Research America
-                                                             8 June 2026
+                                                            12 June 2026
 
 
           Updates to OAuth 2.0 Security Best Current Practice
@@ -33,9 +33,9 @@ About This Document
    ietf-oauth-security-topics-update/.
 
    Discussion of this document takes place on the Web Authorization
-   Protocol mailing list (mailto:oauth@ietf.org), which is archived at
-   https://mailarchive.ietf.org/arch/browse/oauth/.  Subscribe at
-   https://www.ietf.org/mailman/listinfo/oauth/.
+   Protocol Working Group mailing list (mailto:oauth@ietf.org), which is
+   archived at https://mailarchive.ietf.org/arch/browse/oauth/.
+   Subscribe at https://www.ietf.org/mailman/listinfo/oauth/.
 
    Source for this draft and an issue tracker can be found at
    https://github.com/SECtim/draft-wuertele-oauth-security-topics-
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 December 2026.
+   This Internet-Draft will expire on 14 December 2026.
 
 Copyright Notice
 
