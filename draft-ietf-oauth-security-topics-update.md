@@ -97,6 +97,23 @@ informative:
     date: September 2021
     target: https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html
     title: OpenID Connect Client-Initiated Backchannel Authentication Flow - Core 1.0
+  OpenID.Federation:
+    author:
+    - ins: R. Hedberg
+      name: Roland Hedberg
+    - ins: M. Jones
+      name: Michael B. Jones
+    - ins: A. Solberg
+      name: Andreas Åkre Solberg
+    - ins: J. Bradley
+      name: John Bradley
+    - ins: G. De Marco
+      name: Giuseppe De Marco
+    - ins: V. Dzhuvinov
+      name: Vladimir Dzhuvinov
+    date: February 2026
+    target: https://openid.net/specs/openid-federation-1_0-final.html
+    title: OpenID Federation 1.0
   research.ust:
     author:
     - ins: P. Hosseyni
@@ -398,7 +415,8 @@ Clients that interact with more than one authorization server and
 authenticate with signature-based client authentication methods MUST
 employ one of the following countermeasures, unless audience injection
 attacks are mitigated by other means, such as using fresh key material
-for each authorization server.
+for each authorization server.  It is RECOMMENDED to prefer the
+countermeasure described in {{AudienceInjectionCountermeasuresASissuer}}.
 
 The countermeasures described below mandate the use of single audience
 value (as opposed to multiple audiences in an array).  This is because
@@ -408,20 +426,6 @@ identifies with only one of the values in such an array.  Since the
 countermeasures rely on the client using an unambiguous audience value,
 there is no value in including additional ones (that would need to be
 unambiguous as well).
-
-Note that the countermeasures described in
-{{AudienceInjectionCountermeasuresASissuer}} and
-{{AudienceInjectionCountermeasuresTargetEP}} do not imply any normative
-changes to the authorization server: {{Section 4.1.3 of ?RFC7519}}
-requires the authorization server to only accept a JWT if the
-authorization server can identify itself with (at least one of the
-elements in) the JWT's audience value. Authentication JWTs produced by a
-client implementing one of these countermeasures meet this condition.
-Of course, an authorization server MAY still decide to only accept its
-issuer identifier ({{AudienceInjectionCountermeasuresASissuer}}) or the
-endpoint that received the JWT
-({{AudienceInjectionCountermeasuresTargetEP}}) as an audience value, for
-example, to force its clients to adopt the respective countermeasure.
 
 #### Authorization Server Issuer Identifier {#AudienceInjectionCountermeasuresASissuer}
 
@@ -449,6 +453,38 @@ sent as that client assertion's sole audience value.
 This countermeasure can be used for authorization servers that do not
 use authorization server metadata {{!RFC8414}} or OpenID Discovery
 {{OpenID.Discovery}}.
+
+
+#### Implementation Considerations
+
+Technically, the countermeasures described in
+{{AudienceInjectionCountermeasuresASissuer}} and
+{{AudienceInjectionCountermeasuresTargetEP}} do not imply any normative
+changes to the authorization server: {{Section 4.1.3 of ?RFC7519}}
+requires the authorization server to only accept a (client assertion) JWT if the
+authorization server can identify itself with (at least one of the
+elements in) the JWT's audience value. Client assertions produced by a
+client implementing one of these countermeasures meet this condition.
+
+However, some existing authorization server implementations only accept
+their token endpoint as the audience value in client assertions,
+including for authentication at endpoints other than the token endpoint.
+Clients interacting with such authorization servers MUST employ
+alternative countermeasures.  In this case, clients SHOULD use one of
+the following countermeasures, in decreasing order of preference:
+
+  1. Use distinct authentication key material with each authorization server.
+  2. Ensure the use of unique client identifiers across all authorization servers (note that this might not be feasible in some ecosystems, for example, in connection with OpenID Federation {{OpenID.Federation}}).
+  3. Ensure uniqueness of all (client identifier, token endpoint) pairs and use the token endpoint as the sole audience value in all client assertions.
+
+While an authorization server that already accepts (among other values)
+its issuer identifier or the exact endpoint as client assertion audience
+values does not need to change anything, such an authorization server
+MAY still decide to restrict acceptance to its issuer identifier
+({{AudienceInjectionCountermeasuresASissuer}}) or the endpoint that
+received the client assertion
+({{AudienceInjectionCountermeasuresTargetEP}}) as an audience value, for
+example, to force its clients to adopt the respective countermeasure.
 
 
 ## Cross-toolkit OAuth Account Takeover {#COAT}
