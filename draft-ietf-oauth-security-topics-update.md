@@ -130,32 +130,17 @@ informative:
       name: Kaixuan Luo
     - ins: X. Wang
       name: Xianbo Wang
-    - ins: A. Fung
-      name: Adonis Fung
-    - ins: J. Lecomte
-      name: Julien Lecomte
+    - ins: P. H. A. Fung
+      name: Pui Ho Adonis Fung
     - ins: W. C. Lau
       name: Wing Cheong Lau
-    date: August 2024
-    target: https://www.blackhat.com/us-24/briefings/schedule/#one-hack-to-rule-them-all-pervasive-account-takeovers-in-integration-platforms-for-workflow-automation-virtual-voice-assistant-iot-38-llm-services-38994
-    refcontent: "Black Hat USA 2024"
-    title: "One Hack to Rule Them All: Pervasive Account Takeovers in Integration Platforms for Workflow Automation, Virtual Voice Assistant, IoT, & LLM Services"
-  research.cuhk3:
-    author:
-    - ins: K. Luo
-      name: Kaixuan Luo
-    - ins: X. Wang
-      name: Xianbo Wang
-    - ins: A. Fung
-      name: Adonis Fung
-    - ins: Y. Bi
-      name: Yanxiang Bi
-    - ins: W. C. Lau
-      name: Wing Cheong Lau
-    date: August 2025
-    target: https://www.blackhat.com/us-25/briefings/schedule/index.html#back-to-the-future-hacking-and-securing-connection-based-oauth-architectures-in-agentic-ai-and-integration-platforms-44686
-    refcontent: "Black Hat USA 2025"
-    title: "Back to the Future: Hacking and Securing Connection-based OAuth Architectures in Agentic AI and Integration Platforms"
+    date: May 2026
+    target: https://doi.ieeecomputersociety.org/10.1109/SP63933.2026.00128
+    refcontent: "2026 IEEE Symposium on Security and Privacy (SP)"
+    seriesInfo:
+      - name: DOI
+        value: 10.1109/SP63933.2026.00128
+    title: "Demystifying the (In)Security of OAuth-based Account Linking in Connector Ecosystems"
   arXiv.1601.01229:
     author:
       - ins: D. Fett
@@ -463,7 +448,7 @@ Multiple OAuth connections can be linked to some form of user identity based on 
 - Application Integration: The OAuth connections made with different toolkits are linked to an application's user account or session (e.g., represented by an application's user identifier or a short-lived anonymous session). This is common where a user authorizes an application (e.g., a cloud platform or an agentic AI service) to orchestrate multiple tools, some of which together with their OAuth providers can be contributed by the public.
 - Multi-tenant OAuth-as-a-Service (also known as Token Vault): In cases where OAuth responsibilities of a client are managed by a multi-tenant OAuth-as-a-Service provider, a successful OAuth connection is linked to a tenant's user identifier in addition to the tenant identifier. This is a generalization of the last deployment scenario, where an application using this OAuth-as-a-Service is becoming a tenant. A tenant can usually choose some off-the-shelf toolkits using (partially-) completed OAuth providers, if not adding their own toolkits with custom OAuth providers to support the tenant's service.
 
-When controlled by an attacker, the open configurations of OAuth providers have posed a new threat to this centralized OAuth client design. If the client fails to properly identify, track, and isolate which proper OAuth connection context (representing a combination of OAuth provider, toolkit, and tenant) is in use during an authorization flow, an attacker can exploit this to mount Cross-toolkit OAuth Account Takeover (COAT) attacks (see {{research.cuhk}} and {{research.cuhk3}}). The COAT attacker uses a malicious toolkit to steal a victim's authorization code issued by an honest OAuth provider of an honest toolkit, and applies the authorization code injection (as defined in {{Section 4.5 of !RFC9700}}) against a new OAuth connection with the attacker's identity. This results in a compromised OAuth connection between the attacker's application identity and the victim's toolkit access. The impact is equivalent to an account takeover: the attacker can operate the honest toolkit with the victim's account (hijacked either under the same application, or even cross-tenant that shares a vulnerable OAuth-as-a-service).
+When controlled by an attacker, the open configurations of OAuth providers have posed a new threat to this centralized OAuth client design. If the client fails to properly identify, track, and isolate which proper OAuth connection context (representing a combination of OAuth provider, toolkit, and tenant) is in use during an authorization flow, an attacker can exploit this to mount Cross-toolkit OAuth Account Takeover (COAT) attacks (see {{research.cuhk}} and {{research.cuhk2}}). The COAT attacker uses a malicious toolkit to steal a victim's authorization code issued by an honest OAuth provider of an honest toolkit, and applies the authorization code injection (as defined in {{Section 4.5 of !RFC9700}}) against a new OAuth connection with the attacker's identity. This results in a compromised OAuth connection between the attacker's application identity and the victim's toolkit access. The impact is equivalent to an account takeover: the attacker can operate the honest toolkit with the victim's account (hijacked either under the same application, or even cross-tenant that shares a vulnerable OAuth-as-a-service).
 
 
 ### Attack Description {#COATDescription}
@@ -558,7 +543,7 @@ This variant differs from the above only by obtaining and sending the pre-author
 
 To defend against the Cross-user OAuth Session Fixation attack, the client MUST ensure that an OAuth flow initiated by one user is completed by the same user.
 
-The most straightforward countermeasure is to identify the initiating user via their existing session at the client, rather than introducing a fixated session, if usability conditions permit. However, eliminating the session fixation vector may not always be feasible due to application needs. For instance, when the OAuth client responsibilities of establishing OAuth connections and the application's session management are handled by separate entities (e.g., separate services isolated under different origins, accessed from different user agents, or when the OAuth client is outsourced to an OAuth-as-a-Service provider), as observed in practice by {{research.cuhk2}} and {{research.cuhk3}}.
+The most straightforward countermeasure is to identify the initiating user via their existing session at the client, rather than introducing a fixated session, if usability conditions permit. However, eliminating the session fixation vector may not always be feasible due to application needs. For instance, when the OAuth client responsibilities of establishing OAuth connections and the application's session management are handled by separate entities (e.g., separate services isolated under different origins, accessed from different user agents, or when the OAuth client is outsourced to an OAuth-as-a-Service provider), as observed in practice by {{research.cuhk2}}.
 
 Hence, the client MUST validate the binding of any *newly fixated authorization session* (conveyed via `state` or the pre-authorization URL) to the *existing user session* (maintained at the user agent) that initiates the OAuth flow, before proceeding with the access token request. Depending on the specific current settings:
 
