@@ -319,25 +319,34 @@ by the client and contains, among others, the following claims:
 "aud": "https://honest.com/token"
 ~~~
 
-Due to the malicious use of H-AS' token endpoint in A-AS'
-authorization server metadata, the `aud` claim contains H-AS' token
-endpoint.  Recall that both A-AS and H-AS registered the client with
-client ID `cid`, and that the client uses the same key pair for
-authentication at both authorization servers.  Hence, this client
-assertion is a valid authentication credential for the client at
-H-AS.
+Due to the malicious use of H-AS' token endpoint in A-AS' authorization
+server metadata, the `aud` claim contains H-AS' token endpoint (see
+{{TokenEPasAud}}).  Recall that both A-AS and H-AS registered the
+client with client ID `cid`, and that the client uses the same key pair
+for authentication at both authorization servers.  Hence, this client
+assertion is a valid authentication credential for the client at H-AS.
+
+Once the attacker obtained such a client assertion, it can impersonate
+the client towards H-AS.  This enables multiple attacks.  For example,
+the attacker may obtain access tokens via a client credentials grant.
+Another example is the attacker initiating a regular authorization code
+grant where a victim user grants access to the honest client at H-AS,
+but the access token ends up with the attacker (since the attacker fully
+impersonates the client in this case, mechanisms like DPoP {{?RFC9449}}
+cannot protect against the attack).
+
+Further attack scenarios and additional details are given in
+{{research.ust}}.
+
+#### Token Endpoint as Client Assertion Audience {#TokenEPasAud}
 
 The use of the token endpoint to identify the authorization server as a
-client assertion's audience even for client assertions that are not sent
-to the token endpoint is encouraged, or at least allowed by many
+client assertion's audience (even for client assertions that are not sent
+to the token endpoint) is encouraged, or at least allowed by many
 standards, including {{RFC7521}}, {{RFC7522}}, {{RFC7523}}, {{RFC9126}},
 {{OpenID.Core}}, {{OpenID.CIBA}}, and all standards referencing the IANA
 registry for OAuth Token Endpoint Authentication Methods for available
 client authentication methods.
-
-As described in {{research.ust}}, the attacker can then utilize the
-obtained client authentication assertion to impersonate the client and,
-for example, obtain access tokens.
 
 #### Endpoints Requiring Client Authentication {#AudienceInjectionEndpoints}
 
