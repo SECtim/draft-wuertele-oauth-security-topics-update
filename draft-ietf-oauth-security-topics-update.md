@@ -587,13 +587,13 @@ A malicious downstream client integrated with the same broker can therefore obta
 ### Attack Description {#SharedConsentDescription}
 
 The descriptions here follow {{research.rub}}, where additional details of the attack are laid out.
-Shared consent attacks require at least two downstream clients (one honest, one malicious) to be integrated with the same (honest) broker, and that broker to register itself as a single client at the (honest) upstream AS.
+Shared consent attacks require at least two downstream clients (one honest, one malicious) to be integrated with the same (honest) broker, and that broker to register itself as a client at the (honest) upstream AS.
 
 In the following, let `H-Client` and `M-Client` be downstream clients (honest and attacker-controlled, respectively) integrated with broker `B`.
 As a non-normative example, the description assumes that `B` exposes a standards-compliant OAuth interface to its downstream clients.
 
-The broker `B` registers itself once at the AS and obtains a single client identifier `cid_B@AS` together with a single redirection URI bound to the broker.
-The broker uses this single registration whenever it issues an authorization request triggered from any of its downstream clients to the AS.
+The broker `B` registers itself once at the AS and obtains a client identifier `cid_B@AS` together with a redirection URI bound to the broker.
+The broker uses this registration whenever it issues an authorization request triggered from any of its downstream clients to the AS.
 At `B`, `H-Client` is registered as `cid_HC@B` and `M-Client` is registered as `cid_MC@B`, each with its own redirection URI bound to the respective downstream client.
 From the point of view of the AS, every flow that `B` initiates appears to come from the same client `cid_B@AS`, regardless of which downstream client actually triggered the flow.
 
