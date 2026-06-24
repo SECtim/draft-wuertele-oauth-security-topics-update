@@ -15,24 +15,25 @@ OAuth 2.0 by extending the security advice given in RFC 6749, RFC
 6750, and RFC 9700, to cover new threats that have been discovered
 since the former documents have been published. 
     " name="description">
-<meta content="xml2rfc 3.33.0" name="generator">
+<meta content="xml2rfc 3.34.0" name="generator">
 <meta content="security" name="keyword">
 <meta content="oauth2" name="keyword">
 <meta content="best current practice" name="keyword">
 <meta content="draft-ietf-oauth-security-topics-update-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.33.0
-    Python 3.12.13
-    ConfigArgParse 1.7
+  xml2rfc 3.34.0
+    Python 3.14.5
+    ConfigArgParse 1.7.5
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 6.0.2
-    platformdirs 4.9.6
+    lxml 6.1.1
+    natsort 8.4.0
+    platformdirs 4.10.0
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.7.0
+    wcwidth 0.8.1
 -->
 <link href="draft-ietf-oauth-security-topics-update.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1055,7 +1056,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Würtele, et al.</td>
-<td class="center">Expires 14 December 2026</td>
+<td class="center">Expires 26 December 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1073,12 +1074,12 @@ svg {
 <a href="https://www.rfc-editor.org/rfc/rfc6749" class="eref">6749</a>, <a href="https://www.rfc-editor.org/rfc/rfc6750" class="eref">6750</a>, <a href="https://www.rfc-editor.org/rfc/rfc7521" class="eref">7521</a>, <a href="https://www.rfc-editor.org/rfc/rfc7522" class="eref">7522</a>, <a href="https://www.rfc-editor.org/rfc/rfc7523" class="eref">7523</a>, <a href="https://www.rfc-editor.org/rfc/rfc9700" class="eref">9700</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-06-12" class="published">12 June 2026</time>
+<time datetime="2026-06-24" class="published">24 June 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Best Current Practice</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-12-14">14 December 2026</time></dd>
+<dd class="expires"><time datetime="2026-12-26">26 December 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1143,7 +1144,7 @@ since the former documents have been published.<a href="#section-abstract-1" cla
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 14 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 26 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1216,6 +1217,17 @@ since the former documents have been published.<a href="#section-abstract-1" cla
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3.2.2">
                     <p id="section-toc.1-1.2.2.3.2.2.1"><a href="#section-2.3.2" class="auto internal xref">2.3.2</a>.  <a href="#name-countermeasures-3" class="internal xref">Countermeasures</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4">
+                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="auto internal xref">2.4</a>.  <a href="#name-shared-consent-in-brokered-" class="internal xref">Shared Consent in Brokered OAuth</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4.2.1">
+                    <p id="section-toc.1-1.2.2.4.2.1.1"><a href="#section-2.4.1" class="auto internal xref">2.4.1</a>.  <a href="#name-attack-description-4" class="internal xref">Attack Description</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4.2.2">
+                    <p id="section-toc.1-1.2.2.4.2.2.1"><a href="#section-2.4.2" class="auto internal xref">2.4.2</a>.  <a href="#name-countermeasures-4" class="internal xref">Countermeasures</a></p>
 </li>
                 </ul>
 </li>
@@ -1640,30 +1652,29 @@ example, to force its clients to adopt the respective countermeasure.<a href="#s
           <h4 id="name-countermeasures-2">
 <a href="#section-2.2.2" class="section-number selfRef">2.2.2. </a><a href="#name-countermeasures-2" class="section-name selfRef">Countermeasures</a>
           </h4>
-<p id="section-2.2.2-1">The client <span class="bcp14">MUST NOT</span> share OAuth providers with completed client registrations across toolkits and tenants belonging to different owners.<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.2.2-2">The client <span class="bcp14">MUST</span> use all variables in its supported OAuth connection context to form a connection context identifier that uniquely identifies each AS instance configured at the client. This identifier always includes the unique toolkit identifier. Additionally,<a href="#section-2.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.2.2-1">The client <span class="bcp14">MUST</span> use all variables in its supported OAuth connection context to form a connection context identifier that uniquely identifies each AS instance configured at the client. This identifier always includes the unique toolkit identifier. Additionally,<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2.2-3.1">
-              <p id="section-2.2.2-3.1.1">a client allowing each toolkit to use multiple OAuth providers, of which one AS may be compromised as assumed in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>, <span class="bcp14">MUST</span> also include the OAuth provider identifier;<a href="#section-2.2.2-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-2.2.2-2.1">
+              <p id="section-2.2.2-2.1.1">a client allowing each toolkit to use multiple OAuth providers, of which one AS may be compromised as assumed in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>, <span class="bcp14">MUST</span> also include the OAuth provider identifier;<a href="#section-2.2.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-2.2.2-3.2">
-              <p id="section-2.2.2-3.2.1">a multi-tenant client <span class="bcp14">MUST</span> also include the tenant identifier, if the toolkit identifier is not globally unique.<a href="#section-2.2.2-3.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-2.2.2-2.2">
+              <p id="section-2.2.2-2.2.1">a multi-tenant client <span class="bcp14">MUST</span> also include the tenant identifier, if the toolkit identifier is not globally unique.<a href="#section-2.2.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-2.2.2-4">Unless otherwise specified as follows, the client <span class="bcp14">MUST</span> issue per-context distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client <span class="bcp14">MUST</span> store this identifier in the user's session. When an authorization response was received on the redirection endpoint, the client <span class="bcp14">MUST</span> also check that the context identifier from the distinct redirection URI matches with the one in the user's session. If there is a mismatch, the client <span class="bcp14">MUST</span> abort the flow.<a href="#section-2.2.2-4" class="pilcrow">¶</a></p>
-<p id="section-2.2.2-5">Existing countermeasures for mix-up attacks (<span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>) can be a replacement under the following conditions:<a href="#section-2.2.2-5" class="pilcrow">¶</a></p>
+<p id="section-2.2.2-3">Unless otherwise specified as follows, the client <span class="bcp14">MUST</span> issue per-context distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client <span class="bcp14">MUST</span> store this identifier in the user's session. When an authorization response was received on the redirection endpoint, the client <span class="bcp14">MUST</span> also check that the context identifier from the distinct redirection URI matches with the one in the user's session. If there is a mismatch, the client <span class="bcp14">MUST</span> abort the flow.<a href="#section-2.2.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.2.2-4">Existing countermeasures for mix-up attacks (<span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>) can be a replacement under the following conditions:<a href="#section-2.2.2-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2.2-6.1">
-              <p id="section-2.2.2-6.1.1">the client has entirely dropped the support to implicit grant, and<a href="#section-2.2.2-6.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-2.2.2-5.1">
+              <p id="section-2.2.2-5.1.1">the client has entirely dropped the support to implicit grant, and<a href="#section-2.2.2-5.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-2.2.2-6.2">
-              <p id="section-2.2.2-6.2.1">the OAuth provider specifies an AS not by individually configured AS endpoints but instead by an abstract issuer identifier (as defined in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4.2" class="relref">Section 4.4.2</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>) that represents the endpoints, and<a href="#section-2.2.2-6.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-2.2.2-5.2">
+              <p id="section-2.2.2-5.2.1">the OAuth provider specifies an AS not by individually configured AS endpoints but instead by an abstract issuer identifier (as defined in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4.2" class="relref">Section 4.4.2</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>) that represents the endpoints, and<a href="#section-2.2.2-5.2.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-2.2.2-6.3">
-              <p id="section-2.2.2-6.3.1">the issuer identifier is used either in place of the connection context identifier in the redirection URI or is separately returned according to <span>[<a href="#RFC9207" class="cite xref">RFC9207</a>]</span>, and<a href="#section-2.2.2-6.3.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-2.2.2-5.3">
+              <p id="section-2.2.2-5.3.1">the issuer identifier is used either in place of the connection context identifier in the redirection URI or is separately returned according to <span>[<a href="#RFC9207" class="cite xref">RFC9207</a>]</span>, and<a href="#section-2.2.2-5.3.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-2.2.2-6.4">
-              <p id="section-2.2.2-6.4.1">an additional runtime resolution is used to resolve the issuer to retrieve the associated AS endpoints (e.g., with the authorization server metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> or OpenID Discovery <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span>). Clients using such resolution solely to pre-populate individual AS endpoint fields, without any coupling with the issuer identifier will remain vulnerable.<a href="#section-2.2.2-6.4.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-2.2.2-5.4">
+              <p id="section-2.2.2-5.4.1">an additional runtime resolution is used to resolve the issuer to retrieve the associated AS endpoints (e.g., with the authorization server metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> or OpenID Discovery <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span>). Clients using such resolution solely to pre-populate individual AS endpoint fields, without any coupling with the issuer identifier will remain vulnerable.<a href="#section-2.2.2-5.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -1749,6 +1760,176 @@ Set-Cookie: auth_session_id=6064f11c-f73e-425b-b9b9-4a36088cdb2b
               </ul>
 </li>
           </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="SharedConsent">
+<section id="section-2.4">
+        <h3 id="name-shared-consent-in-brokered-">
+<a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-shared-consent-in-brokered-" class="section-name selfRef">Shared Consent in Brokered OAuth</a>
+        </h3>
+<p id="section-2.4-1">In a brokered OAuth deployment, an intermediate entity (called the <em>broker</em> in the following) mediates between downstream clients and one or more upstream authorization servers (referred to as <em>AS</em> in the following).
+The broker acts as an OAuth client towards each AS.
+Towards its downstream clients, the broker either acts as an authorization server itself, exposing a standards-compliant OAuth interface, or it exposes a custom, non-OAuth interface.<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.4-2">The attack and countermeasures described in this section apply regardless of which of these two interfaces the broker exposes to its downstream clients.<a href="#section-2.4-2" class="pilcrow">¶</a></p>
+<p id="section-2.4-3">Throughout this section, the terms <em>upstream</em> and <em>downstream</em> are used relative to the broker and the direction in which authorization flows.
+The AS is <em>upstream</em> as the source of authorization and tokens, while the clients the broker serves are <em>downstream</em> as the recipients of the access the broker obtains on their behalf.<a href="#section-2.4-3" class="pilcrow">¶</a></p>
+<p id="section-2.4-4">The term <em>downstream client</em> furthermore denotes a unit of trust rather than necessarily a single application or an OAuth client in the sense of <span>[<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>.
+Multiple applications under common administrative control, such as the applications of a single tenant of a multi-tenant broker or the applications of an organization operating its own broker, may legitimately share a single registration and consent decision and thus be treated as a single downstream client.
+Applications under separate administrative control constitute distinct downstream clients.<a href="#section-2.4-4" class="pilcrow">¶</a></p>
+<p id="section-2.4-5">When the broker registers itself once at an AS and reuses this single registration for every downstream client it serves, the AS cannot distinguish between those downstream clients.
+As a consequence, the consent the user grants for one downstream client is silently reused for any other downstream client that integrates the same broker.
+A malicious downstream client integrated with the same broker can therefore obtain access to the user's protected resources without the user ever consenting to that client.<a href="#section-2.4-5" class="pilcrow">¶</a></p>
+<div id="SharedConsentDescription">
+<section id="section-2.4.1">
+          <h4 id="name-attack-description-4">
+<a href="#section-2.4.1" class="section-number selfRef">2.4.1. </a><a href="#name-attack-description-4" class="section-name selfRef">Attack Description</a>
+          </h4>
+<p id="section-2.4.1-1">The descriptions here follow <span>[<a href="#research.rub" class="cite xref">research.rub</a>]</span>, where additional details of the attack are laid out.
+Shared consent attacks require at least two downstream clients (one honest, one malicious) to be integrated with the same (honest) broker, and that broker to register itself as a client at the (honest) upstream AS.<a href="#section-2.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.4.1-2">In the following, let <code>H-Client</code> and <code>M-Client</code> be downstream clients (honest and attacker-controlled, respectively) integrated with broker <code>B</code>.
+As a non-normative example, the description assumes that <code>B</code> exposes a standards-compliant OAuth interface to its downstream clients.<a href="#section-2.4.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.4.1-3">The broker <code>B</code> registers itself once at the AS and obtains a client identifier <code>cid_B@AS</code> together with a redirection URI bound to the broker.
+The broker uses this registration whenever it issues an authorization request triggered from any of its downstream clients to the AS.
+At <code>B</code>, <code>H-Client</code> is registered as <code>cid_HC@B</code> and <code>M-Client</code> is registered as <code>cid_MC@B</code>, each with its own redirection URI bound to the respective downstream client.
+From the point of view of the AS, every flow that <code>B</code> initiates appears to come from the same client <code>cid_B@AS</code>, regardless of which downstream client actually triggered the flow.<a href="#section-2.4.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.4.1-4">The broker acts invisibly to the user during the flow.
+It renders no consent screen of its own and no other user-visible UI that would indicate that an additional entity is involved between the downstream client and the AS.<a href="#section-2.4.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.4.1-5">The exact form of the authorization response (<code>authz res</code>) returned to a downstream client is out of scope for this attack.<a href="#section-2.4.1-5" class="pilcrow">¶</a></p>
+<p id="section-2.4.1-6">The flaw is illustrated in the following figure:<a href="#section-2.4.1-6" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.4.1-7">
+<pre>
+  User        H-Client      M-Client          B                      AS
+    |============================ Phase 1 ============================|
+    |             |    authz req: cid_HC@B    |                       |
+    |             |--------------------------&gt;|                       |
+    |             |             |             |  authz req: cid_B@AS  |
+    |             |             |             |----------------------&gt;|
+    |             |          consent: cid_B@AS|                       |
+    |&lt;---------------------------------------------------------------&gt;|
+    |             |             |             |       authz res       |
+    |             |             |             |&lt;----------------------|
+    |             |         authz res         |                       |
+    |             |&lt;--------------------------|                       |
+    |============================ Phase 2 ============================|
+    |             |           authz req: cid_MC@B                     |
+    |             |             |------------&gt;|                       |
+    |             |             |             |  authz req: cid_B@AS  |
+    |             |             |             |----------------------&gt;|
+    |             |             |             |       authz res       |
+    |             |             |             |&lt;----------------------|
+    |             |             |  authz res  |                       |
+    |             |             |&lt;------------|                       |
+</pre><a href="#section-2.4.1-7" class="pilcrow">¶</a>
+</div>
+<p id="section-2.4.1-8">In the second phase of the figure, no consent prompt is rendered for <code>M-Client</code>.
+The AS only sees the broker's client identifier <code>cid_B@AS</code>, for which the user has already granted consent in the first phase, so the AS silently issues a token to <code>B</code> (cf. <code>prompt=none</code>, as defined in Section 3.1.2.1 of <span>[<a href="#OpenID.Core" class="cite xref">OpenID.Core</a>]</span>) and <code>B</code> returns an <code>authz res</code> to <code>M-Client</code>.<a href="#section-2.4.1-8" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="SharedConsentCountermeasures">
+<section id="section-2.4.2">
+          <h4 id="name-countermeasures-4">
+<a href="#section-2.4.2" class="section-number selfRef">2.4.2. </a><a href="#name-countermeasures-4" class="section-name selfRef">Countermeasures</a>
+          </h4>
+<p id="section-2.4.2-1">The root cause of shared consent attacks is that the AS cannot tell on whose behalf the broker is acting and therefore cannot ask the user for consent on a per-downstream-client basis.
+Brokers <span class="bcp14">MUST</span> employ at least one of the following two countermeasures.<a href="#section-2.4.2-1" class="pilcrow">¶</a></p>
+<div id="SharedConsentRegistration">
+<section id="section-2.4.2.1">
+            <h5 id="name-per-client-registration-at-">
+<a href="#section-2.4.2.1" class="section-number selfRef">2.4.2.1. </a><a href="#name-per-client-registration-at-" class="section-name selfRef">Per-Client Registration at the Upstream Authorization Server</a>
+            </h5>
+<p id="section-2.4.2.1-1">Each downstream client <span class="bcp14">MUST</span> be registered as a separate client at the AS.
+When initiating an authorization flow to the AS on behalf of a downstream client, the broker <span class="bcp14">MUST</span> use the registration of exactly that downstream client.<a href="#section-2.4.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.4.2.1-2">The specific mechanism by which these per-client registrations are established is out of scope of this document.
+In practice, they are commonly established as follows:
+The broker provides each downstream client with a redirection URI that is hosted by the broker, and instructs the downstream client to register at every AS it expects to use, using the broker-provided redirection URI.
+The downstream client performs this registration at each AS, obtaining a distinct client identifier (e.g., <code>cid_HC@AS</code> for <code>H-Client</code> and <code>cid_MC@AS</code> for <code>M-Client</code>) and any associated credentials (such as a client secret).
+The downstream client then hands these credentials over to the broker, which gives the broker full control to act on behalf of the downstream client at the AS.<a href="#section-2.4.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.4.2.1-3">This countermeasure ensures that the AS recognizes each downstream client as a distinct client, and that any consent prompt rendered by the AS is bound to a single downstream client.
+Consent granted for one downstream client is therefore not reusable for another.<a href="#section-2.4.2.1-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.4.2.1-4">
+<pre>
+  User        H-Client      M-Client          B                      AS
+    |             |             |             |                       |
+    |             |    authz req: cid_HC@B    |                       |
+    |             |--------------------------&gt;|                       |
+    |             |             |             | authz req: cid_HC@AS  |
+    |             |             |             |----------------------&gt;|
+    |             |         consent: cid_HC@AS|                       |
+    |&lt;---------------------------------------------------------------&gt;|
+    |             |             |             |       authz res       |
+    |             |             |             |&lt;----------------------|
+    |             |         authz res         |                       |
+    |             |&lt;--------------------------|                       |
+    |             |             |             |                       |
+    |             |           authz req: cid_MC@B                     |
+    |             |             |------------&gt;|                       |
+    |             |             |             | authz req: cid_MC@AS  |
+    |             |             |             |----------------------&gt;|
+    |             |         consent: cid_MC@AS|                       |
+    |&lt;---------------------------------------------------------------&gt;|
+    |             |             |             |       authz res       |
+    |             |             |             |&lt;----------------------|
+    |             |             |  authz res  |                       |
+    |             |             |&lt;------------|                       |
+</pre><a href="#section-2.4.2.1-4" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="SharedConsentBrokerConsent">
+<section id="section-2.4.2.2">
+            <h5 id="name-broker-side-consent-screen">
+<a href="#section-2.4.2.2" class="section-number selfRef">2.4.2.2. </a><a href="#name-broker-side-consent-screen" class="section-name selfRef">Broker-Side Consent Screen</a>
+            </h5>
+<p id="section-2.4.2.2-1">Unless consent for the downstream client has already been granted, the broker <span class="bcp14">MUST</span> present an explicit consent screen to the user that identifies the downstream client, before initiating its own authorization request to the AS on behalf of the downstream client.
+The broker <span class="bcp14">MUST NOT</span> skip this consent screen based on a previously granted consent for a different downstream client.
+The broker <span class="bcp14">MAY</span> remember the user's consent decision per downstream client (e.g., per <code>client_id</code> of the downstream client), but <span class="bcp14">MUST NOT</span> remember it across different downstream clients.<a href="#section-2.4.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.4.2.2-2">This countermeasure prevents the broker from silently reusing a consent granted for one downstream client when initiating a request to the AS on behalf of another downstream client, even when the AS cannot distinguish between the broker's downstream clients.<a href="#section-2.4.2.2-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.4.2.2-3">
+<pre>
+  User        H-Client      M-Client          B                      AS
+    |             |             |             |                       |
+    |             |    authz req: cid_HC@B    |                       |
+    |             |--------------------------&gt;|                       |
+    |            consent: cid_HC@B            |                       |
+    |&lt;---------------------------------------&gt;|                       |
+    |             |             |             |  authz req: cid_B@AS  |
+    |             |             |             |----------------------&gt;|
+    |             |          consent: cid_B@AS|                       |
+    |&lt;---------------------------------------------------------------&gt;|
+    |             |             |             |       authz res       |
+    |             |             |             |&lt;----------------------|
+    |             |         authz res         |                       |
+    |             |&lt;--------------------------|                       |
+    |             |             |             |                       |
+    |             |           authz req: cid_MC@B                     |
+    |             |             |------------&gt;|                       |
+    |            consent: cid_MC@B            |                       |
+    |&lt;---------------------------------------&gt;|                       |
+    |             |             |             |  authz req: cid_B@AS  |
+    |             |             |             |----------------------&gt;|
+    |             |             |             |       authz res       |
+    |             |             |             |&lt;----------------------|
+    |             |             |  authz res  |                       |
+    |             |             |&lt;------------|                       |
+</pre><a href="#section-2.4.2.2-3" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="SharedConsentDiscussion">
+<section id="section-2.4.2.3">
+            <h5 id="name-discussion-of-the-counterme">
+<a href="#section-2.4.2.3" class="section-number selfRef">2.4.2.3. </a><a href="#name-discussion-of-the-counterme" class="section-name selfRef">Discussion of the Countermeasures</a>
+            </h5>
+<p id="section-2.4.2.3-1">The two countermeasures have different practical trade-offs.<a href="#section-2.4.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.4.2.3-2">The Per-Client Registration countermeasure (<a href="#SharedConsentRegistration" class="auto internal xref">Section 2.4.2.1</a>) confronts the user with at most one consent screen per authorization flow, which improves the user experience.
+However, it requires each downstream client to be registered at every AS the broker integrates with, which can be a substantial effort given that a single broker is typically integrated with many ASes.<a href="#section-2.4.2.3-2" class="pilcrow">¶</a></p>
+<p id="section-2.4.2.3-3">The Broker-Side Consent Screen countermeasure (<a href="#SharedConsentBrokerConsent" class="auto internal xref">Section 2.4.2.2</a>) spares downstream clients this registration effort, since the broker's single registration at each AS is reused for all downstream clients.
+However, the user may be confronted with up to two consent screens in a single authorization flow: one rendered by the broker identifying the downstream client, and one rendered by the AS identifying the broker.<a href="#section-2.4.2.3-3" class="pilcrow">¶</a></p>
+<p id="section-2.4.2.3-4">Both countermeasures are implemented entirely on the client side (the downstream client and the broker) and require no software or protocol changes to any AS.<a href="#section-2.4.2.3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 </section>
@@ -1871,6 +2052,10 @@ Set-Cookie: auth_session_id=6064f11c-f73e-425b-b9b9-4a36088cdb2b
         <dd>
 <span class="refAuthor">Bansal, C.</span>, <span class="refAuthor">Bhargavan, K.</span>, <span class="refAuthor">Delignat-Lavaud, A.</span>, and <span class="refAuthor">S. Maffeis</span>, <span class="refTitle">"Discovering concrete attacks on website authorization by formal analysis"</span>, <span class="refContent">Journal of Computer Security, vol. 22, no. 4, pp. 601-657</span>, <time datetime="2014-04" class="refDate">April 2014</time>, <span>&lt;<a href="https://www.doc.ic.ac.uk/~maffeis/papers/jcs14.pdf">https://www.doc.ic.ac.uk/~maffeis/papers/jcs14.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="research.rub">[research.rub]</dt>
+        <dd>
+<span class="refAuthor">Innocenti, T.</span>, <span class="refAuthor">Jannett, L.</span>, <span class="refAuthor">Mainka, C.</span>, <span class="refAuthor">Mladenov, V.</span>, and <span class="refAuthor">E. Kirda</span>, <span class="refTitle">""Only as Strong as the Weakest Link": On the Security of Brokered Single Sign-On on the Web"</span>, <time datetime="2025-05" class="refDate">May 2025</time>, <span>&lt;<a href="https://ieeexplore.ieee.org/document/11023371">https://ieeexplore.ieee.org/document/11023371</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="research.ust">[research.ust]</dt>
         <dd>
 <span class="refAuthor">Hosseyni, P.</span>, <span class="refAuthor">Küsters, R.</span>, and <span class="refAuthor">T. Würtele</span>, <span class="refTitle">"Audience Injection Attacks: A New Class of Attacks on Web-Based Authorization and Authentication Standards"</span>, <time datetime="2025-04" class="refDate">April 2025</time>, <span>&lt;<a href="https://eprint.iacr.org/2025/629">https://eprint.iacr.org/2025/629</a>&gt;</span>. </dd>
@@ -1920,6 +2105,7 @@ Set-Cookie: auth_session_id=6064f11c-f73e-425b-b9b9-4a36088cdb2b
 <p id="appendix-A-1">We would like to thank
 <span class="cref" id="acksAddNames">TODO add names, sort by last name.<span class="crefSource">Tim W.</span></span>
 Daniel Fett,
+Louis Jannett,
 Wing Cheong Lau,
 Julien Lecomte,
 Aaron Parecki,
@@ -1944,6 +2130,9 @@ Xianbo Wang<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-3.3">
           <p id="appendix-B-3.3.1">Add implementation considerations for Audience Injection countermeasures, including recommendations for how to deal with ASs that only accept their token endpoint as audience value<a href="#appendix-B-3.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-3.4">
+          <p id="appendix-B-3.4.1">Add new section on Shared Consent in Brokered OAuth, describing the attack, its preconditions, and countermeasures<a href="#appendix-B-3.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-B-4">-01<a href="#appendix-B-4" class="pilcrow">¶</a></p>
