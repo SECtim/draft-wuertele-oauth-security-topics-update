@@ -6,10 +6,10 @@ Web Authorization Protocol                                    T. Würtele
 Internet-Draft                                               P. Hosseyni
 Updates: 6749, 6750, 7521, 7522, 7523, 9700      University of Stuttgart
          (if approved)                                            K. Luo
-Intended status: Best Current PracticeThe Chinese University of Hong Kong
-Expires: 26 December 2026                                        A. Fung
+Intended status: Best Current Practice                              CUHK
+Expires: 27 December 2026                                        A. Fung
                                                 Samsung Research America
-                                                            24 June 2026
+                                                            25 June 2026
 
 
           Updates to OAuth 2.0 Security Best Current Practice
@@ -56,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 December 2026.
+   This Internet-Draft will expire on 27 December 2026.
 
 Copyright Notice
 
