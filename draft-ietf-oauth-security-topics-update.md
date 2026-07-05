@@ -534,6 +534,8 @@ Attack on the authorization code grant:
 5. Since the client still assumes that the code was issued by A-AS of A-Toolkit, as stored in the user's session (with `state` verified), it will try to redeem the code at A-AS's token endpoint.
 6. The attacker therefore obtains the code and can either exchange the code for an access token (for public clients) or perform an authorization code injection attack as described in {{Section 4.5 of !RFC9700}}.
 
+Note that merely issuing distinct redirection URIs per OAuth connection context, as used in this example, does not prevent the attack: in Step 5, the client fails to verify that the connection context incorporated in the redirection URI on which the authorization response was received (H-Toolkit) matches the connection context recorded in the user's session for this flow (A-Toolkit), as required in {{COATCountermeasure}}. The same vulnerability would also arise if the client had issued a single shared redirection URI (e.g., `https://client.com/cb`) for both toolkits.
+
 This Cross-toolkit OAuth Account Takeover (COAT) attack is a generalization of the Cross-app OAuth Account Takeover as defined in {{research.cuhk}} and the mix-up attack as defined in {{Section 4.4 of !RFC9700}}. This COAT attack exploits confusion between the OAuth connection contexts (i.e., combinations of OAuth provider, toolkit, and tenant) of a centralized client rather than being limited to confusion between two distinct authorization servers.
 
 Variants:
