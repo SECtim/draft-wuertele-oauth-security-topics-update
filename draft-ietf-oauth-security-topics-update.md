@@ -561,7 +561,7 @@ Existing countermeasures for mix-up attacks ({{Section 4.4 of !RFC9700}}) can se
 - the issuer identifier is used either in place of the connection context identifier in the redirection URI or is separately returned according to {{?RFC9207}}, and
 - an additional runtime resolution is used to resolve the issuer to retrieve the associated AS endpoints (e.g., with the authorization server metadata {{!RFC8414}} or OpenID Discovery {{OpenID.Discovery}}). Clients using such resolution solely to pre-populate individual AS endpoint fields without any coupling with the issuer identifier will remain vulnerable.
 
-Compared with existing countermeasures for mix-up attacks, which rely on an issuer identifier that each AS uses to uniquely identify itself and that the client stores, the connection context identifier approach lets the client uniquely identify each AS instance it has configured. This approach is particularly useful for clients that provision AS endpoints with manually configured metadata, where an issuer identifier is not available.
+Compared with existing countermeasures for mix-up attacks, which rely on an issuer identifier that each AS uses to uniquely identify itself and that the client stores, the connection context identifier approach lets the client uniquely identify each AS instance it has configured. This approach is particularly useful for clients that provision AS endpoints with manually configured metadata, where an issuer identifier may not be available.
 
 ## Cross-user OAuth Session Fixation {#SessionFixation}
 
