@@ -810,6 +810,12 @@ for their valuable feedback and contributions to this document.
 
 [[ To be removed from the final specification ]]
 
+-03
+
+* Note that issuing distinct redirection URIs alone does not prevent the COAT attack
+* Add comparison of the COAT countermeasure with issuer-based mix-up countermeasures
+* Remove a COAT variant mention already covered by Shared Consent in Brokered OAuth
+
 -02
 
 * Simplify core attack description for Audience Injection attacks by moving "why token EP" discussion to a new section
