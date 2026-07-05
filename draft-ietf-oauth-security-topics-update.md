@@ -809,6 +809,13 @@ for their valuable feedback and contributions to this document.
 
 [[ To be removed from the final specification ]]
 
+-03
+
+* Clarify the native app backend scenario in Session Fixation and label it as the BFF pattern 
+* Reduce non-standard terminology and unify terms used in the Session Fixation section
+* Add sequence diagram to illustrate Session Fixation attack flow
+* Editorial clarifications and fixes to COAT and Session Fixation section wording
+
 -02
 
 * Simplify core attack description for Audience Injection attacks by moving "why token EP" discussion to a new section
