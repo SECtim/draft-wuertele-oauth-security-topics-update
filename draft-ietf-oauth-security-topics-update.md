@@ -811,7 +811,7 @@ for their valuable feedback and contributions to this document.
 
 -03
 
-* Clarify the native app backend scenario in Session Fixation and label it as the BFF pattern 
+* Clarify the native app backend scenario in Session Fixation and label it as the BFF pattern
 * Reduce non-standard terminology and unify terms used in the Session Fixation section
 * Add sequence diagram to illustrate Session Fixation attack flow
 * Editorial clarifications and fixes to COAT and Session Fixation section wording
