@@ -49,6 +49,13 @@ author:
     organization: Samsung Research America
     email: adonis.fung@samsung.com
     country: USA
+ -
+    fullname: "Wing Cheong Lau"
+    organization: The Chinese University of Hong Kong
+    abbrev: CUHK
+    email: wclau@ie.cuhk.edu.hk
+    region: Hong Kong
+    country: China
 
 normative:
 
@@ -806,6 +813,10 @@ for their valuable feedback and contributions to this document.
 {:numbered="false"}
 
 [[ To be removed from the final specification ]]
+
+-03
+
+* Add Wing Cheong Lau as co-author
 
 -02
 
