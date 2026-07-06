@@ -1716,26 +1716,64 @@ example, to force its clients to adopt the respective countermeasure.<a href="#s
               <p id="section-2.3.1-3.5.1">The attacker's account at the client now gains access to the victim's resources.<a href="#section-2.3.1-3.5.1" class="pilcrow">¶</a></p>
 </li>
           </ol>
-<p id="section-2.3.1-4">Variant:<a href="#section-2.3.1-4" class="pilcrow">¶</a></p>
-<p id="section-2.3.1-5">The client may first generate a pre-authorization URL for the purpose of fixating a session before redirecting to the authorization endpoint.<a href="#section-2.3.1-5" class="pilcrow">¶</a></p>
-<p id="section-2.3.1-6">Non-normative example request:<a href="#section-2.3.1-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-2.3.1-7">
+<p id="section-2.3.1-4">The following diagram illustrates the attack:<a href="#section-2.3.1-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.3.1-5">
+<pre>
+Attacker     (Victim) User          Client           AS             RS
+    |                |                |              |              |
+    | Initiate OAuth flow             |              |              |
+    |--------------------------------&gt;|              |              |
+    | authz req URI with              |              |              |
+    | state=attacker_auth_session     |              |              |
+    |&lt;--------------------------------|              |              |
+    |                |                |              |              |
+    | Send URI to victim out-of-band  |              |              |
+    | (e.g., via phishing link)       |              |              |
+    |---------------&gt;|                |              |              |
+    |                |                |              |              |
+    |                | Visit authz req URI           |              |
+    |                |------------------------------&gt;|              |
+    |                | User consent (may be skipped) |              |
+    |                |&lt;-----------------------------&gt;|              |
+    |                |                | authz res with code +       |
+    |                |                | state=attacker_auth_session |
+    |                |                |&lt;-------------|              |
+    |                |                | Exchange code for token     |
+    |                |                |&lt;------------&gt;|              |
+    |                |  token for victim's resources |              |
+    |                |  associated with attacker's   |              |
+    |                |  identity at the client       |              |
+    |                |                |              |              |
+    | Access resources                |              |              |
+    |--------------------------------&gt;|              |              |
+    |                |                | Resource request with token |
+    |                |                | for victim's resources      |
+    |                |                |&lt;---------------------------&gt;|
+    | Unauthorized access to          |              |              |
+    | victim's resources              |              |              |
+    |&lt;--------------------------------|              |              |
+</pre><a href="#section-2.3.1-5" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3.1-6">Variant:<a href="#section-2.3.1-6" class="pilcrow">¶</a></p>
+<p id="section-2.3.1-7">The client may first generate a pre-authorization URL for the purpose of fixating a session before redirecting to the authorization endpoint.<a href="#section-2.3.1-7" class="pilcrow">¶</a></p>
+<p id="section-2.3.1-8">Non-normative example request:<a href="#section-2.3.1-8" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.3.1-9">
 <pre>
 GET /oauth?auth_session_id=6064f11c-f73e-425b-b9b9-4a36088cdb2b HTTP/1.1
 Host: client.com
-</pre><a href="#section-2.3.1-7" class="pilcrow">¶</a>
+</pre><a href="#section-2.3.1-9" class="pilcrow">¶</a>
 </div>
-<p id="section-2.3.1-8">Non-normative example response:<a href="#section-2.3.1-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-2.3.1-9">
+<p id="section-2.3.1-10">Non-normative example response:<a href="#section-2.3.1-10" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.3.1-11">
 <pre>
 HTTP/1.1 303 See Other
 Location: https://as.example/authorize?
           response_type=code&amp;client_id=K9dTpWzqL7&amp;state=b1d8f043
           &amp;redirect_uri=https%3A%2F%2Fclient.com%2Fcb
 Set-Cookie: auth_session_id=6064f11c-f73e-425b-b9b9-4a36088cdb2b
-</pre><a href="#section-2.3.1-9" class="pilcrow">¶</a>
+</pre><a href="#section-2.3.1-11" class="pilcrow">¶</a>
 </div>
-<p id="section-2.3.1-10">This variant differs from the above only by obtaining and sending the pre-authorization URL instead, which will first fixate the attacker's authorization session (rather than in Step 4).<a href="#section-2.3.1-10" class="pilcrow">¶</a></p>
+<p id="section-2.3.1-12">This variant differs from the above only by obtaining and sending the pre-authorization URL instead, which will first fixate the attacker's authorization session (rather than in Step 4).<a href="#section-2.3.1-12" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="FixationCountermeasures">

@@ -667,6 +667,42 @@ Table of Contents
    5.  The attacker's account at the client now gains access to the
        victim's resources.
 
+   The following diagram illustrates the attack:
+
+  Attacker     (Victim) User          Client           AS             RS
+      |                |                |              |              |
+      | Initiate OAuth flow             |              |              |
+      |-------------------------------->|              |              |
+      | authz req URI with              |              |              |
+      | state=attacker_auth_session     |              |              |
+      |<--------------------------------|              |              |
+      |                |                |              |              |
+      | Send URI to victim out-of-band  |              |              |
+      | (e.g., via phishing link)       |              |              |
+      |--------------->|                |              |              |
+      |                |                |              |              |
+      |                | Visit authz req URI           |              |
+      |                |------------------------------>|              |
+      |                | User consent (may be skipped) |              |
+      |                |<----------------------------->|              |
+      |                |                | authz res with code +       |
+      |                |                | state=attacker_auth_session |
+      |                |                |<-------------|              |
+      |                |                | Exchange code for token     |
+      |                |                |<------------>|              |
+      |                |  token for victim's resources |              |
+      |                |  associated with attacker's   |              |
+      |                |  identity at the client       |              |
+      |                |                |              |              |
+      | Access resources                |              |              |
+      |-------------------------------->|              |              |
+      |                |                | Resource request with token |
+      |                |                | for victim's resources      |
+      |                |                |<--------------------------->|
+      | Unauthorized access to          |              |              |
+      | victim's resources              |              |              |
+      |<--------------------------------|              |              |
+
    Variant:
 
    The client may first generate a pre-authorization URL for the purpose
