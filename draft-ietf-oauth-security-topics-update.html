@@ -33,7 +33,7 @@ since the former documents have been published.
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.8.1
+    wcwidth 0.8.2
 -->
 <link href="draft-ietf-oauth-security-topics-update.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1052,11 +1052,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Updates to OAuth 2.0 Security BCP</td>
-<td class="right">June 2026</td>
+<td class="right">July 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Würtele, et al.</td>
-<td class="center">Expires 27 December 2026</td>
+<td class="center">Expires 7 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1074,12 +1074,12 @@ svg {
 <a href="https://www.rfc-editor.org/rfc/rfc6749" class="eref">6749</a>, <a href="https://www.rfc-editor.org/rfc/rfc6750" class="eref">6750</a>, <a href="https://www.rfc-editor.org/rfc/rfc7521" class="eref">7521</a>, <a href="https://www.rfc-editor.org/rfc/rfc7522" class="eref">7522</a>, <a href="https://www.rfc-editor.org/rfc/rfc7523" class="eref">7523</a>, <a href="https://www.rfc-editor.org/rfc/rfc9700" class="eref">9700</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-06-25" class="published">25 June 2026</time>
+<time datetime="2026-07-06" class="published">6 July 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Best Current Practice</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-12-27">27 December 2026</time></dd>
+<dd class="expires"><time datetime="2027-01-07">7 January 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1144,7 +1144,7 @@ since the former documents have been published.<a href="#section-abstract-1" cla
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 27 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1577,17 +1577,17 @@ example, to force its clients to adopt the respective countermeasure.<a href="#s
         <h3 id="name-cross-toolkit-oauth-account">
 <a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-cross-toolkit-oauth-account" class="section-name selfRef">Cross-toolkit OAuth Account Takeover</a>
         </h3>
-<p id="section-2.2-1">It is increasingly common and observed that a single OAuth client supports multiple tools. Each set of tools, known as a toolkit, is mapped to an OAuth provider configuration, which includes at least the authorization server (AS) endpoints and client registration. A successful OAuth connection is established when the OAuth client obtains an access token for a tool based on its corresponding OAuth provider configuration. The tool can then use the access token to access the user's protected resource at a resource server (RS).<a href="#section-2.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.2-2">Multiple OAuth connections can be linked to some form of user identity based on the following common deployment scenarios:<a href="#section-2.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.2-1">It is increasingly common for a single OAuth client to access protected resources of multiple <em>tools</em> on behalf of users. Each set of tools, referred to as a <em>toolkit</em> in the following, is mapped to an <em>OAuth provider</em> configuration, which includes at least the authorization server (AS) endpoints and the client registration. A successful <em>OAuth connection</em> is established when the OAuth client obtains an access token for a tool based on its corresponding OAuth provider configuration. The client can then use the access token to access the user's protected resources at the tool's resource server (RS).<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2-2">Multiple OAuth connections can be linked to some form of user identity in the following non-normative example deployment scenarios:<a href="#section-2.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2-3.1">
-            <p id="section-2.2-3.1.1">Application Integration: The OAuth connections made with different toolkits are linked to an application's user account or session (e.g., represented by an application's user identifier or a short-lived anonymous session). This is common where a user authorizes an application (e.g., a cloud platform or an agentic AI service) to orchestrate multiple tools, some of which together with their OAuth providers can be contributed by the public.<a href="#section-2.2-3.1.1" class="pilcrow">¶</a></p>
+            <p id="section-2.2-3.1.1">Application Integration: The OAuth connections made with different toolkits are linked to an application's user account or session (e.g., represented by an application's user identifier or an anonymous session identifier). This is common where a user authorizes an application (e.g., a cloud platform or an agentic AI service) to orchestrate multiple tools, some of which together with their OAuth providers can be contributed by the public.<a href="#section-2.2-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.2-3.2">
-            <p id="section-2.2-3.2.1">Multi-tenant OAuth-as-a-Service (also known as Token Vault): In cases where OAuth responsibilities of a client are managed by a multi-tenant OAuth-as-a-Service provider, a successful OAuth connection is linked to a tenant's user identifier in addition to the tenant identifier. This is a generalization of the last deployment scenario, where an application using this OAuth-as-a-Service is becoming a tenant. A tenant can usually choose some off-the-shelf toolkits using (partially-) completed OAuth providers, if not adding their own toolkits with custom OAuth providers to support the tenant's service.<a href="#section-2.2-3.2.1" class="pilcrow">¶</a></p>
+            <p id="section-2.2-3.2.1">Multi-tenant OAuth-as-a-Service (also known as Token Vault): In cases where OAuth responsibilities of a client are managed by a multi-tenant OAuth-as-a-Service provider, a successful OAuth connection is linked to a tenant's user identifier in addition to the tenant identifier. This is a generalization of the last deployment scenario, where an application using this OAuth-as-a-Service becomes a tenant. A tenant can usually choose some off-the-shelf toolkits using (partially) completed OAuth providers, or add their own toolkits with custom OAuth providers to support the tenant's service.<a href="#section-2.2-3.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-2.2-4">When controlled by an attacker, the open configurations of OAuth providers have posed a new threat to this centralized OAuth client design. If the client fails to properly identify, track, and isolate which proper OAuth connection context (representing a combination of OAuth provider, toolkit, and tenant) is in use during an authorization flow, an attacker can exploit this to mount Cross-toolkit OAuth Account Takeover (COAT) attacks (see <span>[<a href="#research.cuhk" class="cite xref">research.cuhk</a>]</span> and <span>[<a href="#research.cuhk2" class="cite xref">research.cuhk2</a>]</span>). The COAT attacker uses a malicious toolkit to steal a victim's authorization code issued by an honest OAuth provider of an honest toolkit, and applies the authorization code injection (as defined in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.5" class="relref">Section 4.5</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>) against a new OAuth connection with the attacker's identity. This results in a compromised OAuth connection between the attacker's application identity and the victim's toolkit access. The impact is equivalent to an account takeover: the attacker can operate the honest toolkit with the victim's account (hijacked either under the same application, or even cross-tenant that shares a vulnerable OAuth-as-a-service).<a href="#section-2.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.2-4">When controlled by an attacker, the open configurations of OAuth providers pose a new threat to this centralized OAuth client design. If the client fails to properly identify, track, and isolate the OAuth connection context (representing a combination of OAuth provider, toolkit, and tenant) in use during an authorization flow, an attacker can exploit this to mount Cross-toolkit OAuth Account Takeover (COAT) attacks (see <span>[<a href="#research.cuhk" class="cite xref">research.cuhk</a>]</span> and <span>[<a href="#research.cuhk2" class="cite xref">research.cuhk2</a>]</span>). The COAT attacker uses a malicious toolkit to steal a victim's authorization code issued by an honest OAuth provider of an honest toolkit, and applies authorization code injection (as defined in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.5" class="relref">Section 4.5</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>) against a new OAuth connection with the attacker's identity. This results in a compromised OAuth connection between the attacker's application identity and the victim's toolkit access. The impact is equivalent to an account takeover: the attacker can operate the honest toolkit with the victim's account (hijacked either under the same application, or even across tenants that share a vulnerable OAuth-as-a-Service).<a href="#section-2.2-4" class="pilcrow">¶</a></p>
 <div id="COATDescription">
 <section id="section-2.2.1">
           <h4 id="name-attack-description-2">
@@ -1616,33 +1616,34 @@ example, to force its clients to adopt the respective countermeasure.<a href="#s
                 <code>&amp;redirect_uri=https%3A%2F%2Fclient.com%2Fattack-cb</code>.<a href="#section-2.2.1-5.2.1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-2.2.1-5.3">
-              <p id="section-2.2.1-5.3.1">When the user's browser navigates to the A-AS, the attacker immediately redirects the browser to the authorization endpoint of H-AS. In the authorization request, the attacker uses the honest authorization URL and replaces the <code>state</code> with the one freshly received. Therefore, the browser receives a redirection with a Location header pointing to <code>https://honest.as.example/authorize?response_type=code&amp;client_id=7ZGZldHQ&amp;state=[state]</code>
+              <p id="section-2.2.1-5.3.1">When the user's browser navigates to the A-AS, the attacker immediately redirects the browser to the authorization endpoint of H-AS. In the authorization request, the attacker uses an authorization request URL of H-AS and replaces the <code>state</code> with the one freshly received. Therefore, the browser receives a redirection with a Location header pointing to <code>https://honest.as.example/authorize?response_type=code&amp;client_id=7ZGZldHQ&amp;state=[state]</code>
                 <code>&amp;redirect_uri=https%3A%2F%2Fclient.com%2Fhonest-cb</code>.<a href="#section-2.2.1-5.3.1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-2.2.1-5.4">
-              <p id="section-2.2.1-5.4.1">Due to implicit or prior approvals, the user might not be prompted for a re-authorization (re-consent). H-AS issues a code and sends it (via the browser) back with the <code>state</code> to the client.<a href="#section-2.2.1-5.4.1" class="pilcrow">¶</a></p>
+              <p id="section-2.2.1-5.4.1">Due to implicit or prior approvals, the user might not be prompted for re-consent. H-AS issues a code and sends it (via the browser) back with the <code>state</code> to the client.<a href="#section-2.2.1-5.4.1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-2.2.1-5.5">
-              <p id="section-2.2.1-5.5.1">Since the client still assumes that the code was issued by A-Toolkit, as stored in the user's session (with <code>state</code> verified), it will try to redeem the code at A-AS's token endpoint.<a href="#section-2.2.1-5.5.1" class="pilcrow">¶</a></p>
+              <p id="section-2.2.1-5.5.1">Since the client still assumes that the code was issued by A-AS of A-Toolkit, as stored in the user's session (with <code>state</code> verified), it will try to redeem the code at A-AS's token endpoint.<a href="#section-2.2.1-5.5.1" class="pilcrow">¶</a></p>
 </li>
             <li id="section-2.2.1-5.6">
-              <p id="section-2.2.1-5.6.1">The attacker therefore obtains code and can either exchange the code for an access token (for public clients) or perform an authorization code injection attack as described in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.5" class="relref">Section 4.5</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>.<a href="#section-2.2.1-5.6.1" class="pilcrow">¶</a></p>
+              <p id="section-2.2.1-5.6.1">The attacker therefore obtains the code and can either exchange the code for an access token (for public clients) or perform an authorization code injection attack as described in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.5" class="relref">Section 4.5</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>.<a href="#section-2.2.1-5.6.1" class="pilcrow">¶</a></p>
 </li>
           </ol>
-<p id="section-2.2.1-6">This Cross-toolkit OAuth Account Takeover (COAT) attack is a generalization of the Cross-app OAuth Account Takeover as defined in <span>[<a href="#research.cuhk" class="cite xref">research.cuhk</a>]</span> and the mix-up attack as defined in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>. This COAT exploits confusion between the OAuth connection context (i.e., a combination of OAuth provider, toolkit, tenant) of a centralized client rather than being limited to confusion between two distinct authorization servers.<a href="#section-2.2.1-6" class="pilcrow">¶</a></p>
-<p id="section-2.2.1-7">Variants:<a href="#section-2.2.1-7" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-6">Note that merely issuing distinct redirection URIs per OAuth connection context, as used in this example, does not prevent the attack: in Step 5, the client fails to verify that the connection context incorporated in the redirection URI on which the authorization response was received (H-Toolkit) matches the connection context recorded in the user's session for this flow (A-Toolkit), as required in <a href="#COATCountermeasure" class="auto internal xref">Section 2.2.2</a>. The same vulnerability would also arise if the client had issued a single shared redirection URI (e.g., <code>https://client.com/cb</code>) for both toolkits.<a href="#section-2.2.1-6" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-7">This Cross-toolkit OAuth Account Takeover (COAT) attack is a generalization of the Cross-app OAuth Account Takeover as defined in <span>[<a href="#research.cuhk" class="cite xref">research.cuhk</a>]</span> and the mix-up attack as defined in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>. This COAT attack exploits confusion between the OAuth connection contexts (i.e., combinations of OAuth provider, toolkit, and tenant) of a centralized client rather than being limited to confusion between two distinct authorization servers.<a href="#section-2.2.1-7" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-8">Variants:<a href="#section-2.2.1-8" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2.1-8.1">
-              <p id="section-2.2.1-8.1.1">COAT under the OAuth-as-a-Service context: the attack above can be launched with a malicious tenant by adding a custom toolkit with an OAuth provider that targets an honest AS used by another tenant's toolkit. A variation of this attack involves the malicious tenant simply using a shared off-the-shelf toolkit that comes with a pre-built OAuth provider (with client registration included), if so allowed.<a href="#section-2.2.1-8.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-2.2.1-9.1">
+              <p id="section-2.2.1-9.1.1">COAT under the OAuth-as-a-Service context: the attack above can be launched with a malicious tenant by adding a custom toolkit with an OAuth provider that targets an honest AS used by another tenant's toolkit.<a href="#section-2.2.1-9.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-2.2.1-8.2">
-              <p id="section-2.2.1-8.2.1">Implicit Grant: In the implicit grant, the attacker receives an access token instead of the code in Step 4.  The attacker's authorization server receives the access token when the client makes either a request to the A-AS userinfo endpoint (defined in <span>[<a href="#OpenID.Core" class="cite xref">OpenID.Core</a>]</span>) or a request to the attacker's resource server (since the client believes it has completed the flow with A-AS).<a href="#section-2.2.1-8.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-2.2.1-9.2">
+              <p id="section-2.2.1-9.2.1">Implicit Grant: In the implicit grant, the attacker receives an access token instead of the code in Step 4.  The attacker's authorization server receives the access token when the client makes either a request to the A-AS userinfo endpoint (defined in <span>[<a href="#OpenID.Core" class="cite xref">OpenID.Core</a>]</span>) or a request to the attacker's resource server (since the client believes it has completed the flow with A-AS).<a href="#section-2.2.1-9.2.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-2.2.1-8.3">
-              <p id="section-2.2.1-8.3.1">Cross-toolkit OAuth Request Forgery (CORF): If clients do not store the selected OAuth connection context in the user's session, but in the redirection URI instead, attackers can mount an attack called Cross-toolkit OAuth Request Forgery (CORF). This results in a compromised OAuth connection between the victim's application identity and the attacker's toolkit access. The goal of this specific attack variant is not to obtain an authorization code or access token, but to force the client to use an attacker's authorization code or access token for H-AS. This Cross-toolkit OAuth Request Forgery attack is a generalization of the Cross-app OAuth Request Forgery as defined in <span>[<a href="#research.cuhk" class="cite xref">research.cuhk</a>]</span> and the Naïve RP Session Integrity Attack when the OAuth connection context is limited to AS, and is detailed in Section 3.4 of <span>[<a href="#arXiv.1601.01229" class="cite xref">arXiv.1601.01229</a>]</span>.<a href="#section-2.2.1-8.3.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-2.2.1-9.3">
+              <p id="section-2.2.1-9.3.1">Cross-toolkit OAuth Request Forgery (CORF): If clients do not store the selected OAuth connection context in the user's session, but in the redirection URI instead, attackers can mount an attack called Cross-toolkit OAuth Request Forgery (CORF). This results in a compromised OAuth connection between the victim's application identity and the attacker's toolkit access. The goal of this specific attack variant is not to obtain an authorization code or access token, but to force the client to use an attacker's authorization code or access token for H-AS. This Cross-toolkit OAuth Request Forgery attack is a generalization of the Cross-app OAuth Request Forgery as defined in <span>[<a href="#research.cuhk" class="cite xref">research.cuhk</a>]</span> and, when the OAuth connection context is limited to the AS, the Naïve RP Session Integrity Attack as detailed in Section 3.4 of <span>[<a href="#arXiv.1601.01229" class="cite xref">arXiv.1601.01229</a>]</span>.<a href="#section-2.2.1-9.3.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-2.2.1-8.4">
-              <p id="section-2.2.1-8.4.1">OpenID Connect: Some variants can be used to attack OpenID Connect. In these attacks, the attacker misuses features of the OpenID Connect Discovery <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span> mechanism or replays access tokens or ID Tokens to conduct a mix-up attack. The attacks are described in detail in Appendix A of <span>[<a href="#arXiv.1704.08539" class="cite xref">arXiv.1704.08539</a>]</span> and Section 6 of <span>[<a href="#arXiv.1508.04324v2" class="cite xref">arXiv.1508.04324v2</a>]</span> ("Malicious Endpoints Attacks").<a href="#section-2.2.1-8.4.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-2.2.1-9.4">
+              <p id="section-2.2.1-9.4.1">OpenID Connect: Some variants can be used to attack OpenID Connect. In these attacks, the attacker misuses features of the OpenID Connect Discovery <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span> mechanism or replays access tokens or ID Tokens to conduct a mix-up attack. The attacks are described in detail in Appendix A of <span>[<a href="#arXiv.1704.08539" class="cite xref">arXiv.1704.08539</a>]</span> and Section 6 of <span>[<a href="#arXiv.1508.04324v2" class="cite xref">arXiv.1508.04324v2</a>]</span> ("Malicious Endpoints Attacks").<a href="#section-2.2.1-9.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -1655,17 +1656,17 @@ example, to force its clients to adopt the respective countermeasure.<a href="#s
 <p id="section-2.2.2-1">The client <span class="bcp14">MUST</span> use all variables in its supported OAuth connection context to form a connection context identifier that uniquely identifies each AS instance configured at the client. This identifier always includes the unique toolkit identifier. Additionally,<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2.2-2.1">
-              <p id="section-2.2.2-2.1.1">a client allowing each toolkit to use multiple OAuth providers, of which one AS may be compromised as assumed in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>, <span class="bcp14">MUST</span> also include the OAuth provider identifier;<a href="#section-2.2.2-2.1.1" class="pilcrow">¶</a></p>
+              <p id="section-2.2.2-2.1.1">a client allowing each toolkit to use multiple OAuth providers, where one provider's AS may be compromised as assumed in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>, <span class="bcp14">MUST</span> also include the OAuth provider identifier;<a href="#section-2.2.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-2.2.2-2.2">
               <p id="section-2.2.2-2.2.1">a multi-tenant client <span class="bcp14">MUST</span> also include the tenant identifier, if the toolkit identifier is not globally unique.<a href="#section-2.2.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-2.2.2-3">Unless otherwise specified as follows, the client <span class="bcp14">MUST</span> issue per-context distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client <span class="bcp14">MUST</span> store this identifier in the user's session. When an authorization response was received on the redirection endpoint, the client <span class="bcp14">MUST</span> also check that the context identifier from the distinct redirection URI matches with the one in the user's session. If there is a mismatch, the client <span class="bcp14">MUST</span> abort the flow.<a href="#section-2.2.2-3" class="pilcrow">¶</a></p>
-<p id="section-2.2.2-4">Existing countermeasures for mix-up attacks (<span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>) can be a replacement under the following conditions:<a href="#section-2.2.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.2.2-3">Unless otherwise specified as follows, the following requirements apply: the client <span class="bcp14">MUST</span> issue a per-context distinct redirection URI that incorporates this unique connection context identifier. When initiating an authorization request, the client <span class="bcp14">MUST</span> store this identifier in the user's session. When an authorization response is received on the redirection endpoint, the client <span class="bcp14">MUST</span> also check that the context identifier from the distinct redirection URI matches the one in the user's session. If there is a mismatch, the client <span class="bcp14">MUST</span> abort the flow.<a href="#section-2.2.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.2.2-4">Existing countermeasures for mix-up attacks (<span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4" class="relref">Section 4.4</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>) can serve as a replacement under the following conditions:<a href="#section-2.2.2-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2.2-5.1">
-              <p id="section-2.2.2-5.1.1">the client has entirely dropped the support to implicit grant, and<a href="#section-2.2.2-5.1.1" class="pilcrow">¶</a></p>
+              <p id="section-2.2.2-5.1.1">the client has entirely dropped support for the implicit grant, and<a href="#section-2.2.2-5.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-2.2.2-5.2">
               <p id="section-2.2.2-5.2.1">the OAuth provider specifies an AS not by individually configured AS endpoints but instead by an abstract issuer identifier (as defined in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.4.2" class="relref">Section 4.4.2</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>) that represents the endpoints, and<a href="#section-2.2.2-5.2.1" class="pilcrow">¶</a></p>
@@ -1674,9 +1675,10 @@ example, to force its clients to adopt the respective countermeasure.<a href="#s
               <p id="section-2.2.2-5.3.1">the issuer identifier is used either in place of the connection context identifier in the redirection URI or is separately returned according to <span>[<a href="#RFC9207" class="cite xref">RFC9207</a>]</span>, and<a href="#section-2.2.2-5.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-2.2.2-5.4">
-              <p id="section-2.2.2-5.4.1">an additional runtime resolution is used to resolve the issuer to retrieve the associated AS endpoints (e.g., with the authorization server metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> or OpenID Discovery <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span>). Clients using such resolution solely to pre-populate individual AS endpoint fields, without any coupling with the issuer identifier will remain vulnerable.<a href="#section-2.2.2-5.4.1" class="pilcrow">¶</a></p>
+              <p id="section-2.2.2-5.4.1">an additional runtime resolution is used to resolve the issuer to retrieve the associated AS endpoints (e.g., with the authorization server metadata <span>[<a href="#RFC8414" class="cite xref">RFC8414</a>]</span> or OpenID Discovery <span>[<a href="#OpenID.Discovery" class="cite xref">OpenID.Discovery</a>]</span>). Clients using such resolution solely to pre-populate individual AS endpoint fields without any coupling with the issuer identifier will remain vulnerable.<a href="#section-2.2.2-5.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
+<p id="section-2.2.2-6">Compared with existing countermeasures for mix-up attacks, which rely on an issuer identifier that each AS uses to uniquely identify itself and that the client stores, the connection context identifier approach lets the client uniquely identify each AS instance it has configured. This approach is particularly useful for clients that provision AS endpoints with manually configured metadata, where an issuer identifier may not be available.<a href="#section-2.2.2-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2120,43 +2122,55 @@ Xianbo Wang<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <a href="#name-document-history" class="section-name selfRef">Document History</a>
       </h2>
 <p id="appendix-B-1">[[ To be removed from the final specification ]]<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<p id="appendix-B-2">-02<a href="#appendix-B-2" class="pilcrow">¶</a></p>
+<p id="appendix-B-2">-03<a href="#appendix-B-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B-3.1">
-          <p id="appendix-B-3.1.1">Simplify core attack description for Audience Injection attacks by moving "why token EP" discussion to a new section<a href="#appendix-B-3.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.1.1">Note that issuing distinct redirection URIs alone does not prevent the COAT attack<a href="#appendix-B-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-3.2">
-          <p id="appendix-B-3.2.1">Include concrete examples for how an attacker may misuse client assertions obtained via Audience Injection attacks<a href="#appendix-B-3.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.2.1">Add comparison of the COAT countermeasure with issuer-based mix-up countermeasures<a href="#appendix-B-3.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-3.3">
-          <p id="appendix-B-3.3.1">Add implementation considerations for Audience Injection countermeasures, including recommendations for how to deal with ASs that only accept their token endpoint as audience value<a href="#appendix-B-3.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-B-3.4">
-          <p id="appendix-B-3.4.1">Add new section on Shared Consent in Brokered OAuth, describing the attack, its preconditions, and countermeasures<a href="#appendix-B-3.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.3.1">Remove a COAT variant mention already covered by Shared Consent in Brokered OAuth<a href="#appendix-B-3.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-B-4">-01<a href="#appendix-B-4" class="pilcrow">¶</a></p>
+<p id="appendix-B-4">-02<a href="#appendix-B-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B-5.1">
-          <p id="appendix-B-5.1.1">Clarify that shared redirection URI is not a precondition of COAT<a href="#appendix-B-5.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-5.1.1">Simplify core attack description for Audience Injection attacks by moving "why token EP" discussion to a new section<a href="#appendix-B-5.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-5.2">
-          <p id="appendix-B-5.2.1">Clarify that COAT countermeasure uniquely identifies each configured AS instance<a href="#appendix-B-5.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-5.2.1">Include concrete examples for how an attacker may misuse client assertions obtained via Audience Injection attacks<a href="#appendix-B-5.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-5.3">
-          <p id="appendix-B-5.3.1">Clarify Session Fixation countermeasures and relationship to CSRF and PKCE<a href="#appendix-B-5.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-5.3.1">Add implementation considerations for Audience Injection countermeasures, including recommendations for how to deal with ASs that only accept their token endpoint as audience value<a href="#appendix-B-5.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-5.4">
-          <p id="appendix-B-5.4.1">Use terminology that is less ambiguous and better aligned with standard OAuth language<a href="#appendix-B-5.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-B-5.5">
-          <p id="appendix-B-5.5.1">Editorial clarifications and fixes, and reference updates<a href="#appendix-B-5.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-5.4.1">Add new section on Shared Consent in Brokered OAuth, describing the attack, its preconditions, and countermeasures<a href="#appendix-B-5.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-B-6">-00<a href="#appendix-B-6" class="pilcrow">¶</a></p>
+<p id="appendix-B-6">-01<a href="#appendix-B-6" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B-7.1">
-          <p id="appendix-B-7.1.1">WG adoption, no changes from previous individual draft<a href="#appendix-B-7.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-7.1.1">Clarify that shared redirection URI is not a precondition of COAT<a href="#appendix-B-7.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-7.2">
+          <p id="appendix-B-7.2.1">Clarify that COAT countermeasure uniquely identifies each configured AS instance<a href="#appendix-B-7.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-7.3">
+          <p id="appendix-B-7.3.1">Clarify Session Fixation countermeasures and relationship to CSRF and PKCE<a href="#appendix-B-7.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-7.4">
+          <p id="appendix-B-7.4.1">Use terminology that is less ambiguous and better aligned with standard OAuth language<a href="#appendix-B-7.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-7.5">
+          <p id="appendix-B-7.5.1">Editorial clarifications and fixes, and reference updates<a href="#appendix-B-7.5.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-B-8">-00<a href="#appendix-B-8" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-B-9.1">
+          <p id="appendix-B-9.1.1">WG adoption, no changes from previous individual draft<a href="#appendix-B-9.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
