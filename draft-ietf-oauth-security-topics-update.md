@@ -49,6 +49,11 @@ author:
     organization: Samsung Research America
     email: adonis.fung@samsung.com
     country: USA
+ -
+    fullname: "Jonas Primbs"
+    organization: University of Tübingen
+    email: jonas.primbs@uni-tuebingen.de
+    country: Germany
 
 normative:
 
@@ -115,6 +120,20 @@ informative:
     date: February 2026
     target: https://openid.net/specs/openid-federation-1_0-final.html
     title: OpenID Federation 1.0
+  OAuth.Responses:
+    author:
+    - ins: B. de Medeiros
+      name: Breno de Medeiros
+      role: editor
+    - ins: M. Scurtescu
+      name: Marius Scurtescu
+    - ins: P. Tarjan
+      name: Paul Tarjan
+    - ins: M. Jones
+      name: Michael B. Jones
+    date: February 2014
+    target: https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html
+    title: OAuth 2.0 Multiple Response Type Encoding Practices
   research.ust:
     author:
     - ins: P. Hosseyni
@@ -174,6 +193,22 @@ informative:
     date: May 2025
     target: https://ieeexplore.ieee.org/document/11023371
     title: "\"Only as Strong as the Weakest Link\": On the Security of Brokered Single Sign-On on the Web"
+  research.syss:
+    author:
+    - ins: J. Primbs
+      name: Jonas Primbs
+    date: November 2025
+    target: https://blog.syss.com/posts/browser_swapping/
+    refcontent: "SySS Tech Blog"
+    title: "OAuth 2.0 Browser Swapping Attacks"
+  research.push:
+    author:
+    - ins: L. Jennings
+      name: Luke Jennings
+    date: December 2025
+    target: https://pushsecurity.com/blog/consentfix
+    refcontent: "Push Security Blog"
+    title: "ConsentFix: Analyzing a browser-native ClickFix-style attack that hijacks OAuth consent grants"
   arXiv.1601.01229:
     author:
       - ins: D. Fett
@@ -818,6 +853,157 @@ However, the user may be confronted with up to two consent screens in a single a
 
 Both countermeasures are implemented entirely on the client side (the downstream client and the broker) and require no software or protocol changes to any AS.
 
+## Browser Swapping {#BrowserSwapping}
+
+In a browser swapping attack, the attacker initiates an authorization code flow in their user agent.
+They then let the victim continue the flow through their authorization request URL, which fails at the authorization response.
+Then, the attacker accesses the authorization code from the authorization response URL and completes the flow in their user agent.
+This causes the attacker's client to resolve the victim's authorization code for the victim's tokens.
+
+The attack requires two conditions to be met: (1) the victim must sign in to the authorization server via the attacker's authorization request URL and (2) the attacker must receive the victim's valid authorization code.
+Both conditions are often met in practice through social engineering.
+
+For example, in the ConsentFix campaign reported in {{research.push}}, victims were lured into signing in to Microsoft Entra through an authorization request URI crafted by the attacker on a phishing page.
+The URI requested authorization for a pre-authorized, first-party client (the Azure CLI), which uses a loopback redirection URI ({{Section 7.3 of !RFC8252}}).
+Since no application was listening on the victim's loopback interface, their browser showed an unreachable error, but the authorization code remained valid and visible in the address bar.
+The phishing page then instructed the victim to paste the URI from the failed redirection back into the page.
+This handed the authorization code to the attacker, who redeemed it for the victim's tokens.
+
+Existing countermeasures do not prevent this attack.
+Since the attacker initiates the authorization request, only the attacker knows the PKCE {{?RFC7636}} `code_verifier`, and the `state` ({{Section 4.7 of !RFC9700}}) for CSRF protection.
+The attacker can use these countermeasures against the victim because clients using the claimed "https" redirection URI ({{Section 7.2 of !RFC8252}}) also tend to fail with an error if the `state` or `code_verifier` verification fails.
+This leaves the authorization code unprotected in the address bar.
+
+### Attack Description {#BrowserSwappingDescription}
+
+Preconditions: The attacker is able to obtain the authorization response that was delivered to the victim's user agent, and the authorization code contained in that response has neither been redeemed nor expired when the attacker replays it.
+
+Example Attack:
+
+1. From the client, the attacker initiates an OAuth flow in the attacker's user agent and obtains an authorization request URI, which contains the `state` value and the `code_challenge` bound to the attacker's session at the client.
+2. The attacker sends this authorization request URI to a victim user and may manipulate it to cause an error in the victim's authorization response with the authorization code accessible in the address bar.
+3. The victim user visits the URI and authorizes the client to access their resources. The consent prompt may be skipped due to prior or implicit approvals.
+4. The AS redirects the victim's user agent to the client's redirect URI with an authorization code for the victim's resources and the attacker's `state` value.
+5. The client detects that the `state` value does not match the victim's session, aborts the flow, and displays an error page. The authorization code remains unused and valid.
+6. The attacker obtains the authorization response, e.g., by socially engineering the victim into sharing the URI of the error page.
+7. The attacker replays the authorization response in their own user agent. The `state` value now matches the attacker's session, so the client redeems the authorization code and obtains access to the victim's tokens and resources.
+
+The following diagram illustrates the attack:
+
+~~~
+Attacker    (Victim) User          Client             AS
+    |             |                   |                |
+    | Initiate OAuth flow             |                |
+    |-------------------------------->|                |
+    | authz req URI with              |                |
+    | state=attacker_state            |                |
+    |<--------------------------------|                |
+    |             |                   |                |
+    | Send URI to victim out-of-band  |                |
+    | (e.g., via phishing link)       |                |
+    |------------>|                   |                |
+    |             |                   |                |
+    |             | Visit authz req URI                |
+    |             |----------------------------------->|
+    |             | User authentication and consent    |
+    |             |<---------------------------------->|
+    |             | authz res with code +              |
+    |             | state=attacker_state               |
+    |             |<-----------------------------------|
+    |             | authz res         |                |
+    |             |------------------>|                |
+    |             | error page;       |                |
+    |             | code stays valid  |                |
+    |             |<------------------|                |
+    |             |                   |                |
+    | authz res leaks to attacker     |                |
+    | (e.g., shared error page URL,   |                |
+    | logs, browser history)          |                |
+    |<------------|                   |                |
+    |             |                   |                |
+    | Replay authz res in attacker's  |                |
+    | user agent  |                   |                |
+    |-------------------------------->|                |
+    |             |                   | Exchange code  |
+    |             |                   | for token      |
+    |             |                   |<-------------->|
+    | tokens for victim's resources   |                |
+    |<--------------------------------|                |
+~~~
+
+Variant:
+
+If the client redirects from a failed authorization response to an error page ({{Section 4.1.2.1 of !RFC6749}}), the authorization code is removed from the address bar.
+However, attackers can circumvent this by appending `&response_mode=fragment` to the authorization request URL.
+This changes the response mode from the default, `query`, to `fragment` (Section 2.1 of {{OAuth.Responses}}), causing the authorization server to put the authorization code into the fragment part of the redirect URI.
+User agents do not send the fragment part to the server, but they do preserve it through redirects ({{Section 17.11 of ?RFC9110}}).
+Consequently, the client cannot process the authorization response, while the response parameters remain in the address bar of the victim's user agent on the error page.
+Without response mode enforcement by the authorization server, only confidential clients can prevent this response mode mutation using Pushed Authorization Requests (PAR) {{?RFC9126}} or JWT-Secured Authorization Requests (JAR) {{?RFC9101}}.
+
+### Countermeasures {#BrowserSwappingCountermeasures}
+
+Browser swapping is mitigated if the authorization code is either unavailable to the attacker or no longer usable when the attacker replays it.
+The following countermeasures address these two aspects and complement each other:
+{{BrowserSwappingErrorPage}} removes the authorization response from the victim's user agent, {{BrowserSwappingCodeInvalidation}} devalues authorization responses that have already leaked, and {{BrowserSwappingResponseMode}} and {{BrowserSwappingRedirectURI}} ensure that the client actually processes every authorization response it receives, so that the previous two countermeasures can take effect.
+Clients SHOULD implement all of them.
+They complement, and do not replace, the countermeasures against credential leakage in {{Section 4.2 of !RFC9700}} and {{Section 4.3 of !RFC9700}}.
+
+#### Clearing the Authorization Response from the User Agent {#BrowserSwappingErrorPage}
+
+Clients MUST NOT serve an error page directly in response to a request to their redirection endpoint because doing so leaves the authorization response parameters in the address bar.
+Instead, clients MUST redirect user agents to an error page whose URI does not contain authorization response parameters.
+If the response mode is set to `fragment`, which may not be expected by the client (see the response mode mutation described in {{BrowserSwappingDescription}}), the authorization response parameters will remain in the user agent's error URL after the redirect.
+Therefore, the client MUST also clear the fragment part.
+An empty fragment component (i.e., a URI ending in `#`) is sufficient (see {{Section 17.11 of ?RFC9110}}).
+
+Non-normative example response from the client's redirection endpoint:
+
+    HTTP/1.1 303 See Other
+    Location: https://client.com/error?error=invalid_request#
+
+This countermeasure prevents the victim from passing the authorization response to the attacker along with the URI of the error page.
+Note that it does not remove the request to the redirection endpoint from the victim's browser history.
+
+#### Invalidating Authorization Codes upon Failed Access Token Requests {#BrowserSwappingCodeInvalidation}
+
+{{Section 4.1.2 of !RFC6749}} requires the authorization server to deny repeated use of an authorization code and recommends revoking any previously issued tokens for it.
+However, this does not help against browser swapping, since the attacker redeems the authorization code for the first time.
+Therefore, if the client receives the authorization code but denies using it (e.g., because the `state` parameter does not match or because the session has no `code_verifier` stored), the client SHOULD revoke it from the authorization server by sending an invalid access token request.
+
+Therefore, the authorization server SHOULD invalidate an authorization code whenever it receives an invalid access token request, particularly if
+
+* client authentication fails, or the code was not issued for the requesting client,
+* the `redirect_uri` parameter is missing or does not match the redirection URI of the authorization request, or
+* the `code_verifier` parameter is missing or does not match the `code_challenge` of the authorization request ({{?RFC7636}}).
+
+Authorization codes SHOULD NOT be invalidated due to errors unrelated to the code's binding to the authorization request, such as an authorization server that is temporarily unavailable.
+
+Clients MUST NOT send an access token request that could succeed because doing so would complete the flow initiated by the attacker.
+
+#### Redirection Endpoints Without Wildcards {#BrowserSwappingRedirectURI}
+
+{{Section 4.1.1 of !RFC9700}} already requires authorization servers to compare redirection URIs against registered ones using exact string matching.
+Consequently, clients MUST NOT register redirection URIs that contain wildcards or otherwise allow attackers to influence which of the client's endpoints receives the authorization response.
+
+This requirement relevant is not only for well-known open redirection issues, but also for browser swapping.
+If an attacker can direct the authorization response to an endpoint other than the redirection endpoint (e.g., to a static page or an endpoint that ignores unknown request parameters), that endpoint will not clear the authorization response from the user agent ({{BrowserSwappingErrorPage}}) nor invalidate the authorization code ({{BrowserSwappingCodeInvalidation}}).
+Therefore, clients SHOULD register each redirection URI as a dedicated endpoint that implements these countermeasures.
+
+#### Restricting the Allowed Response Modes {#BrowserSwappingResponseMode}
+
+Clients SHOULD restrict the allowed response modes in their client configuration to only those that are actually implemented.
+Authorization servers SHOULD support this restriction and MUST reject authorization requests with unauthorized response modes.
+
+Without this restriction, attackers can mutate the response mode as described in {{BrowserSwappingDescription}}, and thereby prevent the client from receiving, processing and invalidating the authorization code.
+Note that this restriction complements, but does not replace, the countermeasure in {{BrowserSwappingErrorPage}}, since the response mode can also be mutated in the opposite direction.
+This would result in a response mode that the client implements, but which exposes the authorization response to more leak sources.
+
+If the authorization server does not support response mode restrictions, clients SHOULD integrity-protect the authorization request.
+They can do so by using Pushed Authorization Requests (PAR) {{?RFC9126}}, where the client transmits the request parameters directly to the authorization server and receives a `request_uri` that references them.
+Alternatively, they can use JWT-Secured Authorization Requests (JAR) {{?RFC9101}}, where the client passes the parameters in a signed request object.
+In both cases, the authorization server only uses the parameters of the request object and ignores parameters added by an attacker ({{Section 6.3 of ?RFC9101}}), so the attacker cannot mutate the response mode or the redirection URI (see {{BrowserSwappingRedirectURI}}).
+Authorization servers SHOULD support enforcing PAR or JAR on a per-client basis (see {{Section 4 of ?RFC9126}}), so an attacker cannot fall back to an authorization request without integrity protection.
+
 # Security Considerations {#Security}
 
 Security considerations are described in {{AttacksMitigations}}.
@@ -853,6 +1039,7 @@ for their valuable feedback and contributions to this document.
 
 -03
 
+* Add new section on Browser Swapping, describing the attack, its preconditions, and countermeasures
 * Note that issuing distinct redirection URIs alone does not prevent the COAT attack
 * Add comparison of the COAT countermeasure with issuer-based mix-up countermeasures
 * Remove a COAT variant mention already covered by Shared Consent in Brokered OAuth
