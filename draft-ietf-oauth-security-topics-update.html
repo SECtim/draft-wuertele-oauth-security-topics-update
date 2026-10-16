@@ -9,31 +9,32 @@
 <meta content="Pedram Hosseyni" name="author">
 <meta content="Kaixuan Luo" name="author">
 <meta content="Adonis Fung" name="author">
+<meta content="Jonas Primbs" name="author">
 <meta content="
        This document updates the set of best current security practices for
 OAuth 2.0 by extending the security advice given in RFC 6749, RFC
 6750, and RFC 9700, to cover new threats that have been discovered
 since the former documents have been published. 
     " name="description">
-<meta content="xml2rfc 3.34.0" name="generator">
+<meta content="xml2rfc 3.34.1" name="generator">
 <meta content="security" name="keyword">
 <meta content="oauth2" name="keyword">
 <meta content="best current practice" name="keyword">
 <meta content="draft-ietf-oauth-security-topics-update-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.34.0
-    Python 3.14.5
-    ConfigArgParse 1.7.5
+  xml2rfc 3.34.1
+    Python 3.14.8
+    ConfigArgParse 1.8.0
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.10.0
+    platformdirs 4.12.2
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.8.2
+    wcwidth 0.9.1
 -->
 <link href="draft-ietf-oauth-security-topics-update.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -69,7 +70,6 @@ since the former documents have been published.
   src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: italic;
@@ -118,7 +118,6 @@ since the former documents have been published.
   src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: normal;
@@ -183,7 +182,6 @@ since the former documents have been published.
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
 }
 
 @font-face {
@@ -1052,11 +1050,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Updates to OAuth 2.0 Security BCP</td>
-<td class="right">July 2026</td>
+<td class="right">October 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Würtele, et al.</td>
-<td class="center">Expires 7 January 2027</td>
+<td class="center">Expires 19 April 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1074,12 +1072,12 @@ svg {
 <a href="https://www.rfc-editor.org/rfc/rfc6749" class="eref">6749</a>, <a href="https://www.rfc-editor.org/rfc/rfc6750" class="eref">6750</a>, <a href="https://www.rfc-editor.org/rfc/rfc7521" class="eref">7521</a>, <a href="https://www.rfc-editor.org/rfc/rfc7522" class="eref">7522</a>, <a href="https://www.rfc-editor.org/rfc/rfc7523" class="eref">7523</a>, <a href="https://www.rfc-editor.org/rfc/rfc9700" class="eref">9700</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-06" class="published">6 July 2026</time>
+<time datetime="2026-10-16" class="published">16 October 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Best Current Practice</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-07">7 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-04-19">19 April 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1097,6 +1095,10 @@ svg {
 <div class="author">
       <div class="author-name">A. Fung</div>
 <div class="org">Samsung Research America</div>
+</div>
+<div class="author">
+      <div class="author-name">J. Primbs</div>
+<div class="org">University of Tübingen</div>
 </div>
 </dd>
 </dl>
@@ -1144,7 +1146,7 @@ since the former documents have been published.<a href="#section-abstract-1" cla
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 7 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 19 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1228,6 +1230,17 @@ since the former documents have been published.<a href="#section-abstract-1" cla
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4.2.2">
                     <p id="section-toc.1-1.2.2.4.2.2.1"><a href="#section-2.4.2" class="auto internal xref">2.4.2</a>.  <a href="#name-countermeasures-4" class="internal xref">Countermeasures</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5">
+                <p id="section-toc.1-1.2.2.5.1"><a href="#section-2.5" class="auto internal xref">2.5</a>.  <a href="#name-browser-swapping" class="internal xref">Browser Swapping</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5.2.1">
+                    <p id="section-toc.1-1.2.2.5.2.1.1"><a href="#section-2.5.1" class="auto internal xref">2.5.1</a>.  <a href="#name-attack-description-5" class="internal xref">Attack Description</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5.2.2">
+                    <p id="section-toc.1-1.2.2.5.2.2.1"><a href="#section-2.5.2" class="auto internal xref">2.5.2</a>.  <a href="#name-countermeasures-5" class="internal xref">Countermeasures</a></p>
 </li>
                 </ul>
 </li>
@@ -1975,6 +1988,196 @@ However, the user may be confronted with up to two consent screens in a single a
 </div>
 </section>
 </div>
+<div id="BrowserSwapping">
+<section id="section-2.5">
+        <h3 id="name-browser-swapping">
+<a href="#section-2.5" class="section-number selfRef">2.5. </a><a href="#name-browser-swapping" class="section-name selfRef">Browser Swapping</a>
+        </h3>
+<p id="section-2.5-1">In a browser swapping attack, the attacker initiates an authorization code flow in their user agent.
+They then let the victim continue the flow through their authorization request URL, which fails at the authorization response.
+Then, the attacker accesses the authorization code from the authorization response URL and completes the flow in their user agent.
+This causes the attacker's client to resolve the victim's authorization code for the victim's tokens.<a href="#section-2.5-1" class="pilcrow">¶</a></p>
+<p id="section-2.5-2">The attack requires two conditions to be met: (1) the victim must sign in to the authorization server via the attacker's authorization request URL and (2) the attacker must receive the victim's valid authorization code.
+Both conditions are often met in practice through social engineering.<a href="#section-2.5-2" class="pilcrow">¶</a></p>
+<p id="section-2.5-3">For example, in the ConsentFix campaign reported in <span>[<a href="#research.push" class="cite xref">research.push</a>]</span>, victims were lured into signing in to Microsoft Entra through an authorization request URI crafted by the attacker on a phishing page.
+The URI requested authorization for a pre-authorized, first-party client (the Azure CLI), which uses a loopback redirection URI (<span><a href="https://rfc-editor.org/rfc/rfc8252#section-7.3" class="relref">Section 7.3</a> of [<a href="#RFC8252" class="cite xref">RFC8252</a>]</span>).
+Since no application was listening on the victim's loopback interface, their browser showed an unreachable error, but the authorization code remained valid and visible in the address bar.
+The phishing page then instructed the victim to paste the URI from the failed redirection back into the page.
+This handed the authorization code to the attacker, who redeemed it for the victim's tokens.<a href="#section-2.5-3" class="pilcrow">¶</a></p>
+<p id="section-2.5-4">Existing countermeasures do not prevent this attack.
+Since the attacker initiates the authorization request, only the attacker knows the PKCE <span>[<a href="#RFC7636" class="cite xref">RFC7636</a>]</span> <code>code_verifier</code>, and the <code>state</code> (<span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.7" class="relref">Section 4.7</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>) for CSRF protection.
+The attacker can use these countermeasures against the victim because clients using the claimed "https" redirection URI (<span><a href="https://rfc-editor.org/rfc/rfc8252#section-7.2" class="relref">Section 7.2</a> of [<a href="#RFC8252" class="cite xref">RFC8252</a>]</span>) also tend to fail with an error if the <code>state</code> or <code>code_verifier</code> verification fails.
+This leaves the authorization code unprotected in the address bar.<a href="#section-2.5-4" class="pilcrow">¶</a></p>
+<div id="BrowserSwappingDescription">
+<section id="section-2.5.1">
+          <h4 id="name-attack-description-5">
+<a href="#section-2.5.1" class="section-number selfRef">2.5.1. </a><a href="#name-attack-description-5" class="section-name selfRef">Attack Description</a>
+          </h4>
+<p id="section-2.5.1-1">Preconditions: The attacker is able to obtain the authorization response that was delivered to the victim's user agent, and the authorization code contained in that response has neither been redeemed nor expired when the attacker replays it.<a href="#section-2.5.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.5.1-2">Example Attack:<a href="#section-2.5.1-2" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.5.1-3">
+<li id="section-2.5.1-3.1">
+              <p id="section-2.5.1-3.1.1">From the client, the attacker initiates an OAuth flow in the attacker's user agent and obtains an authorization request URI, which contains the <code>state</code> value and the <code>code_challenge</code> bound to the attacker's session at the client.<a href="#section-2.5.1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.1-3.2">
+              <p id="section-2.5.1-3.2.1">The attacker sends this authorization request URI to a victim user and may manipulate it to cause an error in the victim's authorization response with the authorization code accessible in the address bar.<a href="#section-2.5.1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.1-3.3">
+              <p id="section-2.5.1-3.3.1">The victim user visits the URI and authorizes the client to access their resources. The consent prompt may be skipped due to prior or implicit approvals.<a href="#section-2.5.1-3.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.1-3.4">
+              <p id="section-2.5.1-3.4.1">The AS redirects the victim's user agent to the client's redirect URI with an authorization code for the victim's resources and the attacker's <code>state</code> value.<a href="#section-2.5.1-3.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.1-3.5">
+              <p id="section-2.5.1-3.5.1">The client detects that the <code>state</code> value does not match the victim's session, aborts the flow, and displays an error page. The authorization code remains unused and valid.<a href="#section-2.5.1-3.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.1-3.6">
+              <p id="section-2.5.1-3.6.1">The attacker obtains the authorization response, e.g., by socially engineering the victim into sharing the URI of the error page.<a href="#section-2.5.1-3.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-2.5.1-3.7">
+              <p id="section-2.5.1-3.7.1">The attacker replays the authorization response in their own user agent. The <code>state</code> value now matches the attacker's session, so the client redeems the authorization code and obtains access to the victim's tokens and resources.<a href="#section-2.5.1-3.7.1" class="pilcrow">¶</a></p>
+</li>
+          </ol>
+<p id="section-2.5.1-4">The following diagram illustrates the attack:<a href="#section-2.5.1-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.5.1-5">
+<pre>
+Attacker    (Victim) User          Client             AS
+    |             |                   |                |
+    | Initiate OAuth flow             |                |
+    |--------------------------------&gt;|                |
+    | authz req URI with              |                |
+    | state=attacker_state            |                |
+    |&lt;--------------------------------|                |
+    |             |                   |                |
+    | Send URI to victim out-of-band  |                |
+    | (e.g., via phishing link)       |                |
+    |------------&gt;|                   |                |
+    |             |                   |                |
+    |             | Visit authz req URI                |
+    |             |-----------------------------------&gt;|
+    |             | User authentication and consent    |
+    |             |&lt;----------------------------------&gt;|
+    |             | authz res with code +              |
+    |             | state=attacker_state               |
+    |             |&lt;-----------------------------------|
+    |             | authz res         |                |
+    |             |------------------&gt;|                |
+    |             | error page;       |                |
+    |             | code stays valid  |                |
+    |             |&lt;------------------|                |
+    |             |                   |                |
+    | authz res leaks to attacker     |                |
+    | (e.g., shared error page URL,   |                |
+    | logs, browser history)          |                |
+    |&lt;------------|                   |                |
+    |             |                   |                |
+    | Replay authz res in attacker's  |                |
+    | user agent  |                   |                |
+    |--------------------------------&gt;|                |
+    |             |                   | Exchange code  |
+    |             |                   | for token      |
+    |             |                   |&lt;--------------&gt;|
+    | tokens for victim's resources   |                |
+    |&lt;--------------------------------|                |
+</pre><a href="#section-2.5.1-5" class="pilcrow">¶</a>
+</div>
+<p id="section-2.5.1-6">Variant:<a href="#section-2.5.1-6" class="pilcrow">¶</a></p>
+<p id="section-2.5.1-7">If the client redirects from a failed authorization response to an error page (<span><a href="https://rfc-editor.org/rfc/rfc6749#section-4.1.2.1" class="relref">Section 4.1.2.1</a> of [<a href="#RFC6749" class="cite xref">RFC6749</a>]</span>), the authorization code is removed from the address bar.
+However, attackers can circumvent this by appending <code>&amp;response_mode=fragment</code> to the authorization request URL.
+This changes the response mode from the default, <code>query</code>, to <code>fragment</code> (Section 2.1 of <span>[<a href="#OAuth.Responses" class="cite xref">OAuth.Responses</a>]</span>), causing the authorization server to put the authorization code into the fragment part of the redirect URI.
+User agents do not send the fragment part to the server, but they do preserve it through redirects (<span><a href="https://rfc-editor.org/rfc/rfc9110#section-17.11" class="relref">Section 17.11</a> of [<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>).
+Consequently, the client cannot process the authorization response, while the response parameters remain in the address bar of the victim's user agent on the error page.
+Without response mode enforcement by the authorization server, only confidential clients can prevent this response mode mutation using Pushed Authorization Requests (PAR) <span>[<a href="#RFC9126" class="cite xref">RFC9126</a>]</span> or JWT-Secured Authorization Requests (JAR) <span>[<a href="#RFC9101" class="cite xref">RFC9101</a>]</span>.<a href="#section-2.5.1-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="BrowserSwappingCountermeasures">
+<section id="section-2.5.2">
+          <h4 id="name-countermeasures-5">
+<a href="#section-2.5.2" class="section-number selfRef">2.5.2. </a><a href="#name-countermeasures-5" class="section-name selfRef">Countermeasures</a>
+          </h4>
+<p id="section-2.5.2-1">Browser swapping is mitigated if the authorization code is either unavailable to the attacker or no longer usable when the attacker replays it.
+The following countermeasures address these two aspects and complement each other:
+<a href="#BrowserSwappingErrorPage" class="auto internal xref">Section 2.5.2.1</a> removes the authorization response from the victim's user agent, <a href="#BrowserSwappingCodeInvalidation" class="auto internal xref">Section 2.5.2.2</a> devalues authorization responses that have already leaked, and <a href="#BrowserSwappingResponseMode" class="auto internal xref">Section 2.5.2.4</a> and <a href="#BrowserSwappingRedirectURI" class="auto internal xref">Section 2.5.2.3</a> ensure that the client actually processes every authorization response it receives, so that the previous two countermeasures can take effect.
+Clients <span class="bcp14">SHOULD</span> implement all of them.
+They complement, and do not replace, the countermeasures against credential leakage in <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.2" class="relref">Section 4.2</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.3" class="relref">Section 4.3</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span>.<a href="#section-2.5.2-1" class="pilcrow">¶</a></p>
+<div id="BrowserSwappingErrorPage">
+<section id="section-2.5.2.1">
+            <h5 id="name-clearing-the-authorization-">
+<a href="#section-2.5.2.1" class="section-number selfRef">2.5.2.1. </a><a href="#name-clearing-the-authorization-" class="section-name selfRef">Clearing the Authorization Response from the User Agent</a>
+            </h5>
+<p id="section-2.5.2.1-1">Clients <span class="bcp14">MUST NOT</span> serve an error page directly in response to a request to their redirection endpoint because doing so leaves the authorization response parameters in the address bar.
+Instead, clients <span class="bcp14">MUST</span> redirect user agents to an error page whose URI does not contain authorization response parameters.
+If the response mode is set to <code>fragment</code>, which may not be expected by the client (see the response mode mutation described in <a href="#BrowserSwappingDescription" class="auto internal xref">Section 2.5.1</a>), the authorization response parameters will remain in the user agent's error URL after the redirect.
+Therefore, the client <span class="bcp14">MUST</span> also clear the fragment part.
+An empty fragment component (i.e., a URI ending in <code>#</code>) is sufficient (see <span><a href="https://rfc-editor.org/rfc/rfc9110#section-17.11" class="relref">Section 17.11</a> of [<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>).<a href="#section-2.5.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.5.2.1-2">Non-normative example response from the client's redirection endpoint:<a href="#section-2.5.2.1-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.5.2.1-3">
+<pre>
+HTTP/1.1 303 See Other
+Location: https://client.com/error?error=invalid_request#
+</pre><a href="#section-2.5.2.1-3" class="pilcrow">¶</a>
+</div>
+<p id="section-2.5.2.1-4">This countermeasure prevents the victim from passing the authorization response to the attacker along with the URI of the error page.
+Note that it does not remove the request to the redirection endpoint from the victim's browser history.<a href="#section-2.5.2.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="BrowserSwappingCodeInvalidation">
+<section id="section-2.5.2.2">
+            <h5 id="name-invalidating-authorization-">
+<a href="#section-2.5.2.2" class="section-number selfRef">2.5.2.2. </a><a href="#name-invalidating-authorization-" class="section-name selfRef">Invalidating Authorization Codes upon Failed Access Token Requests</a>
+            </h5>
+<p id="section-2.5.2.2-1"><span><a href="https://rfc-editor.org/rfc/rfc6749#section-4.1.2" class="relref">Section 4.1.2</a> of [<a href="#RFC6749" class="cite xref">RFC6749</a>]</span> requires the authorization server to deny repeated use of an authorization code and recommends revoking any previously issued tokens for it.
+However, this does not help against browser swapping, since the attacker redeems the authorization code for the first time.
+Therefore, if the client receives the authorization code but denies using it (e.g., because the <code>state</code> parameter does not match or because the session has no <code>code_verifier</code> stored), the client <span class="bcp14">SHOULD</span> revoke it from the authorization server by sending an invalid access token request.<a href="#section-2.5.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.5.2.2-2">Therefore, the authorization server <span class="bcp14">SHOULD</span> invalidate an authorization code whenever it receives an invalid access token request, particularly if<a href="#section-2.5.2.2-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.5.2.2-3.1">
+                <p id="section-2.5.2.2-3.1.1">client authentication fails, or the code was not issued for the requesting client,<a href="#section-2.5.2.2-3.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.5.2.2-3.2">
+                <p id="section-2.5.2.2-3.2.1">the <code>redirect_uri</code> parameter is missing or does not match the redirection URI of the authorization request, or<a href="#section-2.5.2.2-3.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.5.2.2-3.3">
+                <p id="section-2.5.2.2-3.3.1">the <code>code_verifier</code> parameter is missing or does not match the <code>code_challenge</code> of the authorization request (<span>[<a href="#RFC7636" class="cite xref">RFC7636</a>]</span>).<a href="#section-2.5.2.2-3.3.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+<p id="section-2.5.2.2-4">Authorization codes <span class="bcp14">SHOULD NOT</span> be invalidated due to errors unrelated to the code's binding to the authorization request, such as an authorization server that is temporarily unavailable.<a href="#section-2.5.2.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.5.2.2-5">Clients <span class="bcp14">MUST NOT</span> send an access token request that could succeed because doing so would complete the flow initiated by the attacker.<a href="#section-2.5.2.2-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="BrowserSwappingRedirectURI">
+<section id="section-2.5.2.3">
+            <h5 id="name-redirection-endpoints-witho">
+<a href="#section-2.5.2.3" class="section-number selfRef">2.5.2.3. </a><a href="#name-redirection-endpoints-witho" class="section-name selfRef">Redirection Endpoints Without Wildcards</a>
+            </h5>
+<p id="section-2.5.2.3-1"><span><a href="https://rfc-editor.org/rfc/rfc9700#section-4.1.1" class="relref">Section 4.1.1</a> of [<a href="#RFC9700" class="cite xref">RFC9700</a>]</span> already requires authorization servers to compare redirection URIs against registered ones using exact string matching.
+Consequently, clients <span class="bcp14">MUST NOT</span> register redirection URIs that contain wildcards or otherwise allow attackers to influence which of the client's endpoints receives the authorization response.<a href="#section-2.5.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.5.2.3-2">This requirement relevant is not only for well-known open redirection issues, but also for browser swapping.
+If an attacker can direct the authorization response to an endpoint other than the redirection endpoint (e.g., to a static page or an endpoint that ignores unknown request parameters), that endpoint will not clear the authorization response from the user agent (<a href="#BrowserSwappingErrorPage" class="auto internal xref">Section 2.5.2.1</a>) nor invalidate the authorization code (<a href="#BrowserSwappingCodeInvalidation" class="auto internal xref">Section 2.5.2.2</a>).
+Therefore, clients <span class="bcp14">SHOULD</span> register each redirection URI as a dedicated endpoint that implements these countermeasures.<a href="#section-2.5.2.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="BrowserSwappingResponseMode">
+<section id="section-2.5.2.4">
+            <h5 id="name-restricting-the-allowed-res">
+<a href="#section-2.5.2.4" class="section-number selfRef">2.5.2.4. </a><a href="#name-restricting-the-allowed-res" class="section-name selfRef">Restricting the Allowed Response Modes</a>
+            </h5>
+<p id="section-2.5.2.4-1">Clients <span class="bcp14">SHOULD</span> restrict the allowed response modes in their client configuration to only those that are actually implemented.
+Authorization servers <span class="bcp14">SHOULD</span> support this restriction and <span class="bcp14">MUST</span> reject authorization requests with unauthorized response modes.<a href="#section-2.5.2.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.5.2.4-2">Without this restriction, attackers can mutate the response mode as described in <a href="#BrowserSwappingDescription" class="auto internal xref">Section 2.5.1</a>, and thereby prevent the client from receiving, processing and invalidating the authorization code.
+Note that this restriction complements, but does not replace, the countermeasure in <a href="#BrowserSwappingErrorPage" class="auto internal xref">Section 2.5.2.1</a>, since the response mode can also be mutated in the opposite direction.
+This would result in a response mode that the client implements, but which exposes the authorization response to more leak sources.<a href="#section-2.5.2.4-2" class="pilcrow">¶</a></p>
+<p id="section-2.5.2.4-3">If the authorization server does not support response mode restrictions, clients <span class="bcp14">SHOULD</span> integrity-protect the authorization request.
+They can do so by using Pushed Authorization Requests (PAR) <span>[<a href="#RFC9126" class="cite xref">RFC9126</a>]</span>, where the client transmits the request parameters directly to the authorization server and receives a <code>request_uri</code> that references them.
+Alternatively, they can use JWT-Secured Authorization Requests (JAR) <span>[<a href="#RFC9101" class="cite xref">RFC9101</a>]</span>, where the client passes the parameters in a signed request object.
+In both cases, the authorization server only uses the parameters of the request object and ignores parameters added by an attacker (<span><a href="https://rfc-editor.org/rfc/rfc9101#section-6.3" class="relref">Section 6.3</a> of [<a href="#RFC9101" class="cite xref">RFC9101</a>]</span>), so the attacker cannot mutate the response mode or the redirection URI (see <a href="#BrowserSwappingRedirectURI" class="auto internal xref">Section 2.5.2.3</a>).
+Authorization servers <span class="bcp14">SHOULD</span> support enforcing PAR or JAR on a per-client basis (see <span><a href="https://rfc-editor.org/rfc/rfc9126#section-4" class="relref">Section 4</a> of [<a href="#RFC9126" class="cite xref">RFC9126</a>]</span>), so an attacker cannot fall back to an authorization request without integrity protection.<a href="#section-2.5.2.4-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
 </section>
 </div>
 <div id="Security">
@@ -2065,6 +2268,10 @@ However, the user may be confronted with up to two consent screens in a single a
         <dd>
 <span class="refAuthor">Jones, M. B.</span>, <span class="refAuthor">Campbell, B.</span>, <span class="refAuthor">Mortimore, C.</span>, and <span class="refAuthor">F. Skokan</span>, <span class="refTitle">"Updates to OAuth 2.0 JSON Web Token (JWT) Client Authentication and Assertion-Based Authorization Grants"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-oauth-rfc7523bis-05</span>, <time datetime="2026-01-12" class="refDate">12 January 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rfc7523bis-05">https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rfc7523bis-05</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="OAuth.Responses">[OAuth.Responses]</dt>
+        <dd>
+<span class="refAuthor">de Medeiros, B., Ed.</span>, <span class="refAuthor">Scurtescu, M.</span>, <span class="refAuthor">Tarjan, P.</span>, and <span class="refAuthor">M. Jones</span>, <span class="refTitle">"OAuth 2.0 Multiple Response Type Encoding Practices"</span>, <time datetime="2014-02" class="refDate">February 2014</time>, <span>&lt;<a href="https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html">https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="OpenID.CIBA">[OpenID.CIBA]</dt>
         <dd>
 <span class="refAuthor">Fernandez, G.</span>, <span class="refAuthor">Walter, F.</span>, <span class="refAuthor">Nennker, A.</span>, <span class="refAuthor">Tonge, D.</span>, and <span class="refAuthor">B. Campbell</span>, <span class="refTitle">"OpenID Connect Client-Initiated Backchannel Authentication Flow - Core 1.0"</span>, <time datetime="2021-09" class="refDate">September 2021</time>, <span>&lt;<a href="https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html">https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html</a>&gt;</span>. </dd>
@@ -2093,9 +2300,17 @@ However, the user may be confronted with up to two consent screens in a single a
         <dd>
 <span class="refAuthor">Bansal, C.</span>, <span class="refAuthor">Bhargavan, K.</span>, <span class="refAuthor">Delignat-Lavaud, A.</span>, and <span class="refAuthor">S. Maffeis</span>, <span class="refTitle">"Discovering concrete attacks on website authorization by formal analysis"</span>, <span class="refContent">Journal of Computer Security, vol. 22, no. 4, pp. 601-657</span>, <time datetime="2014-04" class="refDate">April 2014</time>, <span>&lt;<a href="https://www.doc.ic.ac.uk/~maffeis/papers/jcs14.pdf">https://www.doc.ic.ac.uk/~maffeis/papers/jcs14.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="research.push">[research.push]</dt>
+        <dd>
+<span class="refAuthor">Jennings, L.</span>, <span class="refTitle">"ConsentFix: Analyzing a browser-native ClickFix-style attack that hijacks OAuth consent grants"</span>, <span class="refContent">Push Security Blog</span>, <time datetime="2025-12" class="refDate">December 2025</time>, <span>&lt;<a href="https://pushsecurity.com/blog/consentfix">https://pushsecurity.com/blog/consentfix</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="research.rub">[research.rub]</dt>
         <dd>
 <span class="refAuthor">Innocenti, T.</span>, <span class="refAuthor">Jannett, L.</span>, <span class="refAuthor">Mainka, C.</span>, <span class="refAuthor">Mladenov, V.</span>, and <span class="refAuthor">E. Kirda</span>, <span class="refTitle">""Only as Strong as the Weakest Link": On the Security of Brokered Single Sign-On on the Web"</span>, <time datetime="2025-05" class="refDate">May 2025</time>, <span>&lt;<a href="https://ieeexplore.ieee.org/document/11023371">https://ieeexplore.ieee.org/document/11023371</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="research.syss">[research.syss]</dt>
+        <dd>
+<span class="refAuthor">Primbs, J.</span>, <span class="refTitle">"OAuth 2.0 Browser Swapping Attacks"</span>, <span class="refContent">SySS Tech Blog</span>, <time datetime="2025-11" class="refDate">November 2025</time>, <span>&lt;<a href="https://blog.syss.com/posts/browser_swapping/">https://blog.syss.com/posts/browser_swapping/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="research.ust">[research.ust]</dt>
         <dd>
@@ -2120,6 +2335,14 @@ However, the user may be confronted with up to two consent screens in a single a
 <dt id="RFC8628">[RFC8628]</dt>
         <dd>
 <span class="refAuthor">Denniss, W.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">Jones, M.</span>, and <span class="refAuthor">H. Tschofenig</span>, <span class="refTitle">"OAuth 2.0 Device Authorization Grant"</span>, <span class="seriesInfo">RFC 8628</span>, <span class="seriesInfo">DOI 10.17487/RFC8628</span>, <time datetime="2019-08" class="refDate">August 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8628">https://www.rfc-editor.org/rfc/rfc8628</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9101">[RFC9101]</dt>
+        <dd>
+<span class="refAuthor">Sakimura, N.</span>, <span class="refAuthor">Bradley, J.</span>, and <span class="refAuthor">M. Jones</span>, <span class="refTitle">"The OAuth 2.0 Authorization Framework: JWT-Secured Authorization Request (JAR)"</span>, <span class="seriesInfo">RFC 9101</span>, <span class="seriesInfo">DOI 10.17487/RFC9101</span>, <time datetime="2021-08" class="refDate">August 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9101">https://www.rfc-editor.org/rfc/rfc9101</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9110">[RFC9110]</dt>
+        <dd>
+<span class="refAuthor">Fielding, R., Ed.</span>, <span class="refAuthor">Nottingham, M., Ed.</span>, and <span class="refAuthor">J. Reschke, Ed.</span>, <span class="refTitle">"HTTP Semantics"</span>, <span class="seriesInfo">STD 97</span>, <span class="seriesInfo">RFC 9110</span>, <span class="seriesInfo">DOI 10.17487/RFC9110</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9110">https://www.rfc-editor.org/rfc/rfc9110</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9126">[RFC9126]</dt>
         <dd>
@@ -2164,25 +2387,28 @@ Xianbo Wang<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <p id="appendix-B-2">-03<a href="#appendix-B-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-B-3.1">
-          <p id="appendix-B-3.1.1">Note that issuing distinct redirection URIs alone does not prevent the COAT attack<a href="#appendix-B-3.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.1.1">Add new section on Browser Swapping, describing the attack, its preconditions, and countermeasures<a href="#appendix-B-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-3.2">
-          <p id="appendix-B-3.2.1">Add comparison of the COAT countermeasure with issuer-based mix-up countermeasures<a href="#appendix-B-3.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.2.1">Note that issuing distinct redirection URIs alone does not prevent the COAT attack<a href="#appendix-B-3.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-3.3">
-          <p id="appendix-B-3.3.1">Remove a COAT variant mention already covered by Shared Consent in Brokered OAuth<a href="#appendix-B-3.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.3.1">Add comparison of the COAT countermeasure with issuer-based mix-up countermeasures<a href="#appendix-B-3.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-3.4">
-          <p id="appendix-B-3.4.1">Clarify the native app backend scenario in Session Fixation and label it as the BFF pattern<a href="#appendix-B-3.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.4.1">Remove a COAT variant mention already covered by Shared Consent in Brokered OAuth<a href="#appendix-B-3.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-3.5">
-          <p id="appendix-B-3.5.1">Reduce non-standard terminology and unify terms used in the Session Fixation section<a href="#appendix-B-3.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.5.1">Clarify the native app backend scenario in Session Fixation and label it as the BFF pattern<a href="#appendix-B-3.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-3.6">
-          <p id="appendix-B-3.6.1">Add sequence diagram to illustrate Session Fixation attack flow<a href="#appendix-B-3.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.6.1">Reduce non-standard terminology and unify terms used in the Session Fixation section<a href="#appendix-B-3.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-3.7">
-          <p id="appendix-B-3.7.1">Editorial clarifications and fixes to COAT and Session Fixation section wording<a href="#appendix-B-3.7.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-3.7.1">Add sequence diagram to illustrate Session Fixation attack flow<a href="#appendix-B-3.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-B-3.8">
+          <p id="appendix-B-3.8.1">Editorial clarifications and fixes to COAT and Session Fixation section wording<a href="#appendix-B-3.8.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-B-4">-02<a href="#appendix-B-4" class="pilcrow">¶</a></p>
@@ -2267,6 +2493,15 @@ Xianbo Wang<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <div class="email">
 <span>Email:</span>
 <a href="mailto:adonis.fung@samsung.com" class="email">adonis.fung@samsung.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Jonas Primbs</span></div>
+<div dir="auto" class="left"><span class="org">University of Tübingen</span></div>
+<div dir="auto" class="left"><span class="country-name">Germany</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:jonas.primbs@uni-tuebingen.de" class="email">jonas.primbs@uni-tuebingen.de</a>
 </div>
 </address>
 </section>
